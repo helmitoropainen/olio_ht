@@ -74,7 +74,7 @@
         android:shadowDx="-3"
         android:shadowDy="3"
         android:shadowRadius="0.01"
-        android:text="You have slept x hours"
+        android:text="You've slept 0 hours"
         android:textColor="#448AFF"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
