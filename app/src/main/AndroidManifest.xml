@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.olio_ht">
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -11,28 +12,37 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.Olio_HT">
-        <activity
+      
+      <activity
             android:name=".LogInActivity"
             android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+      
+      <activity android:name=".RegisterActivity"
+            android:windowSoftInputMode="adjustNothing">
+        </activity>
+      
         <activity android:name=".MainActivity"
             android:windowSoftInputMode="adjustNothing">
         </activity>
+      
         <activity android:name=".SleepActivity"
             android:windowSoftInputMode="adjustNothing">
         </activity>
+      
         <activity android:name=".CalorieActivity"
             android:windowSoftInputMode="adjustNothing">
         </activity>
+      
         <activity android:name=".Pop"
             android:windowSoftInputMode="adjustNothing"
             android:theme="@style/Theme.Olio_HT.Pop">
         </activity>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
