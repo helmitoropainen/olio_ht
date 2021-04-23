@@ -7,16 +7,18 @@
     android:background="#FFE57F">
 
     <TextView
-        android:id="@+id/textView18"
+        android:id="@+id/sumView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clickable="true"
         android:fontFamily="@font/baloo_bhaina"
         android:gravity="center"
+        android:onClick="calorieRecommendation"
         android:shadowColor="@color/black"
         android:shadowDx="-2"
         android:shadowDy="2"
         android:shadowRadius="0.02"
-        android:text="Todays calories are +/-0"
+        android:text="Todays calories are 0 kcal"
         android:textColor="@color/white"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -26,27 +28,27 @@
         app:layout_constraintVertical_bias="0.023" />
 
     <TextView
-        android:id="@+id/textView20"
+        android:id="@+id/spentCalories"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/baloo_bhaina"
         android:gravity="center"
-        android:text="You spent x kcal"
-        android:textColor="@color/white"
-        android:textSize="20sp"
         android:shadowColor="@color/black"
         android:shadowDx="-2"
         android:shadowDy="2"
         android:shadowRadius="0.02"
+        android:text="You spent 0 kcal"
+        android:textColor="@color/white"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.162"
+        app:layout_constraintHorizontal_bias="0.174"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.286" />
+        app:layout_constraintVertical_bias="0.368" />
 
     <TextView
-        android:id="@+id/textView21"
+        android:id="@+id/gainedCalories"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/baloo_bhaina"
@@ -55,15 +57,55 @@
         android:shadowDx="-2"
         android:shadowDy="2"
         android:shadowRadius="0.02"
-        android:text="You gained x kcal"
+        android:text="You gained 0 kcal"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.169"
+        app:layout_constraintHorizontal_bias="0.185"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.731" />
+        app:layout_constraintVertical_bias="0.779" />
+
+    <TextView
+        android:id="@+id/typeView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/baloo_bhaina"
+        android:gravity="center"
+        android:shadowColor="@color/black"
+        android:shadowDx="-2"
+        android:shadowDy="2"
+        android:shadowRadius="0.02"
+        android:text="Calories for own workout"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.132"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.246" />
+
+    <TextView
+        android:id="@+id/typeView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/baloo_bhaina"
+        android:gravity="center"
+        android:shadowColor="@color/black"
+        android:shadowDx="-2"
+        android:shadowDy="2"
+        android:shadowRadius="0.02"
+        android:text="Calories for own portion"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.132"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.645" />
 
     <TextView
         android:id="@+id/durationView"
@@ -80,10 +122,49 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.201" />
+        app:layout_constraintVertical_bias="0.184" />
+
+    <TextView
+        android:id="@+id/kcalView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/baloo_bhaina"
+        android:gravity="center"
+        android:shadowColor="@color/black"
+        android:shadowDx="-2"
+        android:shadowDy="2"
+        android:shadowRadius="0.02"
+        android:text="kcal"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.307" />
+
+    <TextView
+        android:id="@+id/kcalView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/baloo_bhaina"
+        android:gravity="center"
+        android:shadowColor="@color/black"
+        android:shadowDx="-2"
+        android:shadowDy="2"
+        android:shadowRadius="0.02"
+        android:text="kcal"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.518"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.709" />
 
     <TextView
         android:id="@+id/massView"
@@ -103,13 +184,14 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.65" />
+        app:layout_constraintVertical_bias="0.588" />
 
     <Button
         android:id="@+id/button7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/baloo_bhaina"
+        android:onClick="addSpentCalories"
         android:text="Add data"
         app:backgroundTint="#FF8A80"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -117,13 +199,14 @@
         app:layout_constraintHorizontal_bias="0.206"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.39" />
+        app:layout_constraintVertical_bias="0.456" />
 
     <Button
         android:id="@+id/button5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/baloo_bhaina"
+        android:onClick="addGainedCalories"
         android:text="Add data"
         app:backgroundTint="#FF8A80"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -131,13 +214,14 @@
         app:layout_constraintHorizontal_bias="0.206"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.822" />
+        app:layout_constraintVertical_bias="0.871" />
 
     <Button
         android:id="@+id/button10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/baloo_bhaina"
+        android:onClick="resetSport"
         android:text="Reset data"
         app:backgroundTint="#FF8A80"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -145,13 +229,14 @@
         app:layout_constraintHorizontal_bias="0.945"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.442" />
+        app:layout_constraintVertical_bias="0.452" />
 
     <Button
         android:id="@+id/button4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/baloo_bhaina"
+        android:onClick="resetFood"
         android:text="Reset data"
         app:backgroundTint="#FF8A80"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -159,7 +244,7 @@
         app:layout_constraintHorizontal_bias="0.945"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.86" />
+        app:layout_constraintVertical_bias="0.871" />
 
     <Button
         android:id="@+id/returnHome"
@@ -172,7 +257,7 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.959" />
+        app:layout_constraintVertical_bias="0.961" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_sports"
@@ -183,7 +268,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.134" />
+        app:layout_constraintVertical_bias="0.166" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_food"
@@ -194,7 +279,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.68" />
+        app:layout_constraintVertical_bias="0.705" />
 
     <Spinner
         android:id="@+id/sportsSpinner"
@@ -216,7 +301,7 @@
         app:layout_constraintHorizontal_bias="0.151"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.564" />
+        app:layout_constraintVertical_bias="0.53" />
 
     <SeekBar
         android:id="@+id/seekBarD"
@@ -228,7 +313,7 @@
         app:layout_constraintHorizontal_bias="0.091"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.206" />
+        app:layout_constraintVertical_bias="0.189" />
 
     <SeekBar
         android:id="@+id/seekBarM"
@@ -237,9 +322,41 @@
         android:max="50"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.122"
+        app:layout_constraintHorizontal_bias="0.091"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.646" />
+        app:layout_constraintVertical_bias="0.584" />
+
+    <EditText
+        android:id="@+id/caloriesSpentInput"
+        android:layout_width="118dp"
+        android:layout_height="37dp"
+        android:ems="10"
+        android:fontFamily="sans-serif"
+        android:inputType="number"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.191"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.303" />
+
+    <EditText
+        android:id="@+id/calorieIntakeInput"
+        android:layout_width="118dp"
+        android:layout_height="37dp"
+        android:ems="10"
+        android:fontFamily="sans-serif"
+        android:inputType="number"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.191"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.708" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
