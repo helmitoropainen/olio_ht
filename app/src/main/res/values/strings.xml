@@ -14,29 +14,4 @@
         <item>Other</item>
     </string-array>
 
-    <string-array name="food">
-        <item>Potato</item>
-        <item>Tomato</item>
-        <item>Porridge</item>
-        <item>Salmon Sushi</item>
-        <item>Veggie Sushi</item>
-        <item>Coke Zero</item>
-        <item>Coke</item>
-        <item>Water</item>
-        <item>Orange Juice</item>
-    </string-array>
-
-    <string-array name="sports">
-        <item>Jogging</item>
-        <item>Walking</item>
-        <item>Cycling</item>
-        <item>Badminton</item>
-        <item>Padel</item>
-        <item>Tennis</item>
-        <item>Ice Hockey</item>
-        <item>Football</item>
-        <item>Yoga</item>
-        <item>Cross Fit</item>
-    </string-array>
-
 </resources>
