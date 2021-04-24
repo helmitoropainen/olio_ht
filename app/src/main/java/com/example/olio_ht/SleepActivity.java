@@ -20,9 +20,9 @@ public class SleepActivity extends AppCompatActivity {
 
     Button returnHome, submit;
     EditText hour1, minute1, hour2, minute2;
-    TextView sum, readinesstext, commenttext ;
+    TextView sum, readinesstext, advicetext ;
     int h1=0, m1=0, h2=0, m2=0, slepth=0, sleptmin=0, mindifference=0, readiness=0, goal=8;
-    float slepttime=0;
+    double slepttime=0;
 
 
     @Override
@@ -38,7 +38,7 @@ public class SleepActivity extends AppCompatActivity {
         minute2 = (EditText) findViewById(R.id.editTextMinute2) ;
         sum = (TextView) findViewById(R.id.textViewSum) ;
         readinesstext = (TextView) findViewById(R.id.textViewReadiness);
-        commenttext = (TextView) findViewById(R.id.textViewComment) ;
+        advicetext = (TextView) findViewById(R.id.textViewComment) ;
 
         // jos h1<00.00, h1:n päivä on h2:n päivä -1. Jos h1>00.00, h1:n päivä = h2:n päivä
 
@@ -48,6 +48,7 @@ public class SleepActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 setResult(RESULT_OK, intent);
+                sendSleptTimeToHome();
                 finish();
             }
         });
@@ -73,53 +74,19 @@ public class SleepActivity extends AppCompatActivity {
         if (h1>23 || m1>59 || h2>23 || m2>59) {
             Toast.makeText(this, "Invalid numbers given for time", Toast.LENGTH_SHORT).show();
             return;
-        } else if (h1>12) {
-            m1 = 24*60 - 60*h1 - m1 ;
-            if (h2>h1) {
-                m2 = 24*60 - h2*60 - m2 ;
-                mindifference = m2 - m1 ;
-            } else {
-                m2 = h2*60 + m2 ;
-                mindifference = m2 + m1 ;
-            }
-        } else if (h1<12) {
-            m1 = 60*h1 + m1 ;
-            m2 = h2*60 + m2 ;
-            mindifference = m2 - m1 ;
         }
 
-        slepth = (int) mindifference/60 ;
-        sleptmin = mindifference - slepth*60 ;
-        slepttime = (float) mindifference/60;
+        sleepEntry SE = new sleepEntry(h1, h2, m1, m2) ;
+        mindifference = SE.calculateTime();
 
-        if (sleptmin == 0) {
-            sum.setText("You slept\n"+slepth+" hours") ;
-        } else if (slepth == 0) {
-            sum.setText("You slept\n"+sleptmin+" hours") ;
-        }
-        else {
-            sum.setText("You slept\n" + slepth + " hours and " + sleptmin + " minutes");
-        }
+        String sumText = SE.getHoursAndMinsText(mindifference) ;
+        sum.setText(sumText);
 
-        readiness = (int) ((slepttime/goal) * 100) ;
+        readiness = SE.getReadiness() ;
+        readinesstext.setText("You've reached "+readiness+"% of your goal") ;
 
-        readinesstext.setText("You've reached "+readiness+"% of your goal");
-
-        if (readiness<30) {
-            commenttext.setText("Take it easy on yourself today and try to sleep early!") ;
-        } else if (readiness<50) {
-            commenttext.setText("Remember to stay hydrated and eat nutritious food. You can get through this day!") ;
-        } else if (readiness<75) {
-            commenttext.setText("A bit of exercising could help you feel more awake!") ;
-        } else if (readiness<95) {
-            commenttext.setText("You're off to a good start today, just remember to take consistent breaks from your work!") ;
-        } else if (readiness<100) {
-            commenttext.setText("Alright! You're getting there!") ;
-        } else if (readiness<115) {
-            commenttext.setText("Yay, you've reached your goal! Now you can go out there and conquer this day!") ;
-        } else {
-            commenttext.setText("Remember that too much sleep can increase your tiredness.") ;
-        }
+        String advice = SE.getAdvice(readiness) ;
+        advicetext.setText(advice);
 
     }
 
@@ -127,10 +94,10 @@ public class SleepActivity extends AppCompatActivity {
 
     }
 
-    public void sendSleptTimeToHome (View view) {
+    public void sendSleptTimeToHome () {
         // tässä koitin lähettää sleptTime arvon homefragmenttiin, muttei onnistunut :)
         Bundle bundle = new Bundle() ;
-        bundle.putFloat("sleptTime", slepttime);
+        bundle.putDouble("sleptTime", slepttime);
         HomeFragment home = new HomeFragment();
         home.setArguments(bundle);
     }
@@ -139,6 +106,7 @@ public class SleepActivity extends AppCompatActivity {
     public void onBackPressed() {
         Intent intent = new Intent();
         setResult(RESULT_OK, intent);
+        sendSleptTimeToHome();
         finish();
     }
 }
