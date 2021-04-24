@@ -29,6 +29,8 @@ public class LogInActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.passwordInput);
 
         userLocalStore = new UserLocalStore(this);
+        System.out.println("TIEDOSTOSIJAINTI: " + LogInActivity.this.getFilesDir());
+        // Tarkistamista varten.
 
         LogIn.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -39,16 +41,26 @@ public class LogInActivity extends AppCompatActivity {
                 User user = userLocalStore.getUserInfo(username);
                 String securePassword = userLocalStore.getUserInfo(username).password;
                 byte[] salt = userLocalStore.getUserInfo(username).salt.getBytes();
-                if (!user.username.equals(username)) {
+                if (username.isEmpty()) {
+                    etUsername.setError("Field can't be empty!");
+                    etUsername.requestFocus();
+                    return;
+                } if (!user.username.equals(username)) {
                     etUsername.setError("Username not found. Please sign up.");
                     etUsername.requestFocus();
+                    return;
+                } if (password.isEmpty()) {
+                    etPassword.setError("Field can't be empty!");
+                    etPassword.requestFocus();
                     return;
                 } if (!passwordCheck(password, securePassword, salt)) {
                     etPassword.setError("Wrong password.");
                     etPassword.requestFocus();
                     return;
                 }
-                userLocalStore.setUserLoggedIn(true, user.username);
+                etUsername.setText("");
+                etPassword.setText("");
+                userLocalStore.setUserLoggedIO(user.username);
                 Intent intent = new Intent(LogInActivity.this, MainActivity.class);
                 startActivityForResult(intent, 1);
             }

@@ -120,6 +120,13 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, CalorieActivity.class);
         startActivityForResult(intent, 1);
     }
+/* nää mul viel kesken
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //super.onActivityResult(requestCode, resultCode, data);
+    }
+*/
+
 
     // en saanu tätä et siin alapalkin asetusten kuvakkees lukis käyttäjänimi nii toimii
     /*@Override

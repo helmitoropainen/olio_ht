@@ -182,6 +182,7 @@
         app:backgroundTint="#EF6C00"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.614" />
@@ -202,8 +203,23 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.701" />
 
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:text="Log out"
+        android:textStyle="bold"
+        app:backgroundTint="#EF6C00"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.614" />
+
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/etLastName"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -221,7 +237,7 @@
         app:layout_constraintVertical_bias="0.289" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName5"
+        android:id="@+id/etFirstName"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -239,7 +255,7 @@
         app:layout_constraintVertical_bias="0.227" />
 
     <EditText
-        android:id="@+id/editTextNumber"
+        android:id="@+id/etHeight"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -257,7 +273,7 @@
         app:layout_constraintVertical_bias="0.412" />
 
     <EditText
-        android:id="@+id/editTextNumber2"
+        android:id="@+id/etWeight"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:ems="10"
