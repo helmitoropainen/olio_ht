@@ -2,6 +2,7 @@ package com.example.olio_ht;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,11 +10,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class SleepActivity extends AppCompatActivity {
@@ -23,12 +26,16 @@ public class SleepActivity extends AppCompatActivity {
     TextView sum, readinesstext, advicetext ;
     int h1=0, m1=0, h2=0, m2=0, slepth=0, sleptmin=0, mindifference=0, readiness=0, goal=8;
     double slepttime=0;
+    boolean hasUserAddedData = false, hasUerCalculatedSleep = false;
+    String username, date;
+    sleepEntry SE = new sleepEntry(0,0,0,0);
 
-
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sleep);
+        setTitle(R.string.app_name);
 
         returnHome = (Button) findViewById(R.id.returnHome);
 
@@ -42,13 +49,19 @@ public class SleepActivity extends AppCompatActivity {
 
         // jos h1<00.00, h1:n päivä on h2:n päivä -1. Jos h1>00.00, h1:n päivä = h2:n päivä
 
+        username = "user";
+        date = "24.4.2021";
+
+        SE.setDate(date);
+        SE.setUsername(username);
+
         returnHome.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
+                intent.putExtra("sleep entry", SE);
                 setResult(RESULT_OK, intent);
-                sendSleptTimeToHome();
                 finish();
             }
         });
@@ -76,7 +89,7 @@ public class SleepActivity extends AppCompatActivity {
             return;
         }
 
-        sleepEntry SE = new sleepEntry(h1, h2, m1, m2) ;
+        SE = new sleepEntry(h1, h2, m1, m2) ;
         mindifference = SE.calculateTime();
 
         String sumText = SE.getHoursAndMinsText(mindifference) ;
@@ -88,18 +101,29 @@ public class SleepActivity extends AppCompatActivity {
         String advice = SE.getAdvice(readiness) ;
         advicetext.setText(advice);
 
+        slepttime = SE.getSleptTime();
+        SE.setDate(date);
+        SE.setUsername(username);
+
+        hasUerCalculatedSleep = true;
+
     }
 
     public void resetData(View v) {
-
+        if (hasUerCalculatedSleep == false) {
+            SE = new sleepEntry(0,0,0,0);
+        }
+        SE.resetTodaysSum();
+        hasUserAddedData = true;
     }
 
-    public void sendSleptTimeToHome () {
-        // tässä koitin lähettää sleptTime arvon homefragmenttiin, muttei onnistunut :)
-        Bundle bundle = new Bundle() ;
-        bundle.putDouble("sleptTime", slepttime);
-        HomeFragment home = new HomeFragment();
-        home.setArguments(bundle);
+    public void addData(View v) {
+        if (hasUerCalculatedSleep == true) {
+            SE.addToTodaysSum(slepttime);
+            hasUserAddedData = true;
+        } else {
+            hasUserAddedData = false;
+        }
     }
 
     public void sleepRecommendation (View v) {
@@ -109,8 +133,13 @@ public class SleepActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent intent = new Intent();
-        setResult(RESULT_OK, intent);
-        sendSleptTimeToHome();
+        if (hasUserAddedData == true) {
+            intent.putExtra("sleep entry", SE);
+            setResult(RESULT_OK, intent);
+        } else {
+            intent.putExtra("no data", SE);
+            setResult(RESULT_CANCELED, intent);
+        }
         finish();
     }
 }

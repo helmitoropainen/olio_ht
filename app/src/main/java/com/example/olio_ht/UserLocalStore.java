@@ -64,10 +64,4 @@ public class UserLocalStore {
         spEditor.putString("loggedIn", un);
         spEditor.apply();
     }
-
-    public void changeBirthday(LocalDate dateOfBirth, String un) {
-        SharedPreferences.Editor spEditor = userLocalDatabase.edit();
-        spEditor.putString("dateOfBirth"+un, dateOfBirth.toString());
-        spEditor.apply();
-    }
 }

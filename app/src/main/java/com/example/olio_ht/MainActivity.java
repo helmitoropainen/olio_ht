@@ -1,13 +1,16 @@
 package com.example.olio_ht;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,22 +23,37 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
 
     int facts_index;
-    //CharSequence username = "_user123";
+    double sleepSum, calorieSum;
     HomeFragment home = new HomeFragment();
     AnalyticsFragment analytics = new AnalyticsFragment();
     SettingsFragment settings = new SettingsFragment();
     PasswordFragment password = new PasswordFragment();
     private DatePickerDialog.OnDateSetListener dateSetListener;
+    UserEntryLog userEntryLog;
+    EntryManager entryManager;
+    User user;
+    Entry sportEntry, foodEntry, sleepEntry;
+    String filename;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setTitle(R.string.app_name);
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, home).commit();
+
+        userEntryLog = new UserEntryLog(getApplicationContext());
+        filename = userEntryLog.createFile();
+
+        entryManager = EntryManager.getInstance();
+        entryManager.setFilename(filename);
+        entryManager.setContext(getApplicationContext());
+
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -111,21 +129,42 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void launchSleep(View v) {
-        Intent intent = new Intent(MainActivity.this, SleepActivity.class);
-        startActivityForResult(intent, 1);
-    }
-
     public void launchCalories(View v) {
         Intent intent = new Intent(MainActivity.this, CalorieActivity.class);
         startActivityForResult(intent, 1);
     }
-/* nää mul viel kesken
+
+    public void launchSleep(View v) {
+        Intent intent = new Intent(MainActivity.this, SleepActivity.class);
+        startActivityForResult(intent, 2);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                sportEntry = (Entry) data.getSerializableExtra("sport entry");
+                foodEntry = (Entry) data.getSerializableExtra("food entry");
+                calorieSum = (double) foodEntry.getSum() - sleepEntry.getSum();
+                entryManager.setSportEntries(sportEntry);
+                entryManager.setFoodEntries(foodEntry);
+            }
+        }
+
+        if (requestCode == 2) {
+            if (resultCode == RESULT_OK) {
+                sleepEntry = (Entry) data.getSerializableExtra("sleep entry");
+                sleepSum = sleepEntry.getSum();
+                entryManager.setSleepEntries(sleepEntry);
+            }
+        }
+
+        entryManager.saveEntries();
     }
-*/
+
 
 
     // en saanu tätä et siin alapalkin asetusten kuvakkees lukis käyttäjänimi nii toimii

@@ -1,8 +1,10 @@
 package com.example.olio_ht;
 
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
-public abstract class Entry {
+public abstract class Entry implements Serializable {
 
     String date;
     double sum;
@@ -19,11 +21,9 @@ public abstract class Entry {
     public void setSum( double s ) { sum = s; }
     public void setUsername( String u ) { username = u; }
 
-    // jos sleep entry tarvii näit, kalorrientryt ei tarvi
-    public void clearTodaysEntries() {
+    public void resetTodaysSum() {
         sum = 0;
     }
-
     public void addToTodaysSum(double x) {
         sum = sum + x;
     }
