@@ -1,11 +1,21 @@
 package com.example.olio_ht;
 
+import android.content.Context;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
+import java.time.LocalDate;
+
 public class EntryManager {
 
     private static EntryManager entryManager = new EntryManager();
-    Entry sportEntries;
-    Entry foodEntries;
-    Entry spleepEntries;
+    UserEntryLog userEntryLog;
+    Entry sportEntries = null;
+    Entry foodEntries = null;
+    Entry sleepEntries = null;
+    String filename = null;
+    Context context = null;
 
     private EntryManager() {
 
@@ -15,18 +25,35 @@ public class EntryManager {
         return entryManager;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void saveEntries() {
-        // entryt logiin :) dunno how
+        if (context != null && filename != null) {
+            userEntryLog = new UserEntryLog(context);
+
+            if (sportEntries != null && foodEntries != null && sleepEntries != null) {
+                String username = sportEntries.getUsername();
+                String birthday = sportEntries.getDate();
+
+                double sleep = sleepEntries.getSum();
+                double caloriesEaten = foodEntries.getSum();
+                double caloriesBurned = sportEntries.getSum();
+
+                userEntryLog.appendToCSV(filename, username, birthday, sleep, caloriesEaten, caloriesBurned);
+            }
+
+        }
+
     }
 
-    // en tiiä tarviiks näit johonki
 
     public Entry getSportEntries() { return sportEntries; }
     public Entry getFoodEntries() { return foodEntries; }
-    public Entry getSpleepEntries() { return spleepEntries; }
+    public Entry getSleepEntries() { return sleepEntries; }
 
     public void setSportEntries( Entry e ) { sportEntries = e; }
     public void setFoodEntries( Entry e ) { foodEntries = e; }
-    public void setSleepEntries( Entry e ) { spleepEntries = e; }
+    public void setSleepEntries( Entry e ) { sleepEntries = e; }
+    public void setFilename ( String f ) { filename = f; }
+    public void setContext ( Context c ) { context = c; }
 
 }

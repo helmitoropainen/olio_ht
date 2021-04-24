@@ -54,9 +54,9 @@ public class UserEntryLog {
 
     // Tällä voi aina lisätä ne päivän tiedot.
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void appendToCSV(String filename, String username, LocalDate date, double sleep, double caloriesEaten, double caloriesBurned) {
+    public void appendToCSV(String filename, String username, String date, double sleep, double caloriesEaten, double caloriesBurned) {
         try {
-            String userdata = username+";"+date.toString()+";"+sleep+";"+caloriesEaten+";"+caloriesBurned+"\n";
+            String userdata = username+";"+date+";"+sleep+";"+caloriesEaten+";"+caloriesBurned+"\n";
             OutputStreamWriter osw = new OutputStreamWriter(context.openFileOutput(filename,Context.MODE_APPEND));
             osw.write(userdata);
             osw.close();

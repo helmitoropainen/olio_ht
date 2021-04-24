@@ -2,7 +2,7 @@ package com.example.olio_ht;
 
 import java.io.Serializable;
 
-public class CalorieEntry extends Entry implements Serializable {
+public class CalorieEntry extends Entry {
 
     String info;
     double calories;
