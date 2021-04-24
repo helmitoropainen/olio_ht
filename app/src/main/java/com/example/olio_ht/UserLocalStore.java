@@ -7,7 +7,6 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class UserLocalStore {
     public static final String SP_NAME = "userInformation";
@@ -19,7 +18,8 @@ public class UserLocalStore {
 
     public void storeUserData(User user) {
         SharedPreferences.Editor spEditor = userLocalDatabase.edit();
-        spEditor.putString("name"+user.username, user.name);
+        spEditor.putString("firstName"+user.username, user.firstName);
+        spEditor.putString("lastName"+user.username, user.lastName);
         spEditor.putString("username"+user.username, user.username);
         spEditor.putString("password"+user.username, user.password);
         spEditor.putString("salt"+user.username, user.salt);
@@ -34,37 +34,40 @@ public class UserLocalStore {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public User getUserInfo(String un) {
-        String name = userLocalDatabase.getString("name"+un, "");
+        String firstName = userLocalDatabase.getString("firstName"+un, "");
+        String lastName = userLocalDatabase.getString("lastName"+un, "");
         String username = userLocalDatabase.getString("username"+un, "");
         String password = userLocalDatabase.getString("password"+un, "");
         String salt = userLocalDatabase.getString("salt"+un, "");
         String sex = userLocalDatabase.getString("sex"+un, "");
-        LocalDate dateOfBirth = LocalDate.parse(userLocalDatabase.getString("dateOfBirth"+un, ""));
+        LocalDate dateOfBirth = LocalDate.parse(userLocalDatabase.getString("dateOfBirth"+un, "2021-01-01"));
         int age = userLocalDatabase.getInt("age"+un, -1);
         float height = userLocalDatabase.getFloat("height"+un, -1);
         float weight = userLocalDatabase.getFloat("weight"+un, -1);
         // float bmi = userLocalDatabase.getFloat("bmi", -1);
 
-        User user = new User(name, username, password, salt, sex, dateOfBirth, age, height, weight
-                /*, bmi*/);
+        User user = new User(firstName, lastName, username, password, salt, sex, dateOfBirth, age,
+                height, weight/*, bmi*/);
 
         return user;
     }
 
     // Tells if a user is logged in or out.
-    public boolean getUserLoggedIn(String un) {
-        if (userLocalDatabase.getBoolean("loggedIn"+un, false)) {
-            return true;
-        } else {
-            return false;
-        }
+    public String getUserLoggedIn() {
+        String loggedInUser = userLocalDatabase.getString("loggedIn", "");
+        return loggedInUser;
     }
 
     // Sets info to the userLocalDatabase which user is logged in.
-    public void setUserLoggedIn(boolean loggedIn, String un) {
+    public void setUserLoggedIO(String un) {
         SharedPreferences.Editor spEditor = userLocalDatabase.edit();
-        spEditor.putBoolean("loggedIn"+un, loggedIn);
+        spEditor.putString("loggedIn", un);
         spEditor.apply();
     }
 
+    public void changeBirthday(LocalDate dateOfBirth, String un) {
+        SharedPreferences.Editor spEditor = userLocalDatabase.edit();
+        spEditor.putString("dateOfBirth"+un, dateOfBirth.toString());
+        spEditor.apply();
+    }
 }

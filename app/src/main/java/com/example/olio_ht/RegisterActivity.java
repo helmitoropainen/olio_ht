@@ -31,7 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText etUsername;
     EditText etFirstName;
     EditText etLastName;
-    TextView twDateOfBirth;
+    TextView tvDateOfBirth;
     EditText etHeight;
     EditText etWeight;
     Spinner spinner;
@@ -48,7 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
         etUsername = findViewById(R.id.etUsername);
         etFirstName = findViewById(R.id.etFirstName);
         etLastName = findViewById(R.id.etLastName);
-        twDateOfBirth = findViewById(R.id.dateOfBirth);
+        tvDateOfBirth = findViewById(R.id.dateOfBirth);
         etHeight = findViewById(R.id.etHeight);
         etWeight = findViewById(R.id.etWeight);
         etPassword = findViewById(R.id.etPassword);
@@ -92,7 +92,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month = month + 1;
                 String date = dayOfMonth + "." + month + "." + year;
-                twDateOfBirth.setText(date);
+                tvDateOfBirth.setText(date);
             }
         };
     }
@@ -106,8 +106,7 @@ public class RegisterActivity extends AppCompatActivity {
         String username = etUsername.getText().toString();
         String firstName = etUsername.getText().toString();
         String lastName = etLastName.getText().toString();
-        String name = firstName + " " + lastName;
-        LocalDate dateOfBirth = LocalDate.parse(twDateOfBirth.getText(), formatter);
+        LocalDate dateOfBirth = LocalDate.parse(tvDateOfBirth.getText(), formatter);
         int age = (int) java.time.temporal.ChronoUnit.YEARS.between(dateOfBirth, now);
         String height = etHeight.getText().toString();
         String weight = etWeight.getText().toString();
@@ -115,6 +114,10 @@ public class RegisterActivity extends AppCompatActivity {
 
         if (username.isEmpty()) {
             etUsername.setError("Field can't be empty!");
+            etUsername.requestFocus();
+            return;
+        } if (!userLocalStore.getUserInfo(username).username.isEmpty()) {
+            etUsername.setError("Username is already taken.");
             etUsername.requestFocus();
             return;
         } if (firstName.isEmpty()) {
@@ -126,8 +129,8 @@ public class RegisterActivity extends AppCompatActivity {
             etLastName.requestFocus();
             return;
         } if (dateOfBirth.toString().isEmpty()) {
-            twDateOfBirth.setError("Field can't be empty!");
-            twDateOfBirth.requestFocus();
+            tvDateOfBirth.setError("Field can't be empty!");
+            tvDateOfBirth.requestFocus();
             return;
         } if (height.isEmpty()) {
             etHeight.setError("Field can't be empty!");
@@ -159,8 +162,8 @@ public class RegisterActivity extends AppCompatActivity {
         String salt = generateSalt();
         String securePassword = getSHA512(password, salt.getBytes());
 
-        User registeredUser = new User(name, username, securePassword, salt, sex, dateOfBirth, age,
-                parseFloat(height), parseFloat(weight)/*, bmi*/);
+        User registeredUser = new User(firstName, lastName, username, securePassword, salt, sex,
+                dateOfBirth, age, parseFloat(height), parseFloat(weight)/*, bmi*/);
         userLocalStore.storeUserData(registeredUser);
         Intent intent = new Intent(RegisterActivity.this, LogInActivity.class);
         startActivityForResult(intent, 1);
@@ -169,11 +172,11 @@ public class RegisterActivity extends AppCompatActivity {
     // Checks whether the password fills the requirements of a secure password or not.
     public boolean checkPassword(String password) {
         char ch;
-        Boolean isValid = true;
-        Boolean hasDigit = false;
-        Boolean hasUpperCase = false;
-        Boolean hasLowerCase = false;
-        Boolean hasSpecialChar = false;
+        boolean isValid = true;
+        boolean hasDigit = false;
+        boolean hasUpperCase = false;
+        boolean hasLowerCase = false;
+        boolean hasSpecialChar = false;
 
         for (int i = 0; i<password.length(); i++) {
             ch = password.charAt(i);

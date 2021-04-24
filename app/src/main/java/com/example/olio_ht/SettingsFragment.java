@@ -1,24 +1,46 @@
 package com.example.olio_ht;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import static java.lang.Float.parseFloat;
 
 public class SettingsFragment extends Fragment {
 
     TextView dateView;
     View view;
     Spinner spinner;
+    UserLocalStore userLocalStore;
+    Button btLogOut;
+    Button btApplyChanges;
+    EditText etFirstName;
+    EditText etLastName;
+    EditText etHeight;
+    EditText etWeight;
+    int choice;
+    UserEntryLog userEntryLog; // Testaan JSON logia
+
 
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String FIRST_NAME = "firstName";
@@ -31,6 +53,29 @@ public class SettingsFragment extends Fragment {
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_settings, container, false);
+        userLocalStore = new UserLocalStore(getActivity().getBaseContext());
+        userEntryLog = new UserEntryLog(getActivity().getBaseContext()); // JSON testausta
+        etFirstName = view.findViewById(R.id.etFirstName);
+        etLastName = view.findViewById(R.id.etLastName);
+        etHeight = view.findViewById(R.id.etHeight);
+        etWeight = view.findViewById(R.id.etWeight);
+        dateView = view.findViewById(R.id.dateOfBirth);
+        btLogOut = view.findViewById(R.id.button3);
+        btLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logOut();
+            }
+        });
+        btApplyChanges = view.findViewById(R.id.button);
+        btApplyChanges.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onClick(View v) {
+                applyChanges();
+                userEntryLog.createFile(); // JSON testaus
+            }
+        });
         return view;
     }
 
@@ -56,6 +101,60 @@ public class SettingsFragment extends Fragment {
         String arg = getArguments().getString("date");
         dateView = (TextView) this.view.findViewById(R.id.dateOfBirth);
         dateView.setText(arg);
+    }
+
+    public void logOut() {
+        userLocalStore.setUserLoggedIO("");
+        Intent intent = new Intent(getActivity().getBaseContext(), LogInActivity.class);
+        startActivityForResult(intent, 1);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void applyChanges() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.M.yyyy");
+        LocalDate now = LocalDate.now();
+        String username = userLocalStore.getUserLoggedIn();
+        String firstName = etFirstName.getText().toString();
+        String lastName = etLastName.getText().toString();
+        LocalDate dateOfBirth = LocalDate.parse(dateView.getText(), formatter);
+        int age = (int) java.time.temporal.ChronoUnit.YEARS.between(dateOfBirth, now);
+        String height = etHeight.getText().toString();
+        String weight = etWeight.getText().toString();
+        String sex = spinner.getItemAtPosition(choice).toString();
+        String securePassword = userLocalStore.getUserInfo(username).password;
+        String salt = userLocalStore.getUserInfo(username).salt;
+
+        if (firstName.isEmpty()) {
+            etFirstName.setError("Field can't be empty!");
+            etFirstName.requestFocus();
+            return;
+        } if (lastName.isEmpty()) {
+            etLastName.setError("Field can't be empty!");
+            etLastName.requestFocus();
+            return;
+        } if (dateOfBirth.toString().isEmpty()) {
+            dateView.setError("Field can't be empty!");
+            dateView.requestFocus();
+            return;
+        } if (height.isEmpty()) {
+            etHeight.setError("Field can't be empty!");
+            etHeight.requestFocus();
+            return;
+        } if (weight.isEmpty()) {
+            etWeight.setError("Field can't be empty!");
+            etWeight.requestFocus();
+            return;
+        }
+
+        User changedUser = new User(firstName, lastName, username, securePassword, salt, sex,
+                dateOfBirth, age, parseFloat(height), parseFloat(weight)/*, bmi*/);
+        userLocalStore.storeUserData(changedUser);
+
+        Context context = getContext();
+        CharSequence text = "User data changed successfully.";
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
     }
 
     // näist en oo viel ihan varma, tämmösii käytin 11? viikol ku halusin et asetukset säilyy vaik
