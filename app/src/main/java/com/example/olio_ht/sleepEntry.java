@@ -36,6 +36,8 @@ public class sleepEntry {
         return mindifference ;
     }
 
+    public double getSleptTime() { return slepttime ; }
+
     public String getHoursAndMinsText(int mins) {
         slepth = (int) mins/60 ;
         sleptmin = mins - slepth*60 ;
