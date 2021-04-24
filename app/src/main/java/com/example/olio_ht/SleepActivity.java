@@ -102,6 +102,10 @@ public class SleepActivity extends AppCompatActivity {
         home.setArguments(bundle);
     }
 
+    public void calorieRecommendation (View v) {
+        startActivity(new Intent(SleepActivity.this, Pop.class));
+    }
+
     @Override
     public void onBackPressed() {
         Intent intent = new Intent();
