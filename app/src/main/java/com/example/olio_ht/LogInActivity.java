@@ -22,6 +22,7 @@ public class LogInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        setTitle(R.string.app_name);
 
         LogIn = (TextView) findViewById(R.id.logInView);
         SignUp = (TextView) findViewById(R.id.signUpView);

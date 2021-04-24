@@ -6,6 +6,7 @@ public class User {
     String firstName, lastName, username, password, sex;
     String salt;
     LocalDate dateOfBirth;
+    long idealSleep, idealCalories;
     int age;
     float height, weight/*, bmi*/;
     // Pitiks tää bmi nyt olla täs? laitoin sen eka tänne, mut sit kommentoin sen pois. En oo kyl

@@ -40,6 +40,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -73,12 +74,11 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
     Context context;
     SharedPreferences sharedPreferences;
 
-    EntryManager entryManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calories);
+        setTitle(R.string.app_name);
 
         context = CalorieActivity.this;
 
@@ -116,8 +116,6 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         calorieIntakeInput = (EditText) findViewById(R.id.calorieIntakeInput);
         sumView = (TextView) findViewById(R.id.sumView);
 
-        entryManager = EntryManager.getInstance();
-
         loadArrays();
         spent_array = initRecyclerView(sportsRecyclerView, spent_array);
         gained_array = initRecyclerView(foodRecyclerView, gained_array);
@@ -128,7 +126,8 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
             public void onClick(View v) {
                 saveArrays();
                 Intent intent = new Intent();
-                // kesken intent.putExtra("todays sum", sum);
+                intent.putExtra("sport entry", SE);
+                intent.putExtra("food entry", FE);
                 setResult(RESULT_OK, intent);
                 finish();
             }
@@ -300,6 +299,8 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
     public void onBackPressed() {
         saveArrays();
         Intent intent = new Intent();
+        intent.putExtra("sport entry", SE);
+        intent.putExtra("food entry", FE);
         setResult(RESULT_OK, intent);
         finish();
     }
@@ -437,14 +438,8 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
             sub = sub + spent_array.get(i).getCalories();
         }
         sum = round(add - sub);
-
-        // täs vaa testailen tot
         SE.setSum(sub);
         FE.setSum(add);
-
-        entryManager.setSportEntries(SE);
-        entryManager.setFoodEntries(FE);
-
         sumView.setText("Todays calories are " + sum + " kcal!");
     }
 

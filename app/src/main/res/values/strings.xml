@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">Olio_HT</string>
+    <string name="app_name">On Track</string>
 
     <string-array name="facts">
-        <item>Laughing is good for the heart\nand can increase blood flow by.</item>
+        <item>Laughing is good for the heart\nand can increase blood flow.</item>
         <item>Exercise will give you more\nenergy, even when you are tired.</item>
-        <item>Drinking coffee can reduce th risk\nof depression, especially in women.</item>
+        <item>Drinking coffee can reduce the risk\nof depression, especially in women.</item>
         <item>Swearing can make you feel\nbetter when you\'re in pain.</item>
     </string-array>
 
