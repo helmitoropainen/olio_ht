@@ -102,8 +102,8 @@ public class SleepActivity extends AppCompatActivity {
         home.setArguments(bundle);
     }
 
-    public void calorieRecommendation (View v) {
-        startActivity(new Intent(SleepActivity.this, Pop.class));
+    public void sleepRecommendation (View v) {
+        startActivity(new Intent(SleepActivity.this, PopUpSleep.class));
     }
 
     @Override

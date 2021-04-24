@@ -43,6 +43,11 @@
             android:theme="@style/Theme.Olio_HT.Pop">
         </activity>
 
+        <activity android:name=".PopUpSleep"
+            android:windowSoftInputMode="adjustNothing"
+            android:theme="@style/Theme.Olio_HT.Pop">
+        </activity>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

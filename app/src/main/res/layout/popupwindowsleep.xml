@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/baloo_bhaina"
         android:gravity="center"
-        android:text="Your recommended daily calorie intake is 8 hours"
+        android:text="Your recommended nightly sleep is 8 hours"
         android:lineSpacingMultiplier="0.5"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"

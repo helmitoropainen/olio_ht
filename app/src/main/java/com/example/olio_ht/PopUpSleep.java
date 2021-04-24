@@ -21,7 +21,7 @@ public class PopUpSleep extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.popupwindow);
+        setContentView(R.layout.popupwindowsleep);
 
         goalInputH = (EditText) findViewById(R.id.goalinputh);
         goalInputMin = (EditText) findViewById(R.id.goalinputmin);
@@ -38,11 +38,10 @@ public class PopUpSleep extends Activity {
 
     public void changeGoal(View v) {
         if (goalInputH.getText().toString().trim().length() > 0) {
-            goalh = Integer.valueOf(goalInputH.getText().toString());
-            goalmin = Integer.valueOf(goalInputMin.getText().toString());
+            goalh = Integer.parseInt(goalInputH.getText().toString());
+            goalmin = Integer.parseInt(goalInputMin.getText().toString());
             if (goalh > 24 || goalmin > 59) {
                 Toast.makeText(getApplicationContext(), "Goal is above limit!", Toast.LENGTH_SHORT).show();
-                return;
             } else {
                 if (goalmin == 0) {
                     viewGoal.setText("Your daily goal is set to " + goalh + " hours");
