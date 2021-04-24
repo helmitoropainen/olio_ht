@@ -17,11 +17,11 @@ import static android.widget.Toast.makeText;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    private ArrayList<calorieEntry> items = new ArrayList<calorieEntry>();
+    private ArrayList<CalorieEntry> items = new ArrayList<CalorieEntry>();
     private OnTextClickListener listener;
     private Context context;
 
-    public RecyclerViewAdapter(ArrayList<calorieEntry> rv_array, OnTextClickListener listener) {
+    public RecyclerViewAdapter(ArrayList<CalorieEntry> rv_array, OnTextClickListener listener) {
         items = rv_array;
         this.listener = listener;
     }
@@ -67,7 +67,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return items.size();
     }
 
-    public ArrayList getArray() { return items; }
+    public ArrayList<CalorieEntry> getArray() { return items; }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -82,7 +82,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     interface OnTextClickListener {
-        void onTextClick(ArrayList<calorieEntry> array);
+        void onTextClick(ArrayList<CalorieEntry> array);
         void getClass(String cN);
     }
 }

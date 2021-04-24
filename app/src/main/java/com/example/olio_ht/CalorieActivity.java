@@ -2,6 +2,7 @@ package com.example.olio_ht;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Editable;
@@ -12,12 +13,19 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.SearchView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,37 +35,45 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import static java.lang.Math.round;
 
-public class CalorieActivity extends AppCompatActivity implements RecyclerViewAdapter.OnTextClickListener {
+public class CalorieActivity extends AppCompatActivity implements RecyclerViewAdapter.OnTextClickListener, Filterable {
 
     Button returnHome;
-    ArrayList<sportData> sports_array = new ArrayList<sportData>();
-    ArrayList<foodData> food_array = new ArrayList<foodData>();
-    ArrayList<calorieEntry> spent_array = new ArrayList<calorieEntry>();
-    ArrayList<calorieEntry> gained_array = new ArrayList<calorieEntry>();
+    ArrayList<SportData> sports_array = new ArrayList<SportData>();
+    ArrayList<SportData> sports_array_full = new ArrayList<SportData>();
+    ArrayList<FoodData> food_array = new ArrayList<FoodData>();
+    ArrayList<CalorieEntry> spent_array;
+    ArrayList<CalorieEntry> gained_array;
+    ArrayAdapter<ArrayList> adapterS;
     RecyclerView sportsRecyclerView, foodRecyclerView;
     Spinner sportsSpinner, foodSpinner;
     SeekBar durationSeekBar, massSeekBar;
+    SearchView searchSport;
+    SearchView searchFood;
     TextView viewDuration, viewMass, viewSpentCalories, viewGainedCalories, sumView;
     EditText caloriesSpentInput, calorieIntakeInput;
-    String sportType, foodType, className, sportName, foodName;
+    String sportType, foodType, className, sportName, foodName, username, date;
     int duration, mass, i, weight;
-    long spentCalories, gainedCalories;
+    long spentCalories, gainedCalories, sum;
     double foodCalories, sportCalories;
-    foodEntry FE;
-    sportEntry SE;
-    foodData FD;
-    sportData SD;
+    FoodEntry FE;
+    SportEntry SE;
+    FoodData FD;
+    SportData SD;
     Context context;
+    SharedPreferences sharedPreferences;
 
+    EntryManager entryManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,12 +85,23 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         readJSON();
-        readFile();
+        this.sports_array = readFile();
+        sports_array_full = new ArrayList<SportData>(sports_array);
 
-        FE = new foodEntry(foodType, mass, gainedCalories);
-        SE = new sportEntry(foodType, mass, gainedCalories);
+        weight = 70;
+        username = "user";
+        date = "24.4.2021";
+
+        FE = new FoodEntry(foodType, mass, gainedCalories);
+        SE = new SportEntry(foodType, mass, gainedCalories);
+
+        FE.setDate(date);
+        FE.setUsername(username);
+        SE.setDate(date);
+        SE.setUsername(username);
 
         returnHome = (Button) findViewById(R.id.returnHome);
+        searchSport = (SearchView) findViewById(R.id.searchViewSport);
         sportsRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_sports);
         foodRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_food);
         sportsSpinner = (Spinner) findViewById(R.id.sportsSpinner);
@@ -89,34 +116,39 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         calorieIntakeInput = (EditText) findViewById(R.id.calorieIntakeInput);
         sumView = (TextView) findViewById(R.id.sumView);
 
-        weight = 70;
+        entryManager = EntryManager.getInstance();
+
+        loadArrays();
+        spent_array = initRecyclerView(sportsRecyclerView, spent_array);
+        gained_array = initRecyclerView(foodRecyclerView, gained_array);
+        countSum();
 
         returnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                saveArrays();
                 Intent intent = new Intent();
+                // kesken intent.putExtra("todays sum", sum);
                 setResult(RESULT_OK, intent);
                 finish();
             }
         });
 
-        ArrayAdapter<CharSequence> adapterS = new ArrayAdapter(this, android.R.layout.simple_spinner_item, sports_array);
+        adapterS = new ArrayAdapter(this, android.R.layout.simple_spinner_item, sports_array);
+        adapterS.setNotifyOnChange(true);
         adapterS.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sportsSpinner.setAdapter(adapterS);
         sportsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position != 0) {
-                    sportType = sports_array.get(position).getSportName();
-                    SD = sports_array.get(position);
-                    SE.setSportType(sportType);
+                sportType = sports_array.get(position).getSportName();
+                SD = sports_array.get(position);
+                SE.setSportType(sportType);
+                if (sportType.equals("Own workout") == false) {
                     caloriesSpentInput.setEnabled(false);
                     durationSeekBar.setEnabled(true);
                     duration = (int) durationSeekBar.getProgress() * 10;
                 } else {
-                    sportType = sports_array.get(position).getSportName();
-                    SE.setSportType(sportType);
-                    SD = sports_array.get(position);
                     caloriesSpentInput.setEnabled(true);
                     durationSeekBar.setEnabled(false);
                     duration = 0;
@@ -130,7 +162,7 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
                     } else {
                         spentCalories = 0;
                     }
-                    SE.setSpentCalories(spentCalories);
+                    SE.setCalories(spentCalories);
                 }
                 SE.setDuration(duration);
                 spentCalories = round(SE.countSpentCalories(SE, SD, weight));
@@ -147,17 +179,14 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         foodSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position != 0) {
-                    foodType = food_array.get(position).getFoodName();
-                    FD = food_array.get(position);
-                    FE.setFoodType(foodType);
+                foodType = food_array.get(position).getFoodName();
+                FD = food_array.get(position);
+                FE.setFoodType(foodType);
+                if (foodType.equals("Own portion") == false) {
                     calorieIntakeInput.setEnabled(false);
                     massSeekBar.setEnabled(true);
                     mass = (int) massSeekBar.getProgress() * 10;
                 } else {
-                    foodType = food_array.get(position).getFoodName();
-                    FD = food_array.get(position);
-                    FE.setFoodType(foodType);
                     calorieIntakeInput.setEnabled(true);
                     massSeekBar.setEnabled(false);
                     mass = 0;
@@ -171,7 +200,7 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
                     } else {
                         gainedCalories = 0;
                     }
-                    FE.setFoodCalories(gainedCalories);
+                    FE.setCalories(gainedCalories);
                 }
                 FE.setFoodAmount(mass);
                 gainedCalories = round(FE.countGainedCalories(FE, FD));
@@ -179,6 +208,18 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        searchSport.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapterS.getFilter().filter(newText);
+                return false;
             }
         });
 
@@ -227,7 +268,7 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
                 } else {
                     spentCalories = 0;
                 }
-                SE.setSpentCalories(spentCalories);
+                SE.setCalories(spentCalories);
                 displaySpentCalories(spentCalories);
             }
             @Override
@@ -246,7 +287,7 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
                 } else {
                     gainedCalories = 0;
                 }
-                FE.setFoodCalories(gainedCalories);
+                FE.setCalories(gainedCalories);
                 displayGainedCalories(gainedCalories);
             }
             @Override
@@ -257,15 +298,92 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
 
     @Override
     public void onBackPressed() {
+        saveArrays();
         Intent intent = new Intent();
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    public class CustomFilter extends Filter {
+        ArrayList<SportData> arrayList;
+        ArrayAdapter adapter;
+        ArrayList<SportData> filterArrayList;
+        public  CustomFilter (ArrayList<SportData> arrayList, ArrayAdapter adapter) {
+            this.arrayList = arrayList;
+            this.adapter = adapter;
+        }
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            ArrayList<SportData> filteredList = new ArrayList<SportData>();
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(sports_array_full);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (SportData item : sports_array_full) {
+                    if (item.getSportName().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            sports_array.clear();
+            sports_array.addAll((ArrayList) results.values);
+            adapterS.clear();
+            adapterS.add(sports_array);
+            sports_array = updateArray(sports_array);
+        }
+    }
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    private Filter filter = new Filter() {
+
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            ArrayList<SportData> filteredList = new ArrayList<SportData>();
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(sports_array_full);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (SportData item : sports_array_full) {
+                    if (item.getSportName().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            results.count = filteredList.size();
+            return results;
+        }
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            sports_array.clear();
+            sports_array.addAll((ArrayList) results.values);
+            adapterS.clear();
+            adapterS.add(sports_array);
+            sports_array = updateArray(sports_array);
+        }
+    };
+
+    public ArrayList<SportData> updateArray(ArrayList<SportData> array) {
+        return  array;
     }
 
     public ArrayList initRecyclerView(RecyclerView rv, ArrayList array) {
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(array, this);
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
+        //array.clear();
         array = adapter.getArray();
         return array;
     }
@@ -281,40 +399,52 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
     public void addSpentCalories(View v) {
         spent_array.add(SE);
         spent_array = initRecyclerView(sportsRecyclerView, spent_array);
-        countSum(gained_array, spent_array);
-        SE = new sportEntry(sportType, duration, spentCalories);
+        countSum();
+        SE = new SportEntry(sportType, duration, spentCalories);
+        SE.setDate(date);
+        SE.setUsername(username);
     }
 
     public void addGainedCalories(View v) {
         gained_array.add(FE);
         gained_array = initRecyclerView(foodRecyclerView, gained_array);
-        countSum(gained_array, spent_array);
-        FE = new foodEntry(foodType, mass, gainedCalories);
+        countSum();
+        FE = new FoodEntry(foodType, mass, gainedCalories);
+        FE.setDate(date);
+        FE.setUsername(username);
     }
 
     public void resetSport(View v) {
         spent_array.clear();
         spent_array = initRecyclerView(sportsRecyclerView, spent_array);
-        countSum(gained_array, spent_array);
+        countSum();
     }
 
     public void resetFood(View v) {
         int i;
         gained_array.clear();
-        countSum(gained_array, spent_array);
+        countSum();
         initRecyclerView(foodRecyclerView, gained_array);
     }
 
-    public void countSum(ArrayList<calorieEntry> gained, ArrayList<calorieEntry> spent) {
+    public void countSum() {
         double add = 0, sub = 0;
-        long sum = 0;
-        for (i = 0; i < gained.size(); i++) {
-            add = add + gained.get(i).getCalories();
+        sum = 0;
+        for (i = 0; i < gained_array.size(); i++) {
+            add = add + gained_array.get(i).getCalories();
         }
-        for(i=0; i<spent.size(); i++) {
-            sub = sub + spent.get(i).getCalories();
+        for(i=0; i<spent_array.size(); i++) {
+            sub = sub + spent_array.get(i).getCalories();
         }
         sum = round(add - sub);
+
+        // täs vaa testailen tot
+        SE.setSum(sub);
+        FE.setSum(add);
+
+        entryManager.setSportEntries(SE);
+        entryManager.setFoodEntries(FE);
+
         sumView.setText("Todays calories are " + sum + " kcal!");
     }
 
@@ -323,35 +453,32 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
     }
 
     @Override
-    public void onTextClick(ArrayList<calorieEntry> array) {
+    public void onTextClick(ArrayList<CalorieEntry> array) {
         if (className.equals("sportEntry") == true) {
-            countSum(gained_array, array);
+            spent_array = array;
         } else if (className.equals("foodEntry") == true) {
-            countSum(array, spent_array);
+            gained_array = array;
         }
-
     }
 
     @Override
     public void getClass(String cN) {
         className = cN;
-        System.out.println(className);
     }
 
     public void readJSON () {
         String json = getJSON();
-        //System.out.println("JSON:" + json);
 
         if (json != null) {
             try {
-                FD = new foodData();
+                FD = new FoodData();
                 FD.setFoodName("Own portion");
                 FD.setCalories(0);
                 food_array.add(FD);
                 JSONArray jsonArray = new JSONArray(json);
                 for (i=0; i<jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    FD = new foodData();
+                    FD = new FoodData();
                     foodName = jsonObject.getJSONObject("name").get("en").toString();
                     foodCalories = Double.valueOf(jsonObject.get("energyKcal").toString());
                     FD.setCalories(foodCalories);
@@ -390,13 +517,13 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         return response;
     }
 
-    public void readFile() {
+    public ArrayList<SportData> readFile() {
         try {
             InputStream ins = getAssets().open("exercise_data.csv");
             BufferedReader br = new BufferedReader(new InputStreamReader(ins));
             String s = "";
             br.readLine();
-            SD = new sportData();
+            SD = new SportData();
             SD.setSportName("Own workout");
             SD.setCalories(0);
             sports_array.add(SD);
@@ -405,7 +532,7 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
                 sportName = tokens[0];
                 int p = (int) tokens.length - 1;
                 sportCalories = Double.valueOf(tokens[p]);
-                SD = new sportData();
+                SD = new SportData();
                 SD.setCalories(sportCalories);
                 SD.setSportName(sportName);
 
@@ -419,6 +546,38 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
             Log.e("FileNotFound", "File not found");
         } catch (IOException e) {
             Log.e("IOException", "Error in input");
+        }
+        return sports_array;
+    }
+
+    public void saveArrays() {
+        sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gsonSe = new Gson();
+        Gson gsonFe = new Gson();
+        String jsonSe = gsonSe.toJson(spent_array);
+        String jsonFe = gsonFe.toJson(gained_array);
+        editor.putString("spent array", jsonSe);
+        editor.putString("gained array", jsonFe);
+        editor.apply();
+    }
+
+    private void loadArrays() {
+        sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        Gson gsonSe = new Gson();
+        Gson gsonFe = new Gson();
+        String jsonSe = sharedPreferences.getString("spent array", null);
+        String jsonFe = sharedPreferences.getString("gained array", null);
+        Type type = new TypeToken<ArrayList<CalorieEntry>>() {}.getType();
+
+        spent_array = gsonSe.fromJson(jsonSe, type);
+        gained_array = gsonFe.fromJson(jsonFe, type);
+
+        if (spent_array == null) {
+            spent_array = new ArrayList<CalorieEntry>();
+        }
+        if (gained_array == null) {
+            gained_array = new ArrayList<CalorieEntry>();
         }
     }
 }

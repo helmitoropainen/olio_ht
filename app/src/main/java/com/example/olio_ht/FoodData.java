@@ -2,12 +2,12 @@ package com.example.olio_ht;
 
 import static java.lang.Math.round;
 
-public class foodData {
+public class FoodData {
 
     String foodName;
     long calories;
 
-    public foodData() {}
+    public FoodData() {}
 
     public void setFoodName(String fn) { foodName = fn; }
     public void setCalories(double c) { calories = round(c); }
