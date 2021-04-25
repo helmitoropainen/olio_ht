@@ -14,7 +14,7 @@
         android:clickable="true"
         android:fontFamily="sans-serif"
         android:gravity="right"
-        android:onClick="updateDate"
+        android:onClick="openDatePicker"
         android:hint="20.4.1980"
         android:textColor="#FFFFFF"
         android:textSize="18sp"

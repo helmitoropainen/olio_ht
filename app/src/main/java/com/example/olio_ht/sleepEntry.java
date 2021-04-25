@@ -55,10 +55,7 @@ public class sleepEntry extends Entry {
         readiness = (int) ((slepttime / goal) * 100);
         return readiness;
     }
-
-    public double getSleptTime() {
-        return slepttime ;
-    }
+    
     public String getAdvice ( int readiness){
         if (readiness < 30) {
             adviceText = "Take it easy on yourself today and try to sleep early!";
