@@ -8,12 +8,10 @@ public class User {
     LocalDate dateOfBirth;
     long idealSleep, idealCalories;
     int age;
-    float height, weight/*, bmi*/;
-    // Pitiks tää bmi nyt olla täs? laitoin sen eka tänne, mut sit kommentoin sen pois. En oo kyl
-    // laskenu sitä täällä missään.
+    float height, weight, bmi;
 
     public User (String firstName, String lastName, String username, String password, String salt,
-                 String sex, LocalDate dateOfBirth, int age, float height, float weight/*, float bmi*/) {
+                 String sex, LocalDate dateOfBirth, int age, float height, float weight) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -24,6 +22,24 @@ public class User {
         this.age = age;
         this.height = height;
         this.weight = weight;
-        // this.bmi = bmi;
+        this.bmi = setBMI();
+        this.idealCalories = setIdealCalories();
+        this.idealSleep = setIdealSleep();
+    }
+
+    public float setBMI() {
+        float bmi = 0;
+        return bmi;
+    }
+
+    public long setIdealCalories() {
+        long idealCalories = 0;
+
+        return idealCalories;
+    }
+
+    public long setIdealSleep() {
+        long idealSleep = 0;
+        return idealSleep;
     }
 }
