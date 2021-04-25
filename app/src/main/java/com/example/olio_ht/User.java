@@ -8,11 +8,13 @@ public class User implements Serializable {
     String salt;
     LocalDate dateOfBirth;
     long idealSleep, idealCalories;
+    long sleepGoal, caloriesGoal;
     int age;
     float height, weight, bmi;
 
     public User (String firstName, String lastName, String username, String password, String salt,
-                 String sex, LocalDate dateOfBirth, int age, float height, float weight) {
+                 String sex, LocalDate dateOfBirth, int age, float height, float weight,
+                 long caloriesGoal, long sleepGoal) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -23,24 +25,48 @@ public class User implements Serializable {
         this.age = age;
         this.height = height;
         this.weight = weight;
-        this.bmi = setBMI();
-        this.idealCalories = setIdealCalories();
-        this.idealSleep = setIdealSleep();
+        this.caloriesGoal = caloriesGoal;
+        this.sleepGoal = sleepGoal;
     }
 
-    public float setBMI() {
-        float bmi = 0;
-        return bmi;
+    public void setBMI() {
+        float bmi = weight/((height/100)*(height/100));
     }
 
-    public long setIdealCalories() {
-        long idealCalories = 0;
-
-        return idealCalories;
+    public void setIdealCalories() {
+        if (sex.equals("Female")) {
+            idealCalories = 2000;
+        } else if (sex.equals("Male")) {
+            idealCalories = 2500;
+        } else {
+            idealCalories = (2500+2000)/2;
+        }
     }
 
-    public long setIdealSleep() {
-        long idealSleep = 0;
-        return idealSleep;
+    public void setIdealSleep() {
+        if (age < 1) {
+            idealSleep = (17+14)/2;
+        } else if (age >= 1 || age < 2) {
+            idealSleep = 10+4;
+        } else if (age >= 1 || age < 3) {
+            idealSleep = (11+12)/2+(1+2)/2;
+        } else if (age >= 3 || age < 6) {
+            idealSleep = (10+13)/2;
+        } else if (age >= 6 || age < 14) {
+            idealSleep = (9+11)/2;
+        } else if (age >= 14 || age < 18) {
+            idealSleep = (8+10)/2;
+        } else if (age >= 18) {
+            idealSleep = (7+9)/2;
+        }
     }
+
+    public void setCaloriesGoal() {
+        caloriesGoal = idealCalories;
+    }
+
+    public void setSleepGoal() {
+        sleepGoal = idealSleep;
+    }
+
 }

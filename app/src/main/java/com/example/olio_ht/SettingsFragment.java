@@ -81,8 +81,6 @@ public class SettingsFragment extends Fragment {
         String formattedDate = dateOfBirth.format(formatter);
         dateView.setText(formattedDate);
 
-        int sex = getSpinnerPosition(uls.getUserInfo(username).sex);
-        spinner.setSelection(sex);
 
         btLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +109,8 @@ public class SettingsFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+        int sex = getSpinnerPosition(uls.getUserInfo(username).sex);
+        spinner.setSelection(sex);
     }
 
     public int getSpinnerPosition(String sex) {
@@ -122,7 +122,6 @@ public class SettingsFragment extends Fragment {
                 break;
             }
         }
-        System.out.println("i: " + i); // Testiii
         return i;
     }
 
@@ -152,6 +151,8 @@ public class SettingsFragment extends Fragment {
         String sex = spinner.getItemAtPosition(choice).toString();
         String securePassword = uls.getUserInfo(username).password;
         String salt = uls.getUserInfo(username).salt;
+        long sleepGoal = uls.getUserInfo(username).sleepGoal;
+        long caloriesGoal = uls.getUserInfo(username).caloriesGoal;
 
         if (firstName.isEmpty()) {
             etFirstName.setError("Field can't be empty!");
@@ -176,7 +177,7 @@ public class SettingsFragment extends Fragment {
         }
 
         User changedUser = new User(firstName, lastName, username, securePassword, salt, sex,
-                dateOfBirth, age, parseFloat(height), parseFloat(weight)/*, bmi*/);
+                dateOfBirth, age, parseFloat(height), parseFloat(weight), caloriesGoal, sleepGoal);
         uls.storeUserData(changedUser);
 
         Context context = getContext();

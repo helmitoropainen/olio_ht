@@ -81,9 +81,11 @@ public class PasswordFragment extends Fragment {
         float height = uls.getUserInfo(username).height;
         float weight = uls.getUserInfo(username).weight;
         String sex = uls.getUserInfo(username).sex;
+        long sleepGoal = uls.getUserInfo(username).sleepGoal;
+        long caloriesGoal = uls.getUserInfo(username).caloriesGoal;
 
         User changedUser = new User(firstName, lastName, username, securePassword, salt, sex,
-                dateOfBirth, age, height, weight);
+                dateOfBirth, age, height, weight, caloriesGoal, sleepGoal);
         uls.storeUserData(changedUser);
 
         Context context = getContext();
