@@ -15,7 +15,7 @@
         android:fontFamily="sans-serif"
         android:gravity="right"
         android:onClick="openDatePicker"
-        android:hint="20.4.1980"
+        android:text="20.4.1980"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -58,7 +58,7 @@
         app:layout_constraintHorizontal_bias="0.082"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.525" />
+        app:layout_constraintVertical_bias="0.516" />
 
     <TextView
         android:id="@+id/textView3"
@@ -170,7 +170,7 @@
         app:layout_constraintHorizontal_bias="0.093"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.58" />
+        app:layout_constraintVertical_bias="0.57" />
 
     <TextView
         android:id="@+id/textView10"
@@ -186,7 +186,7 @@
         app:layout_constraintHorizontal_bias="0.11"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.64" />
+        app:layout_constraintVertical_bias="0.62" />
 
     <Button
         android:id="@+id/button"
@@ -226,7 +226,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
         android:gravity="right"
-        android:hint="_user_"
+        android:text="_user_"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -244,7 +244,7 @@
         android:ems="10"
         android:gravity="right"
         android:inputType="textPersonName"
-        android:hint="Pancakes"
+        android:text="Pancakes"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -262,7 +262,7 @@
         android:ems="10"
         android:gravity="right"
         android:inputType="textPersonName"
-        android:hint="Bob"
+        android:text="Bob"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -280,7 +280,7 @@
         android:ems="10"
         android:gravity="right"
         android:inputType="number"
-        android:hint="190"
+        android:text="190"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -298,7 +298,7 @@
         android:ems="10"
         android:gravity="right"
         android:inputType="number"
-        android:hint="90"
+        android:text="90"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -315,8 +315,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
         android:gravity="right"
-        android:hint="Password"
-        android:inputType="textPassword"
+        android:text="Password"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -325,7 +324,7 @@
         app:layout_constraintHorizontal_bias="0.854"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.59" />
+        app:layout_constraintVertical_bias="0.57" />
 
     <EditText
         android:id="@+id/etConfirmPassword"
@@ -333,8 +332,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
         android:gravity="right"
-        android:inputType="textPassword"
-        android:hint="Password"
+        android:text="Password"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -343,7 +341,7 @@
         app:layout_constraintHorizontal_bias="0.854"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.65" />
+        app:layout_constraintVertical_bias="0.62" />
 
     <Spinner
         android:id="@+id/sexSpinner"

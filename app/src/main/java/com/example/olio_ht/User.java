@@ -28,8 +28,7 @@ public class User {
     }
 
     public void setBMI() {
-        bmi = weight/((height/100)*(height/100));
-        System.out.println("LASKETTU BMI: "+bmi);
+        float bmi = weight/((height/100)*(height/100));
     }
 
     public void setIdealCalories() {
@@ -57,7 +56,6 @@ public class User {
         } else if (age >= 18) {
             idealSleep = (7+9)/2;
         }
-        System.out.println("LASKETTU UNI: "+idealSleep);
     }
 
     public void setCaloriesGoal() {

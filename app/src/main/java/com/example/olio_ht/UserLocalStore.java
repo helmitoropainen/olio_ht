@@ -42,7 +42,7 @@ public class UserLocalStore {
         spEditor.putFloat("bmi"+user.username, user.bmi);
         spEditor.putLong("idealCalories"+user.username, user.idealCalories);
         spEditor.putLong("idealSleep"+user.username, user.idealSleep);
-        spEditor.putLong("sleepGoal"+user.username, user.sleepGoal);
+        spEditor.putLong("sleepGOal"+user.username, user.sleepGoal);
         spEditor.putLong("caloriesGoal"+user.username, user.caloriesGoal);
         spEditor.apply();
     }
@@ -77,6 +77,11 @@ public class UserLocalStore {
 
 
 
+<<<<<<< HEAD
+=======
+        User user = new User(firstName, lastName, username, password, salt, sex, dateOfBirth, age,
+                height, weight, caloriesGoal, sleepGoal);
+>>>>>>> parent of f1c2937 (Merge branch 'master' into Helmin-branch)
 
 
 

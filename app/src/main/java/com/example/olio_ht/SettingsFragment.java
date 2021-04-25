@@ -41,8 +41,6 @@ public class SettingsFragment extends Fragment {
     EditText etLastName;
     EditText etHeight;
     EditText etWeight;
-    TextView tvBMI;
-    TextView tvInfoBMI;
     int choice;
 
     public static final String SHARED_PREFS = "sharedPrefs";
@@ -71,16 +69,13 @@ public class SettingsFragment extends Fragment {
         etWeight = view.findViewById(R.id.etWeight);
         dateView = view.findViewById(R.id.dateOfBirth);
         btLogOut = view.findViewById(R.id.button3);
-        tvBMI = view.findViewById(R.id.idBMI);
-        tvInfoBMI = view.findViewById(R.id.tvInfoBMI);
 
         String username = uls.getUserLoggedIn();
         tvUserName.setText(username);
         etFirstName.setText(uls.getUserInfo(username).firstName);
         etLastName.setText(uls.getUserInfo(username).lastName);
-        etHeight.setText(String.valueOf(Math.round(uls.getUserInfo(username).height)));
-        etWeight.setText(String.valueOf(Math.round(uls.getUserInfo(username).weight)));
-        tvBMI.setText(String.valueOf(Math.round(uls.getUserInfo(username).bmi)));
+        etHeight.setText(String.valueOf(uls.getUserInfo(username).height));
+        etWeight.setText(String.valueOf(uls.getUserInfo(username).height));
         String bmiInfo = getBmiInfo(uls.getUserInfo(username).bmi);
         tvInfoBMI.setText(bmiInfo);
 
