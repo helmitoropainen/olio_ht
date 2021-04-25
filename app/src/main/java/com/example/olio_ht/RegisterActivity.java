@@ -160,14 +160,26 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
+
         String salt = generateSalt();
         String securePassword = getSHA512(password, salt.getBytes());
 
         User registeredUser = new User(firstName, lastName, username, securePassword, salt, sex,
-                dateOfBirth, age, parseFloat(height), parseFloat(weight));
+                dateOfBirth, age, parseFloat(height), parseFloat(weight), 0, 0);
+        registeredUser.setBMI();
+        registeredUser.setIdealCalories();
+        registeredUser.setIdealSleep();
+        registeredUser.setCaloriesGoal();
+        registeredUser.setSleepGoal();
         userLocalStore.storeUserData(registeredUser);
         Intent intent = new Intent(RegisterActivity.this, LogInActivity.class);
         startActivityForResult(intent, 1);
+        System.out.println("IDEAL UNI: "+userLocalStore.getUserInfo(username).idealSleep);
+        System.out.println("GOAL UNI " + userLocalStore.getUserInfo(username).sleepGoal);
+        System.out.println("IDEAL KALORTI: "+userLocalStore.getUserInfo(username).idealCalories);
+        System.out.println("GOAL KALORIT: "+userLocalStore.getUserInfo(username).caloriesGoal);
+        System.out.println("BMI: "+userLocalStore.getUserInfo(username).bmi);
+
     }
 
     // Checks whether the password fills the requirements of a secure password or not.
