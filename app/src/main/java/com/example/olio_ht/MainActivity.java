@@ -16,6 +16,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.Toast;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.Calendar;
 import java.util.Random;
@@ -23,17 +25,20 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
 
     int facts_index;
-    double sleepSum, calorieSum;
+    double sleepSum = 0, calorieSum = 0;
+    boolean rqst1OK = false, rqst2OK = false;
+    String filename, username;
+    Bundle bundle = new Bundle();
     HomeFragment home = new HomeFragment();
     AnalyticsFragment analytics = new AnalyticsFragment();
     SettingsFragment settings = new SettingsFragment();
     PasswordFragment password = new PasswordFragment();
     private DatePickerDialog.OnDateSetListener dateSetListener;
     UserEntryLog userEntryLog;
+    UserLocalStore userLocalStore;
     EntryManager entryManager;
     User user;
     Entry sportEntry, foodEntry, sleepEntry;
-    String filename;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -45,14 +50,18 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, home).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, home, "home fragment").commit();
 
-        userEntryLog = new UserEntryLog(getApplicationContext());
+        userEntryLog = new UserEntryLog(this);
         filename = userEntryLog.createFile();
 
         entryManager = EntryManager.getInstance();
         entryManager.setFilename(filename);
-        entryManager.setContext(getApplicationContext());
+        entryManager.setContext(this);
+
+        userLocalStore = new UserLocalStore(this);
+        username = userLocalStore.getUserLoggedIn();
+        user = userLocalStore.getUserInfo(username);
 
     }
 
@@ -87,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
         Random rand = new Random();
         facts_index = rand.nextInt((max - min) + 1) + min;
         String text = String.format("Did you know?\n" + facts[facts_index]);
-        Bundle bundle = new Bundle();
         bundle.putString("fact", text);
         home.setArguments(bundle);
         home.changeFact();
@@ -127,26 +135,42 @@ public class MainActivity extends AppCompatActivity {
 
     public void launchCalories(View v) {
         Intent intent = new Intent(MainActivity.this, CalorieActivity.class);
+        intent.putExtra("user", user);
         startActivityForResult(intent, 1);
     }
 
     public void launchSleep(View v) {
         Intent intent = new Intent(MainActivity.this, SleepActivity.class);
+        intent.putExtra("user", user);
         startActivityForResult(intent, 2);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        //super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 sportEntry = (Entry) data.getSerializableExtra("sport entry");
                 foodEntry = (Entry) data.getSerializableExtra("food entry");
-                calorieSum = (double) foodEntry.getSum() - sleepEntry.getSum();
-                entryManager.setSportEntries(sportEntry);
-                entryManager.setFoodEntries(foodEntry);
+                try {
+                    calorieSum = (double) foodEntry.getSum() - sportEntry.getSum();
+                    System.out.println("#### food sum " + foodEntry.getSum());
+                    System.out.println("#### sport sum -" + sportEntry.getSum());
+                    System.out.println("#### calorie sum " + calorieSum);
+                    entryManager.setSportEntries(sportEntry);
+                    entryManager.setFoodEntries(foodEntry);
+                    home = (HomeFragment) getSupportFragmentManager().findFragmentByTag("home fragment");
+                    if (home != null) {
+                        home.updateCalorieSum(calorieSum);
+                    }
+                    rqst1OK = true;
+                    Toast.makeText(this,"Adding data was successful.", Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    rqst1OK = false;
+                    Toast.makeText(this,"Adding data wasn't successful. Please re-try", Toast.LENGTH_LONG).show();
+                }
             }
         }
 
@@ -155,20 +179,21 @@ public class MainActivity extends AppCompatActivity {
                 sleepEntry = (Entry) data.getSerializableExtra("sleep entry");
                 sleepSum = sleepEntry.getSum();
                 entryManager.setSleepEntries(sleepEntry);
+                home = (HomeFragment) getSupportFragmentManager().findFragmentByTag("home fragment");
+                if (home != null) {
+                    home.updateSleepSum(sleepSum);
+                }
+                rqst2OK = true;
+                Toast.makeText(this,"Adding data was successful.", Toast.LENGTH_LONG).show();
+            } else {
+                rqst2OK = false;
+                Toast.makeText(this,"Adding data wasn't successful. Please re-try", Toast.LENGTH_LONG).show();
             }
         }
 
-        entryManager.saveEntries();
+        if (rqst1OK == true && rqst2OK == true) {
+            entryManager.saveEntries();
+        }
     }
 
-
-
-    // en saanu tätä et siin alapalkin asetusten kuvakkees lukis käyttäjänimi nii toimii
-    /*@Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem settings_item = menu.findItem(R.id.nav_settings);
-        System.out.println(settings_item.getTitle());
-        settings_item.setTitle(username);
-        return super.onPrepareOptionsMenu(menu);
-    }*/
 }

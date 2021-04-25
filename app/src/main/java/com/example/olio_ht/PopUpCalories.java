@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-public class Pop extends Activity {
+public class PopUpCalories extends Activity {
 
     EditText goalInput;
     TextView viewGoal;

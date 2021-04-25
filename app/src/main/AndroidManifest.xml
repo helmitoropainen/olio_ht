@@ -40,7 +40,7 @@
             android:windowSoftInputMode="adjustNothing">
         </activity>
       
-        <activity android:name=".Pop"
+        <activity android:name=".PopUpCalories"
             android:windowSoftInputMode="adjustNothing"
             android:theme="@style/Theme.Olio_HT.Pop">
         </activity>

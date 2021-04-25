@@ -3,6 +3,7 @@ package com.example.olio_ht;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Editable;
@@ -19,6 +20,8 @@ import android.widget.SearchView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,9 +44,8 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 import static java.lang.Math.round;
 
@@ -64,7 +66,8 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
     TextView viewDuration, viewMass, viewSpentCalories, viewGainedCalories, sumView;
     EditText caloriesSpentInput, calorieIntakeInput;
     String sportType, foodType, className, sportName, foodName, username, date;
-    int duration, mass, i, weight;
+    int duration, mass, i;
+    float weight;
     long spentCalories, gainedCalories, sum;
     double foodCalories, sportCalories;
     FoodEntry FE;
@@ -73,12 +76,19 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
     SportData SD;
     Context context;
     SharedPreferences sharedPreferences;
+    User user;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calories);
         setTitle(R.string.app_name);
+
+        user = (User) getIntent().getSerializableExtra("user");
+        weight = user.weight;
+        username = user.username;
+        System.out.println("onCreatesta: " + username);
 
         context = CalorieActivity.this;
 
@@ -88,9 +98,10 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         this.sports_array = readFile();
         sports_array_full = new ArrayList<SportData>(sports_array);
 
-        weight = 70;
-        username = "user";
-        date = "24.4.2021";
+        LocalDate dateNow = LocalDate.now();
+        System.out.println(dateNow);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        date = dateNow.format(formatter);
 
         FE = new FoodEntry(foodType, mass, gainedCalories);
         SE = new SportEntry(foodType, mass, gainedCalories);
@@ -403,6 +414,7 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         countSum();
         SE = new SportEntry(sportType, duration, spentCalories);
         SE.setDate(date);
+        System.out.println("addista: " + username);
         SE.setUsername(username);
     }
 
@@ -422,10 +434,9 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
     }
 
     public void resetFood(View v) {
-        int i;
         gained_array.clear();
+        gained_array = initRecyclerView(foodRecyclerView, gained_array);
         countSum();
-        initRecyclerView(foodRecyclerView, gained_array);
     }
 
     public void countSum() {
@@ -444,7 +455,7 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
     }
 
     public void calorieRecommendation (View v) {
-        startActivity(new Intent(CalorieActivity.this, Pop.class));
+        startActivity(new Intent(CalorieActivity.this, PopUpCalories.class));
     }
 
     @Override
@@ -546,19 +557,22 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
     }
 
     public void saveArrays() {
-        sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        String spName = "shared preferences" + username;
+        sharedPreferences = getSharedPreferences(spName, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gsonSe = new Gson();
         Gson gsonFe = new Gson();
         String jsonSe = gsonSe.toJson(spent_array);
         String jsonFe = gsonFe.toJson(gained_array);
+        editor.putString("username", username);
         editor.putString("spent array", jsonSe);
         editor.putString("gained array", jsonFe);
         editor.apply();
     }
 
     private void loadArrays() {
-        sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        String spName = "shared preferences" + username;
+        sharedPreferences = getSharedPreferences(spName, MODE_PRIVATE);
         Gson gsonSe = new Gson();
         Gson gsonFe = new Gson();
         String jsonSe = sharedPreferences.getString("spent array", null);
