@@ -8,27 +8,20 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Filter;
-import android.widget.Filterable;
-import android.widget.SearchView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,7 +39,6 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
 import static java.lang.Math.round;
 
 public class CalorieActivity extends AppCompatActivity implements RecyclerViewAdapter.OnTextClickListener {
@@ -86,7 +78,6 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         user = (User) getIntent().getSerializableExtra("user");
         weight = user.weight;
         username = user.username;
-        System.out.println("onCreatesta: " + username);
 
         context = CalorieActivity.this;
 
@@ -97,7 +88,6 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         sports_array_full = new ArrayList<SportData>(sports_array);
 
         LocalDate dateNow = LocalDate.now();
-        System.out.println(dateNow);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         date = dateNow.format(formatter);
 
@@ -132,6 +122,7 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         returnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                countSum();
                 saveArrays();
                 Intent intent = new Intent();
                 intent.putExtra("sport entry", SE);
@@ -257,10 +248,50 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
+
+        caloriesSpentInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().length() > 0) {
+                    spentCalories = Integer.valueOf(s.toString().trim());
+                } else {
+                    spentCalories = 0;
+                }
+                SE.setCalories(spentCalories);
+                displaySpentCalories(spentCalories);
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        calorieIntakeInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0) {
+                    gainedCalories = Integer.valueOf(s.toString().trim());
+                } else {
+                    gainedCalories = 0;
+                }
+                FE.setCalories(gainedCalories);
+                displayGainedCalories(gainedCalories);
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
     }
 
     @Override
     public void onBackPressed() {
+        countSum();
         saveArrays();
         Intent intent = new Intent();
         intent.putExtra("sport entry", SE);
@@ -292,7 +323,6 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         countSum();
         SE = new SportEntry(sportType, duration, spentCalories);
         SE.setDate(date);
-        System.out.println("addista: " + username);
         SE.setUsername(username);
     }
 
@@ -333,7 +363,9 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
     }
 
     public void calorieRecommendation (View v) {
-        startActivity(new Intent(CalorieActivity.this, PopUpCalories.class));
+        Intent intent = new Intent(CalorieActivity.this, PopUpCalories.class);
+        intent.putExtra("user", user);
+        startActivity(intent);
     }
 
     @Override
