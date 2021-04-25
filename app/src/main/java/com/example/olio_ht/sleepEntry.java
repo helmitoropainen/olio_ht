@@ -72,7 +72,6 @@ public class sleepEntry extends Entry {
             } else {
                 adviceText = "Remember that too much sleep can increase your tiredness.";
             }
-
             return adviceText;
         }
 
