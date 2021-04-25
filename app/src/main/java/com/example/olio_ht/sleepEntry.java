@@ -51,28 +51,31 @@ public class sleepEntry extends Entry {
         return resultText;
     }
 
-        public int getReadiness () {
-            readiness = (int) ((slepttime / goal) * 100);
-            return readiness;
+    public int getReadiness () {
+        readiness = (int) ((slepttime / goal) * 100);
+        return readiness;
+    }
+
+    public double getSleptTime() {
+        return slepttime ;
+    }
+    public String getAdvice ( int readiness){
+        if (readiness < 30) {
+            adviceText = "Take it easy on yourself today and try to sleep early!";
+        } else if (readiness < 50) {
+            adviceText = "Remember to stay hydrated and eat nutritious food. You can get through this day!";
+        } else if (readiness < 75) {
+            adviceText = "A bit of exercising could help you feel more awake!";
+        } else if (readiness < 95) {
+            adviceText = "You're off to a good start today, just remember to take consistent breaks from your work!";
+        } else if (readiness < 100) {
+            adviceText = "Alright! You're getting there!";
+        } else if (readiness < 115) {
+            adviceText = "Yay, you've reached your goal! Now you can go out there and conquer this day!";
+        } else {
+            adviceText = "Remember that too much sleep can increase your tiredness.";
         }
 
-        public String getAdvice ( int readiness){
-            if (readiness < 30) {
-                adviceText = "Take it easy on yourself today and try to sleep early!";
-            } else if (readiness < 50) {
-                adviceText = "Remember to stay hydrated and eat nutritious food. You can get through this day!";
-            } else if (readiness < 75) {
-                adviceText = "A bit of exercising could help you feel more awake!";
-            } else if (readiness < 95) {
-                adviceText = "You're off to a good start today, just remember to take consistent breaks from your work!";
-            } else if (readiness < 100) {
-                adviceText = "Alright! You're getting there!";
-            } else if (readiness < 115) {
-                adviceText = "Yay, you've reached your goal! Now you can go out there and conquer this day!";
-            } else {
-                adviceText = "Remember that too much sleep can increase your tiredness.";
-            }
-
-            return adviceText;
-        }
+        return adviceText;
+    }
 }
