@@ -76,4 +76,19 @@ public class UserEntryLog {
             e.printStackTrace();
         }
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void editCSV(String filename, String username, String date, double sleep, double caloriesEaten, double caloriesBurned) {
+        try {
+
+
+            String userdata = username+";"+date+";"+sleep+";"+caloriesEaten+";"+caloriesBurned+"\n";
+            OutputStreamWriter osw = new OutputStreamWriter(context.openFileOutput(filename,Context.MODE_APPEND));
+            osw.write(userdata);
+            osw.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

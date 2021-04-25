@@ -11,23 +11,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/baloo_bhaina"
-        android:text="Our users' hours spent excercising:"
-        android:textColor="@color/white"
-        android:textSize="20sp"
+        android:gravity="center"
         android:shadowColor="@color/black"
         android:shadowDx="-2"
         android:shadowDy="2"
         android:shadowRadius="0.02"
+        android:text="On Track is a fitness app that helps you stay on track with your health!\nExplore our app by clicking on the textst or navigating with the bar below."
+        android:textColor="@color/white"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.517" />
+        app:layout_constraintVertical_bias="0.815" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/factView"
-        android:layout_width="330dp"
-        android:layout_height="120dp"
+        android:layout_width="342dp"
+        android:layout_height="154dp"
         android:background="@drawable/roundstyle"
         android:backgroundTint="#FFE57F"
         android:clickable="true"
@@ -40,9 +42,10 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.141" />
+        app:layout_constraintVertical_bias="0.147" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/todayView"
@@ -58,10 +61,10 @@
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.092"
+        app:layout_constraintHorizontal_bias="0.101"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.348" />
+        app:layout_constraintVertical_bias="0.417" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/goToSleep"
@@ -79,10 +82,10 @@
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.825"
+        app:layout_constraintHorizontal_bias="0.828"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.348" />
+        app:layout_constraintVertical_bias="0.417" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/goToCalories"
@@ -100,10 +103,10 @@
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.82"
+        app:layout_constraintHorizontal_bias="0.79"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.435" />
+        app:layout_constraintVertical_bias="0.526" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/welcomeView"
@@ -123,19 +126,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="350dp"
-        android:layout_height="200dp"
-        android:backgroundTint="#A9A9A9"
-        android:background="@drawable/roundstyle"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.821"
-        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

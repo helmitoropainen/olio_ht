@@ -21,12 +21,12 @@ import java.util.Date;
 
 public class SleepActivity extends AppCompatActivity {
 
-    Button returnHome, submit;
+    Button returnHome;
     EditText hour1, minute1, hour2, minute2;
     TextView sum, readinesstext, advicetext ;
     int h1=0, m1=0, h2=0, m2=0, slepth=0, sleptmin=0, mindifference=0, readiness=0, goal=8;
     double slepttime=0;
-    boolean hasUserAddedData = false, hasUerCalculatedSleep = false;
+    boolean hasUerCalculatedSleep = false;
     String username, date;
     sleepEntry SE = new sleepEntry(0,0,0,0);
 
@@ -104,6 +104,7 @@ public class SleepActivity extends AppCompatActivity {
         slepttime = SE.getSleptTime();
         SE.setDate(date);
         SE.setUsername(username);
+        SE.setSum(slepttime);
 
         hasUerCalculatedSleep = true;
 
@@ -112,18 +113,9 @@ public class SleepActivity extends AppCompatActivity {
     public void resetData(View v) {
         if (hasUerCalculatedSleep == false) {
             SE = new sleepEntry(0,0,0,0);
+            hasUerCalculatedSleep = true;
         }
         SE.resetTodaysSum();
-        hasUserAddedData = true;
-    }
-
-    public void addData(View v) {
-        if (hasUerCalculatedSleep == true) {
-            SE.addToTodaysSum(slepttime);
-            hasUserAddedData = true;
-        } else {
-            hasUserAddedData = false;
-        }
     }
 
     public void sleepRecommendation (View v) {
@@ -133,7 +125,7 @@ public class SleepActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent intent = new Intent();
-        if (hasUserAddedData == true) {
+        if (hasUerCalculatedSleep == true) {
             intent.putExtra("sleep entry", SE);
             setResult(RESULT_OK, intent);
         } else {
