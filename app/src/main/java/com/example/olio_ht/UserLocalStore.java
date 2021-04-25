@@ -1,13 +1,9 @@
 package com.example.olio_ht;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
-
 import androidx.annotation.RequiresApi;
-
 import java.time.LocalDate;
-
 public class UserLocalStore {
     public static final String SP_NAME = "userInformation";
     SharedPreferences userLocalDatabase;
@@ -51,45 +47,49 @@ public class UserLocalStore {
         spEditor.apply();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public User getUserInfo(String un) {
-        firstName = userLocalDatabase.getString("firstName"+un, "");
-        lastName = userLocalDatabase.getString("lastName"+un, "");
-        username = userLocalDatabase.getString("username"+un, "");
-        password = userLocalDatabase.getString("password"+un, "");
-        salt = userLocalDatabase.getString("salt"+un, "");
-        sex = userLocalDatabase.getString("sex"+un, "");
-        dateOfBirth = LocalDate.parse(userLocalDatabase.getString("dateOfBirth"+un, "2021-01-01"));
-        age = userLocalDatabase.getInt("age"+un, -1);
-        height = userLocalDatabase.getFloat("height"+un, -1);
-        weight = userLocalDatabase.getFloat("weight"+un, -1);
-        bmi = userLocalDatabase.getFloat("bmi"+un, -1);
-        idealCalories = userLocalDatabase.getLong("idealCalories"+un, -1);
-        idealSleep = userLocalDatabase.getLong("idealSleep"+un,-1);
-        caloriesGoal = userLocalDatabase.getLong("caloriesGoal"+un, -1);
-        sleepGoal = userLocalDatabase.getLong("sleepGoal"+un, -1);
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public User getUserInfo(String un) {
+            firstName = userLocalDatabase.getString("firstName"+un, "");
+            lastName = userLocalDatabase.getString("lastName"+un, "");
+            username = userLocalDatabase.getString("username"+un, "");
+            password = userLocalDatabase.getString("password"+un, "");
+            salt = userLocalDatabase.getString("salt"+un, "");
+            sex = userLocalDatabase.getString("sex"+un, "");
+            dateOfBirth = LocalDate.parse(userLocalDatabase.getString("dateOfBirth"+un, "2021-01-01"));
+            age = userLocalDatabase.getInt("age"+un, -1);
+            height = userLocalDatabase.getFloat("height"+un, -1);
+            weight = userLocalDatabase.getFloat("weight"+un, -1);
+            bmi = userLocalDatabase.getFloat("bmi"+un, -1);
+            idealCalories = userLocalDatabase.getLong("idealCalories"+un, -1);
+            idealSleep = userLocalDatabase.getLong("idealSleep"+un,-1);
+            caloriesGoal = userLocalDatabase.getLong("caloriesGoal"+un, -1);
+            sleepGoal = userLocalDatabase.getLong("sleepGoal"+un, -1);
+
+            User user = new User(firstName, lastName, username, password, salt, sex, dateOfBirth, age,
+                    height, weight, caloriesGoal, sleepGoal);
+            user.setIdealSleep();
+            user.setIdealCalories();
+            user.setBMI();
+
+            return user;
+        }
 
 
-        User user = new User(firstName, lastName, username, password, salt, sex, dateOfBirth, age,
-                height, weight, caloriesGoal, sleepGoal);
-        user.setIdealSleep();
-        user.setIdealCalories();
-        user.setBMI();
 
-        return user;
+
+
+
+
+
+        // Tells which user is logged in.
+        public String getUserLoggedIn() {
+            String loggedInUser = userLocalDatabase.getString("loggedIn", "");
+            return loggedInUser;
+        }
+        // Sets info to the userLocalDatabase which user is logged in.
+        public void setUserLoggedIO(String un) {
+            SharedPreferences.Editor spEditor = userLocalDatabase.edit();
+            spEditor.putString("loggedIn", un);
+            spEditor.apply();
+        }
     }
-
-    // Tells which user is logged in.
-    public String getUserLoggedIn() {
-        String loggedInUser = userLocalDatabase.getString("loggedIn", "");
-        return loggedInUser;
-    }
-
-    // Sets info to the userLocalDatabase which user is logged in.
-    public void setUserLoggedIO(String un) {
-        SharedPreferences.Editor spEditor = userLocalDatabase.edit();
-        spEditor.putString("loggedIn", un);
-        spEditor.apply();
-    }
-
-}
