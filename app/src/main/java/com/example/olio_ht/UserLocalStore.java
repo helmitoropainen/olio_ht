@@ -46,7 +46,7 @@ public class UserLocalStore {
         spEditor.putFloat("bmi", user.bmi);
         spEditor.putLong("idealCalories"+user.username, user.idealCalories);
         spEditor.putLong("idealSleep"+user.username, user.idealSleep);
-        spEditor.putLong("sleepGOal"+user.username, user.sleepGoal);
+        spEditor.putLong("sleepGoal"+user.username, user.sleepGoal);
         spEditor.putLong("caloriesGoal"+user.username, user.caloriesGoal);
         spEditor.apply();
     }
@@ -72,6 +72,9 @@ public class UserLocalStore {
 
         User user = new User(firstName, lastName, username, password, salt, sex, dateOfBirth, age,
                 height, weight, caloriesGoal, sleepGoal);
+        user.setIdealSleep();
+        user.setIdealCalories();
+        user.setBMI();
 
         return user;
     }

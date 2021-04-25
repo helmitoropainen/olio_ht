@@ -79,4 +79,5 @@ public class sleepEntry extends Entry {
     }
 
         public double getSleptTime() { return slepttime; }
+  
 }
