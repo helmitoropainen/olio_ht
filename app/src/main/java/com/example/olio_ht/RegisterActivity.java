@@ -6,8 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -106,15 +104,12 @@ public class RegisterActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void createAccount(View v) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.M.yyyy");
-        LocalDate now = LocalDate.now();
         String password = etPassword.getText().toString();
         String confirmPassword = etConfirmPassword.getText().toString();
         String username = etUsername.getText().toString();
         String firstName = etUsername.getText().toString();
         String lastName = etLastName.getText().toString();
-        LocalDate dateOfBirth = LocalDate.parse(tvDateOfBirth.getText(), formatter);
-        int age = (int) java.time.temporal.ChronoUnit.YEARS.between(dateOfBirth, now);
+        String stringBirthday = tvDateOfBirth.getText().toString();
         String height = etHeight.getText().toString();
         String weight = etWeight.getText().toString();
         String sex = spinner.getItemAtPosition(choice).toString();
@@ -135,7 +130,7 @@ public class RegisterActivity extends AppCompatActivity {
             etLastName.setError("Field can't be empty!");
             etLastName.requestFocus();
             return;
-        } if (dateOfBirth.toString().isEmpty()) {
+        } if (stringBirthday.isEmpty()) {
             tvDateOfBirth.setError("Field can't be empty!");
             tvDateOfBirth.requestFocus();
             return;
@@ -166,6 +161,10 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.M.yyyy");
+        LocalDate now = LocalDate.now();
+        LocalDate dateOfBirth = LocalDate.parse(stringBirthday, formatter);
+        int age = (int) java.time.temporal.ChronoUnit.YEARS.between(dateOfBirth, now);
 
         String salt = generateSalt();
         String securePassword = getSHA512(password, salt.getBytes());
