@@ -14,12 +14,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 
+import static java.lang.Math.round;
+
 public class HomeFragment extends Fragment {
 
-    TextView factView;
-    AppCompatTextView sleep ;
+    TextView factView, sleep, calories;
     View view;
-    SleepActivity getSleep = new SleepActivity();
+    double sleepSum = 0, calorieSum = 0;
 
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -30,29 +31,32 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         factView = (TextView) this.view.findViewById(R.id.factView);
+        sleep = (TextView) this.view.findViewById(R.id.goToSleep);
+        calories = (TextView) this.view.findViewById(R.id.goToCalories);
+
         String[] facts = getResources().getStringArray(R.array.facts);
         String fact = facts[0];
         factView.setText("Did you know?\n" + fact);
-
-        sleep = (AppCompatTextView) this.view.findViewById(R.id.goToSleep) ;
-        if (getArguments() != null) {
-            float timeSlept = getArguments().getFloat("sleptTime");
-            sleep.setText("You've slept "+timeSlept+" hours");
-        }
-
+        sleep.setText("You've slept " + String.format("%.2f", sleepSum) + " hours");
+        calories.setText("Your calories are " + round(calorieSum) + " kcal");
     }
 
     public void changeFact() {
-        try {
+        if (getArguments() != null) {
             String arg = getArguments().getString("fact");
             factView = (TextView) this.view.findViewById(R.id.factView);
             factView.setText(arg);
-        } catch (Exception e) {}
+        }
     }
 
+    public void updateCalorieSum( double sum ) {
+        calorieSum = sum;
+        calories.setText("Your calories are " + round(calorieSum) + " kcal");
+    }
 
-    public void getArguments(Bundle bundle) {
-
+    public void updateSleepSum( double sum ) {
+        sleepSum = sum;
+        sleep.setText("You've slept " + String.format("%.2f", sleepSum) + " hours");
     }
 }
 

@@ -2,6 +2,7 @@ package com.example.olio_ht;
 
 import android.content.Context;
 import android.os.Build;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
@@ -39,16 +40,13 @@ public class EntryManager {
                 double caloriesBurned = sportEntries.getSum();
 
                 userEntryLog.appendToCSV(filename, username, birthday, sleep, caloriesEaten, caloriesBurned);
+
+                Toast.makeText(context, "appended to csv", Toast.LENGTH_SHORT).show();
             }
 
         }
 
     }
-
-
-    public Entry getSportEntries() { return sportEntries; }
-    public Entry getFoodEntries() { return foodEntries; }
-    public Entry getSleepEntries() { return sleepEntries; }
 
     public void setSportEntries( Entry e ) { sportEntries = e; }
     public void setFoodEntries( Entry e ) { foodEntries = e; }

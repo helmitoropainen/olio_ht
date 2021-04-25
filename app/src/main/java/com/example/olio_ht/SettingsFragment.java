@@ -73,7 +73,6 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 applyChanges();
-                userEntryLog.createFile(); // JSON testaus
             }
         });
         return view;
