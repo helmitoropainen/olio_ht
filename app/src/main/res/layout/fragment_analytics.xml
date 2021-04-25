@@ -69,21 +69,32 @@
         android:layout_width="350dp"
         android:layout_height="200dp"
         android:background="@drawable/roundstyle"
-        android:backgroundTint="#A9A9A9"
+        android:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.838"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints" >
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineChartSleepChart"
+            android:layout_width="345sp"
+            android:layout_height="192sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/sleep_fragment_container"
         android:layout_width="350dp"
         android:layout_height="200dp"
         android:background="@drawable/roundstyle"
-        android:backgroundTint="#A9A9A9"
+        android:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
@@ -91,6 +102,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.229"
         tools:ignore="MissingConstraints">
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineChartCalorieChart"
+            android:layout_width="345sp"
+            android:layout_height="192sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

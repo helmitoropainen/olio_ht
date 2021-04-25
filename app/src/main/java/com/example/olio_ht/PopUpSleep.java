@@ -40,7 +40,7 @@ public class PopUpSleep extends Activity {
         if (goalInputH.getText().toString().trim().length() > 0) {
             goalh = Integer.parseInt(goalInputH.getText().toString());
             goalmin = Integer.parseInt(goalInputMin.getText().toString());
-            if (goalh > 24 || goalmin > 59) {
+            if (goalh > 23 || goalmin > 59) {
                 Toast.makeText(getApplicationContext(), "Goal is above limit!", Toast.LENGTH_SHORT).show();
             } else {
                 if (goalmin == 0) {
