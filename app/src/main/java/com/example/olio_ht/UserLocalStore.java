@@ -28,7 +28,9 @@ public class UserLocalStore {
         spEditor.putInt("age"+user.username, user.age);
         spEditor.putFloat("height"+user.username, user.height);
         spEditor.putFloat("weight"+user.username, user.weight);
-        // spEditor.putFloat("bmi", user.bmi);
+        spEditor.putFloat("bmi", user.bmi);
+        spEditor.putLong("idealCalories"+user.username, user.idealCalories);
+        spEditor.putLong("idealSleep"+user.username, user.idealSleep);
         spEditor.apply();
     }
 
@@ -44,15 +46,17 @@ public class UserLocalStore {
         int age = userLocalDatabase.getInt("age"+un, -1);
         float height = userLocalDatabase.getFloat("height"+un, -1);
         float weight = userLocalDatabase.getFloat("weight"+un, -1);
-        // float bmi = userLocalDatabase.getFloat("bmi", -1);
+        /*float bmi = userLocalDatabase.getFloat("bmi"+un, -1);
+        long idealCalories = userLocalDatabase.getLong("idealCalories"+un, -1);
+        long idealSleep = userLocalDatabase.getLong("idealSleep"+un,-1);*/
 
         User user = new User(firstName, lastName, username, password, salt, sex, dateOfBirth, age,
-                height, weight/*, bmi*/);
+                height, weight);
 
         return user;
     }
 
-    // Tells if a user is logged in or out.
+    // Tells which user is logged in.
     public String getUserLoggedIn() {
         String loggedInUser = userLocalDatabase.getString("loggedIn", "");
         return loggedInUser;
@@ -64,4 +68,5 @@ public class UserLocalStore {
         spEditor.putString("loggedIn", un);
         spEditor.apply();
     }
+
 }

@@ -78,7 +78,4 @@ public class sleepEntry extends Entry {
 
         return adviceText ;
     }
-
-
-
 }

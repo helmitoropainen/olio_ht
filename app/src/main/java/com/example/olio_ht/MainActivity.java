@@ -133,10 +133,6 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.changePassword, password).commit();
     }
 
-    public void savePassword(View v) {
-
-    }
-
     public void launchCalories(View v) {
         Intent intent = new Intent(MainActivity.this, CalorieActivity.class);
         intent.putExtra("user", user);
