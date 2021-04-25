@@ -30,7 +30,8 @@ public class User implements Serializable {
     }
 
     public void setBMI() {
-        float bmi = weight/((height/100)*(height/100));
+        bmi = weight/((height/100)*(height/100));
+        System.out.println("LASKETTU BMI: "+bmi);
     }
 
     public void setIdealCalories() {
@@ -59,6 +60,7 @@ public class User implements Serializable {
         } else if (age >= 18) {
             idealSleep = (7+9)/2;
         }
+        System.out.println("LASKETTU UNI: "+idealSleep);
     }
 
     public void setCaloriesGoal() {
