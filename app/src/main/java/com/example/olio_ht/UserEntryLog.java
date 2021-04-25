@@ -2,9 +2,11 @@ package com.example.olio_ht;
 
 import android.content.Context;
 import android.os.Build;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -24,17 +26,26 @@ public class UserEntryLog {
     public String createFile() {
         System.out.println("CSV TIEDOSTOSIJAINTI: " + context.getFilesDir());
         String filename = "userData.csv";
-        try {
-            OutputStreamWriter osw = new OutputStreamWriter(context.openFileOutput(filename,
-                    Context.MODE_PRIVATE));
-            String s = "username;date;sleep;caloriesEaten;caloriesBurned\n";
-            osw.write(s);
-            osw.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        File file = context.getFileStreamPath(filename);
+        if (file == null || !file.exists()) {
+            try {
+                OutputStreamWriter osw = new OutputStreamWriter(context.openFileOutput(filename,
+                        Context.MODE_PRIVATE));
+                String s = "username;date;sleep;caloriesEaten;caloriesBurned\n";
+                osw.write(s);
+                osw.close();
+                Toast.makeText(context, "file created", Toast.LENGTH_SHORT).show();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(context, "file already exists", Toast.LENGTH_SHORT).show();
         }
+
+
 
         // Nää oli testausta varten, saa hyödyntää entrymanagerissa.
         /*
@@ -56,6 +67,21 @@ public class UserEntryLog {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void appendToCSV(String filename, String username, String date, double sleep, double caloriesEaten, double caloriesBurned) {
         try {
+            String userdata = username+";"+date+";"+sleep+";"+caloriesEaten+";"+caloriesBurned+"\n";
+            OutputStreamWriter osw = new OutputStreamWriter(context.openFileOutput(filename,Context.MODE_APPEND));
+            osw.write(userdata);
+            osw.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void editCSV(String filename, String username, String date, double sleep, double caloriesEaten, double caloriesBurned) {
+        try {
+
+
             String userdata = username+";"+date+";"+sleep+";"+caloriesEaten+";"+caloriesBurned+"\n";
             OutputStreamWriter osw = new OutputStreamWriter(context.openFileOutput(filename,Context.MODE_APPEND));
             osw.write(userdata);

@@ -29,7 +29,7 @@ public class SportEntry extends CalorieEntry {
     public void setSportType(String ft) { sportType = ft; }
     public void setDuration(int a) { duration = a; }
 
-    public double countSpentCalories(SportEntry se, SportData sd, int w) {
+    public double countSpentCalories(SportEntry se, SportData sd, float w) {
         double countedCalories;
         if (se.getSportType().equals("Own workout") == true) {
             countedCalories = se.getCalories();
