@@ -26,6 +26,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import static java.lang.Float.parseFloat;
+import static java.lang.Float.valueOf;
 
 public class SettingsFragment extends Fragment {
 
@@ -80,6 +81,8 @@ public class SettingsFragment extends Fragment {
         etHeight.setText(String.valueOf(Math.round(uls.getUserInfo(username).height)));
         etWeight.setText(String.valueOf(Math.round(uls.getUserInfo(username).weight)));
         tvBMI.setText(String.valueOf(Math.round(uls.getUserInfo(username).bmi)));
+        String bmiInfo = getBmiInfo(uls.getUserInfo(username).bmi);
+        tvInfoBMI.setText(bmiInfo);
 
         LocalDate dateOfBirth = uls.getUserInfo(username).dateOfBirth;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
@@ -185,11 +188,30 @@ public class SettingsFragment extends Fragment {
                 dateOfBirth, age, parseFloat(height), parseFloat(weight), caloriesGoal, sleepGoal);
         uls.storeUserData(changedUser);
 
+        System.out.println(uls.getUserInfo(username).bmi);
+        tvBMI.setText(String.valueOf(Math.round(uls.getUserInfo(username).bmi)));
+        String bmiInfo = getBmiInfo(uls.getUserInfo(username).bmi);
+        tvInfoBMI.setText(bmiInfo);
+
         Context context = getContext();
         CharSequence text = "User data changed successfully.";
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
+    }
+
+    public String getBmiInfo(float bmi) {
+        String bmiInfo = "";
+        if (bmi < 18.5) {
+            bmiInfo = "Underweight";
+        } else if (bmi >= 18.5 && bmi < 25) {
+            bmiInfo = "Normal weight";
+        } else if (bmi >= 25 && bmi < 30) {
+            bmiInfo = "Overweight";
+        } else if (bmi >= 30) {
+            bmiInfo = "Obese";
+        }
+        return bmiInfo;
     }
 
     // näist en oo viel ihan varma, tämmösii käytin 11? viikol ku halusin et asetukset säilyy vaik

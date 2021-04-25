@@ -43,7 +43,7 @@ public class UserLocalStore {
         spEditor.putInt("age"+user.username, user.age);
         spEditor.putFloat("height"+user.username, user.height);
         spEditor.putFloat("weight"+user.username, user.weight);
-        spEditor.putFloat("bmi", user.bmi);
+        spEditor.putFloat("bmi"+user.username, user.bmi);
         spEditor.putLong("idealCalories"+user.username, user.idealCalories);
         spEditor.putLong("idealSleep"+user.username, user.idealSleep);
         spEditor.putLong("sleepGoal"+user.username, user.sleepGoal);

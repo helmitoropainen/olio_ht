@@ -47,15 +47,15 @@ public class User implements Serializable {
     public void setIdealSleep() {
         if (age < 1) {
             idealSleep = (17+14)/2;
-        } else if (age >= 1 || age < 2) {
+        } else if (age == 1) {
             idealSleep = 10+4;
-        } else if (age >= 1 || age < 3) {
+        } else if (age >= 1 && age < 3) {
             idealSleep = (11+12)/2+(1+2)/2;
-        } else if (age >= 3 || age < 6) {
+        } else if (age >= 3 && age < 6) {
             idealSleep = (10+13)/2;
-        } else if (age >= 6 || age < 14) {
+        } else if (age >= 6 && age < 14) {
             idealSleep = (9+11)/2;
-        } else if (age >= 14 || age < 18) {
+        } else if (age >= 14 && age < 18) {
             idealSleep = (8+10)/2;
         } else if (age >= 18) {
             idealSleep = (7+9)/2;

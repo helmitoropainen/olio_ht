@@ -3,6 +3,7 @@ package com.example.olio_ht;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -38,9 +39,10 @@ public class RegisterActivity extends AppCompatActivity {
     EditText etPassword;
     EditText etConfirmPassword;
     int choice;
-    private DatePickerDialog.OnDateSetListener dateSetListener;
     UserLocalStore userLocalStore;
+    DatePickerDialog datePickerDialog;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +56,7 @@ public class RegisterActivity extends AppCompatActivity {
         etWeight = findViewById(R.id.etWeight);
         etPassword = findViewById(R.id.etPassword);
         etConfirmPassword = findViewById(R.id.etConfirmPassword);
+        updateDate();
 
         userLocalStore = new UserLocalStore(this);
 
@@ -74,29 +77,32 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    public void updateDate(View v) {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void updateDate() {
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+                month = month + 1;
+                String date = makeDateString(day, month, year);
+                tvDateOfBirth.setText(date);
+            }
+        };
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         int day = cal.get(Calendar.DAY_OF_MONTH);
-        Bundle bundle = new Bundle();
 
-        DatePickerDialog dialog = new DatePickerDialog(
-                RegisterActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                dateSetListener,
-                year, month, day);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
-
-        dateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month = month + 1;
-                String date = dayOfMonth + "." + month + "." + year;
-                tvDateOfBirth.setText(date);
-            }
-        };
+        datePickerDialog = new DatePickerDialog(this, AlertDialog.THEME_HOLO_LIGHT, dateSetListener, year, month, day);
     }
+
+    public String makeDateString( int day, int month, int year) {
+        return day + "." + month + "." + year;
+    }
+
+    public void openDatePicker (View v) {
+        datePickerDialog.show();
+    }
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void createAccount(View v) {
