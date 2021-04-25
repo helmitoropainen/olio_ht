@@ -51,6 +51,7 @@ public class UserLocalStore {
         spEditor.apply();
     }
 
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public User getUserInfo(String un) {
         firstName = userLocalDatabase.getString("firstName"+un, "");
