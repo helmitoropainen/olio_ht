@@ -3,6 +3,7 @@ package com.example.olio_ht;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -31,16 +32,15 @@ public class SettingsFragment extends Fragment {
     TextView dateView;
     View view;
     Spinner spinner;
-    UserLocalStore userLocalStore;
+    UserLocalStore uls;
     Button btLogOut;
     Button btApplyChanges;
+    TextView tvUserName;
     EditText etFirstName;
     EditText etLastName;
     EditText etHeight;
     EditText etWeight;
     int choice;
-    UserEntryLog userEntryLog; // Testaan JSON logia
-
 
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String FIRST_NAME = "firstName";
@@ -53,14 +53,37 @@ public class SettingsFragment extends Fragment {
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_settings, container, false);
-        userLocalStore = new UserLocalStore(getActivity().getBaseContext());
-        userEntryLog = new UserEntryLog(getActivity().getBaseContext()); // JSON testausta
+        return view;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        spinner = view.findViewById(R.id.sexSpinner);
+        uls = new UserLocalStore(getActivity().getBaseContext());
+        tvUserName = view.findViewById(R.id.textView14);
         etFirstName = view.findViewById(R.id.etFirstName);
         etLastName = view.findViewById(R.id.etLastName);
         etHeight = view.findViewById(R.id.etHeight);
         etWeight = view.findViewById(R.id.etWeight);
         dateView = view.findViewById(R.id.dateOfBirth);
         btLogOut = view.findViewById(R.id.button3);
+
+        String username = uls.getUserLoggedIn();
+        tvUserName.setText(username);
+        etFirstName.setText(uls.getUserInfo(username).firstName);
+        etLastName.setText(uls.getUserInfo(username).lastName);
+        etHeight.setText(String.valueOf(uls.getUserInfo(username).height));
+        etWeight.setText(String.valueOf(uls.getUserInfo(username).height));
+
+        LocalDate dateOfBirth = uls.getUserInfo(username).dateOfBirth;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        String formattedDate = dateOfBirth.format(formatter);
+        dateView.setText(formattedDate);
+
+        int sex = getSpinnerPosition(uls.getUserInfo(username).sex);
+        spinner.setSelection(sex);
+
         btLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,15 +96,8 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 applyChanges();
-                userEntryLog.createFile(); // JSON testaus
             }
         });
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        spinner = view.findViewById(R.id.sexSpinner);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getActivity(), R.array.sexes, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -89,12 +105,25 @@ public class SettingsFragment extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                choice = position;
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
+    }
+
+    public int getSpinnerPosition(String sex) {
+        int i;
+        Resources res = getResources();
+        String[] sexes = res.getStringArray(R.array.sexes);
+        for (i = 0; i < sexes.length; i++) {
+            if (sex.equals(sexes[i])) {
+                break;
+            }
+        }
+        System.out.println("i: " + i); // Testiii
+        return i;
     }
 
     public void changeDate() {
@@ -104,7 +133,7 @@ public class SettingsFragment extends Fragment {
     }
 
     public void logOut() {
-        userLocalStore.setUserLoggedIO("");
+        uls.setUserLoggedIO("");
         Intent intent = new Intent(getActivity().getBaseContext(), LogInActivity.class);
         startActivityForResult(intent, 1);
     }
@@ -113,7 +142,7 @@ public class SettingsFragment extends Fragment {
     public void applyChanges() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.M.yyyy");
         LocalDate now = LocalDate.now();
-        String username = userLocalStore.getUserLoggedIn();
+        String username = uls.getUserLoggedIn();
         String firstName = etFirstName.getText().toString();
         String lastName = etLastName.getText().toString();
         LocalDate dateOfBirth = LocalDate.parse(dateView.getText(), formatter);
@@ -121,8 +150,8 @@ public class SettingsFragment extends Fragment {
         String height = etHeight.getText().toString();
         String weight = etWeight.getText().toString();
         String sex = spinner.getItemAtPosition(choice).toString();
-        String securePassword = userLocalStore.getUserInfo(username).password;
-        String salt = userLocalStore.getUserInfo(username).salt;
+        String securePassword = uls.getUserInfo(username).password;
+        String salt = uls.getUserInfo(username).salt;
 
         if (firstName.isEmpty()) {
             etFirstName.setError("Field can't be empty!");
@@ -148,7 +177,7 @@ public class SettingsFragment extends Fragment {
 
         User changedUser = new User(firstName, lastName, username, securePassword, salt, sex,
                 dateOfBirth, age, parseFloat(height), parseFloat(weight)/*, bmi*/);
-        userLocalStore.storeUserData(changedUser);
+        uls.storeUserData(changedUser);
 
         Context context = getContext();
         CharSequence text = "User data changed successfully.";

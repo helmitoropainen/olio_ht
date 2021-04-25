@@ -164,7 +164,7 @@ public class RegisterActivity extends AppCompatActivity {
         String securePassword = getSHA512(password, salt.getBytes());
 
         User registeredUser = new User(firstName, lastName, username, securePassword, salt, sex,
-                dateOfBirth, age, parseFloat(height), parseFloat(weight)/*, bmi*/);
+                dateOfBirth, age, parseFloat(height), parseFloat(weight));
         userLocalStore.storeUserData(registeredUser);
         Intent intent = new Intent(RegisterActivity.this, LogInActivity.class);
         startActivityForResult(intent, 1);
@@ -212,19 +212,15 @@ public class RegisterActivity extends AppCompatActivity {
 
     // Generates salt for password.
     public String generateSalt() {
-        byte[] salt = new byte[16];
         String stringSalt = "";
-        try {
-            SecureRandom sr = SecureRandom.getInstance("SHA512PRNG");
-            sr.nextBytes(salt);
-            StringBuilder sb = new StringBuilder();
-            for(int i=0; i< salt.length ;i++) {
-                sb.append(Integer.toString((salt[i] & 0xff) + 0x100, 16).substring(1));
-            }
-            stringSalt = sb.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[16];
+        random.nextBytes(salt);
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < salt.length; i++) {
+            sb.append(Integer.toString((salt[i] & 0xff) + 0x100, 16).substring(1));
         }
+        stringSalt = sb.toString();
         return stringSalt;
     }
 
