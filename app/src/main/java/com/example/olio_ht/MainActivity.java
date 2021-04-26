@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     EntryManager entryManager;
     User user;
     Entry sportEntry, foodEntry, sleepEntry;
+    DatePickerDialog datePickerDialog;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -59,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
         userLocalStore = new UserLocalStore(this);
         username = userLocalStore.getUserLoggedIn();
         user = userLocalStore.getUserInfo(username);
+
+        updateDate();
 
     }
 
@@ -98,30 +103,32 @@ public class MainActivity extends AppCompatActivity {
         home.changeFact();
     }
 
-    public void updateDate(View v) {
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
+    public void updateDate() {
         Bundle bundle = new Bundle();
-
-        DatePickerDialog dialog = new DatePickerDialog(
-                MainActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                dateSetListener,
-                year, month, day);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
-
-        dateSetListener = new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            public void onDateSet(DatePicker view, int year, int month, int day) {
                 month = month + 1;
-                String date = dayOfMonth + "." + month + "." + year;
+                String date = makeDateString(day, month, year);
                 bundle.putString("date", date);
                 settings.setArguments(bundle);
                 settings.changeDate();
             }
         };
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        datePickerDialog = new DatePickerDialog(this, AlertDialog.THEME_HOLO_LIGHT, dateSetListener, year, month, day);
+    }
+
+    public String makeDateString( int day, int month, int year) {
+        return day + "." + month + "." + year;
+    }
+
+    public void openDatePicker (View v) {
+        datePickerDialog.show();
     }
 
     public void changePassword(View v) {
