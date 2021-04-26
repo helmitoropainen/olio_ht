@@ -37,22 +37,29 @@ public class AnalyticsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_analytics, container, false);
+        System.out.print("########################    :))    ############################") ;
         return view;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        System.out.print("########################    :)))))))))))    ############################") ;
         caloriesChart = (LineChart) this.view.findViewById(R.id.lineChartCalorieChart);
         sleepChart = (LineChart) this.view.findViewById(R.id.lineChartSleepChart);
 
+        System.out.print("########################    1    ############################") ;
         Analyses analyse = new Analyses(getActivity().getBaseContext());
         analyse.readCSV();
+
+        System.out.print("#######################     2     ############################") ;
+
         ArrayList<Entry> calgained = analyse.getCalorieIntake() ;
         ArrayList<Entry> calburned = analyse.getCalorieLoss() ;
         ArrayList<Entry> sleep = analyse.getSleptHours() ;
 
         ArrayList<String> xAXES = new ArrayList<>() ;
 
+        System.out.print("#######################     3     ############################") ;
         double x = 0;
         int datapoints = 5 ;
 
@@ -88,5 +95,6 @@ public class AnalyticsFragment extends Fragment {
     }
 
     public void setFilename(String f) { filename = f; }
+
 }
 

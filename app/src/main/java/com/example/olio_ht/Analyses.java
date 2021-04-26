@@ -52,11 +52,12 @@ public class Analyses {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void readCSV() {
+        System.out.print("########################    1.1    ############################") ;
         try {
             String line = "" ;
-
+            System.out.print("########################    1.2    ############################") ;
             retrieveUserAndGoals();
-
+            System.out.print("########################    1.3    ############################") ;
             InputStream ins = context.openFileInput(filename); // täl ei tuu file not found erroria
             BufferedReader br = new BufferedReader(new InputStreamReader(ins));
 
@@ -67,7 +68,7 @@ public class Analyses {
             int i = 0 ;
             while ((line = br.readLine()) != null && i<5) {
                 String[] data = line.split(";");
-                if (data[0].equals(username) == true) {//&& data[1].equals(date) == true) { täs ehdos jotain mätää XD
+                if (data[0].equals(username) == true && data[1].equals((String) date)) {// == true) { täs ehdos jotain mätää XD
                     System.out.println("match!");
                     sleep.add(new Entry(Float.parseFloat(data[2]), i)) ;
                     gainedCal.add(new Entry(Float.parseFloat(data[3]), i)) ;
