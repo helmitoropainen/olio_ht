@@ -93,6 +93,9 @@ public class AnalyticsFragment extends Fragment {
         ldsCalorie.add(LineDataSetGained) ;
         ldsCalorie.add(LineDataSetBurnt) ;
 
+        System.out.println("#####################################") ;
+        System.out.println(ldsCalorie) ;
+        System.out.println(xaxes) ;
         caloriesChart.setData(new LineData(xaxes, ldsCalorie)) ;
 
         // Create a new chart and add to it datapoints based on hours slept
