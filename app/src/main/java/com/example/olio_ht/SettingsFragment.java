@@ -231,6 +231,7 @@ public class SettingsFragment extends Fragment {
         editor.putInt(SPINNER_STATE, spinnerPosition);
         editor.apply();
     }
+
     public void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         username = sharedPreferences.getString(USERNAME, "");
@@ -240,6 +241,7 @@ public class SettingsFragment extends Fragment {
         fontSize = sharedPreferences.getInt(FONT_SIZE, 10);
         spinnerPosition = sharedPreferences.getInt(SPINNER_STATE, 0);
     }
+
     public void updateViews() {
         editSwitch.setChecked(editValue);
         boldSwitch.setChecked(boldValue);
@@ -249,3 +251,4 @@ public class SettingsFragment extends Fragment {
         spinner.setSelection(spinnerPosition);
     }*/
 }
+

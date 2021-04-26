@@ -53,24 +53,24 @@ public class PasswordFragment extends Fragment {
     public void changePassword() {
         String password = etPassword.getText().toString();
         String confirmPassword = etConfirmPassword.getText().toString();
-        if (password.isEmpty()) {
-            etPassword.setError("Field can't be empty!");
-            etPassword.requestFocus();
-            return;
-        } if (confirmPassword.isEmpty()) {
-            etConfirmPassword.setError("Field can't be empty!");
-            etConfirmPassword.requestFocus();
-            return;
-        } if (!password.equals(confirmPassword)) {
-            etConfirmPassword.setError("Passwords doesn't match!");
-            etConfirmPassword.requestFocus();
-            return;
-        } if (!ra.checkPassword(password)) {
-            etPassword.setError("Password needs to have at least 12 characters, one digit, one " +
-                    "lowercase letter, one uppercase letter and one special character!");
-            etPassword.requestFocus();
-            return;
-        }
+    if (password.isEmpty()) {
+        etPassword.setError("Field can't be empty!");
+        etPassword.requestFocus();
+        return;
+    } if (confirmPassword.isEmpty()) {
+        etConfirmPassword.setError("Field can't be empty!");
+        etConfirmPassword.requestFocus();
+        return;
+    } if (!password.equals(confirmPassword)) {
+        etConfirmPassword.setError("Passwords doesn't match!");
+        etConfirmPassword.requestFocus();
+        return;
+    } if (!ra.checkPassword(password)) {
+        etPassword.setError("Password needs to have at least 12 characters, one digit, one " +
+                "lowercase letter, one uppercase letter and one special character!");
+        etPassword.requestFocus();
+        return;
+    }
         String salt = ra.generateSalt();
         String securePassword = ra.getSHA512(password, salt.getBytes());
 

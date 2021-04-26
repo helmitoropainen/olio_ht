@@ -56,8 +56,10 @@ public class UserEntryLog {
         double sleep = 8.2045;
         double caloriesEaten = 1869.2495;
         double caloriesBurned = 1503.456;
+
         appendToCSV(filename, username, birthday, sleep, caloriesEaten, caloriesBurned);
         appendToCSV(filename, username, birthday, sleep, caloriesEaten, caloriesBurned);
+
          */
 
         return filename;

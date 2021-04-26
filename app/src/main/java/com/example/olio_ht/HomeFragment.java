@@ -61,3 +61,4 @@ public class HomeFragment extends Fragment {
         sleep.setText("You've slept " + String.format("%.2f", sleepSum) + " hours");
     }
 }
+

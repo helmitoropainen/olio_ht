@@ -88,3 +88,4 @@ public class AnalyticsFragment extends Fragment {
 
     public void setFilename(String f) { filename = f; }
 }
+

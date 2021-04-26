@@ -454,10 +454,10 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
                 SD.setSportName(sportName);
 
                 int l = (int) sports_array.size() - 1;
-                if (sports_array.get(l).getSportName().equals(sportName) == false) {
-                    sports_array.add(SD);
+                    if (sports_array.get(l).getSportName().equals(sportName) == false) {
+                        sports_array.add(SD);
+                    }
                 }
-            }
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

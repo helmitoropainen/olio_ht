@@ -20,3 +20,4 @@ public class SportData {
     @Override
     public String toString() { return sportName; }
 }
+
