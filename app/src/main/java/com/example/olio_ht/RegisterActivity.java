@@ -26,6 +26,8 @@ import java.util.Calendar;
 
 import static java.lang.Float.parseFloat;
 
+
+
 public class RegisterActivity extends AppCompatActivity {
 
     EditText etUsername;

@@ -27,6 +27,8 @@ import java.time.format.DateTimeFormatter;
 
 import static java.lang.Float.parseFloat;
 
+
+
 public class SettingsFragment extends Fragment {
 
     TextView dateView;

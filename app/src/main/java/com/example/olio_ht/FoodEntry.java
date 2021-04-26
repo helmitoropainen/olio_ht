@@ -2,6 +2,8 @@ package com.example.olio_ht;
 
 import static java.lang.Math.round;
 
+
+
 public class FoodEntry extends CalorieEntry {
 
     String foodType;
