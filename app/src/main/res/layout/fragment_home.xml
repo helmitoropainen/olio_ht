@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="#6F40C4FF">
 
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/titleView"
         android:layout_width="wrap_content"

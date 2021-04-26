@@ -41,6 +41,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import static java.lang.Math.round;
 
+
 public class CalorieActivity extends AppCompatActivity implements RecyclerViewAdapter.OnTextClickListener {
 
     Button returnHome;

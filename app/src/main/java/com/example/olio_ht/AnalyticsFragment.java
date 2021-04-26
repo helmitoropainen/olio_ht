@@ -18,6 +18,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
 
+
 public class AnalyticsFragment extends Fragment {
 
     LineChart caloriesChart;

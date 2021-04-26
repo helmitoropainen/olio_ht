@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import static java.lang.Math.round;
 
+
 public class HomeFragment extends Fragment {
 
     TextView factView, sleep, calories;

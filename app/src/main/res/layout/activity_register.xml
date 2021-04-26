@@ -7,6 +7,7 @@
     android:background="#A9A9A9">
     tools:context=".RegisterActivity">
 
+
     <TextView
         android:id="@+id/dateOfBirth"
         android:layout_width="150dp"

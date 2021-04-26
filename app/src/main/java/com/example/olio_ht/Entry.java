@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+
 public abstract class Entry implements Serializable {
 
     String date;

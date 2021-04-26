@@ -2,7 +2,12 @@ package com.example.olio_ht;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+
 public class User {
+
+
+public class User implements Serializable {
+
     String firstName, lastName, username, password, sex;
     String salt;
     LocalDate dateOfBirth;
