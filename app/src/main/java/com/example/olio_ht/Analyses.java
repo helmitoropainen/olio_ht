@@ -68,7 +68,7 @@ public class Analyses {
             int i = 0 ;
             while ((line = br.readLine()) != null && i<5) {
                 String[] data = line.split(";");
-                if (data[0].equals(username) == true && data[1].equals((String) date)) {// == true) { täs ehdos jotain mätää XD
+                if (data[0].equals(username) == true /*&& data[1].equals((String) date)*/) {// == true) { täs ehdos jotain mätää XD
                     System.out.println("match!");
                     sleep.add(new Entry(Float.parseFloat(data[2]), i)) ;
                     gainedCal.add(new Entry(Float.parseFloat(data[3]), i)) ;
