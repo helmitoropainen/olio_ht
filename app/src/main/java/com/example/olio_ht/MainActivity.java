@@ -77,13 +77,19 @@ public class MainActivity extends AppCompatActivity {
 
                     switch (item.getItemId()) {
                         case R.id.nav_home:
-                            selectedFragment = new HomeFragment();
+                            home = new HomeFragment();
+                            selectedFragment = home;
+                            loadState();
+                            home.updateCalorieSum(calorieSum);
+                            home.updateSleepSum(sleepSum);
                             break;
                         case R.id.nav_analytics :
                             selectedFragment = new AnalyticsFragment();
                             break;
                         case R.id.nav_settings:
-                            selectedFragment = new SettingsFragment();
+                            settings = new SettingsFragment();
+                            selectedFragment = settings;
+                            updateDate();
                             break;
                     }
 
@@ -194,6 +200,10 @@ public class MainActivity extends AppCompatActivity {
         if (rqst1OK && rqst2OK) {
             entryManager.saveEntries();
         }
+
+        loadState();
+        home.updateCalorieSum(calorieSum);
+        home.updateSleepSum(sleepSum);
     }
 
     public void saveState() {
