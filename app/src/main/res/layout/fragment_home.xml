@@ -17,7 +17,7 @@
         android:shadowDx="-2"
         android:shadowDy="2"
         android:shadowRadius="0.02"
-        android:text="On Track is a fitness app that helps you stay on track with your health!\nExplore our app by clicking on the textst or navigating with the bar below."
+        android:text="On Track is a fitness app that helps you stay on track with your health!\nExplore our app by clicking on the texts or navigating with the bar below."
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
