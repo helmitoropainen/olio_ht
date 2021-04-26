@@ -14,7 +14,7 @@
         android:fontFamily="@font/baloo_bhaina"
         android:gravity="center"
         android:lineSpacingMultiplier="0.5"
-        android:text="Your daily goal is set to 8 hours"
+        android:text="Your nightly goal is set to 8 hours and 0 minutes"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,15 +29,15 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/baloo_bhaina"
         android:gravity="center"
-        android:text="Your recommended nightly sleep is 8 hours"
         android:lineSpacingMultiplier="0.5"
+        android:text="Your recommended nightly sleep is 8 hours"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.344" />
+        app:layout_constraintVertical_bias="0.39" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textView10"

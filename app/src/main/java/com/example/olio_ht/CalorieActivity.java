@@ -1,6 +1,5 @@
 package com.example.olio_ht;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -41,7 +40,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import static java.lang.Math.round;
 
-
 public class CalorieActivity extends AppCompatActivity implements RecyclerViewAdapter.OnTextClickListener {
 
     Button returnHome;
@@ -65,9 +63,9 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
     SportEntry SE;
     FoodData FD;
     SportData SD;
-    Context context;
     SharedPreferences sharedPreferences;
     User user;
+    UserLocalStore userLocalStore;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -76,11 +74,11 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         setContentView(R.layout.activity_calories);
         setTitle(R.string.app_name);
 
-        user = (User) getIntent().getSerializableExtra("user");
-        weight = user.weight;
-        username = user.username;
+        userLocalStore = new UserLocalStore(this);
+        username = userLocalStore.getUserLoggedIn();
+        user = userLocalStore.getUserInfo(username);
 
-        context = CalorieActivity.this;
+        weight = user.weight;
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -143,7 +141,7 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
                 sportType = sports_array.get(position).getSportName();
                 SD = sports_array.get(position);
                 SE.setSportType(sportType);
-                if (sportType.equals("Own workout") == false) {
+                if (!sportType.equals("Own workout")) {
                     caloriesSpentInput.setEnabled(false);
                     durationSeekBar.setEnabled(true);
                     duration = (int) durationSeekBar.getProgress() * 10;
@@ -182,7 +180,7 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
                 foodType = food_array.get(position).getFoodName();
                 FD = food_array.get(position);
                 FE.setFoodType(foodType);
-                if (foodType.equals("Own portion") == false) {
+                if (!foodType.equals("Own portion")) {
                     calorieIntakeInput.setEnabled(false);
                     massSeekBar.setEnabled(true);
                     mass = (int) massSeekBar.getProgress() * 10;
@@ -287,7 +285,6 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
             public void afterTextChanged(Editable s) {
             }
         });
-
     }
 
     @Override
@@ -364,16 +361,14 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
     }
 
     public void calorieRecommendation (View v) {
-        Intent intent = new Intent(CalorieActivity.this, PopUpCalories.class);
-        intent.putExtra("user", user);
-        startActivity(intent);
+        startActivity(new Intent(CalorieActivity.this, com.example.olio_ht.PopUpCalories.class));
     }
 
     @Override
     public void onTextClick(ArrayList<CalorieEntry> array) {
-        if (className.equals("sportEntry") == true) {
+        if (className.equals("sportEntry")) {
             spent_array = array;
-        } else if (className.equals("foodEntry") == true) {
+        } else if (className.equals("foodEntry")) {
             gained_array = array;
         }
     }
@@ -454,10 +449,10 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
                 SD.setSportName(sportName);
 
                 int l = (int) sports_array.size() - 1;
-                    if (sports_array.get(l).getSportName().equals(sportName) == false) {
-                        sports_array.add(SD);
-                    }
+                if (!sports_array.get(l).getSportName().equals(sportName)) {
+                    sports_array.add(SD);
                 }
+            }
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
