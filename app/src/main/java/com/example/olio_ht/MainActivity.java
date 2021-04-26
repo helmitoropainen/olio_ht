@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
     String filename, username;
     Bundle bundle = new Bundle();
     HomeFragment home = new HomeFragment();
-    AnalyticsFragment analytics = new AnalyticsFragment();
     SettingsFragment settings = new SettingsFragment();
     PasswordFragment password = new PasswordFragment();
     private DatePickerDialog.OnDateSetListener dateSetListener;
@@ -169,7 +168,6 @@ public class MainActivity extends AppCompatActivity {
                     calorieSum = (double) foodEntry.getSum() - sportEntry.getSum();
                     entryManager.setSportEntries(sportEntry);
                     entryManager.setFoodEntries(foodEntry);
-                    home = (HomeFragment) getSupportFragmentManager().findFragmentByTag("home fragment");
                     if (home != null) {
                         home.updateCalorieSum(calorieSum);
                     }
@@ -186,7 +184,6 @@ public class MainActivity extends AppCompatActivity {
                 sleepEntry = (Entry) data.getSerializableExtra("sleep entry");
                 sleepSum = sleepEntry.getSum();
                 entryManager.setSleepEntries(sleepEntry);
-                home = (HomeFragment) getSupportFragmentManager().findFragmentByTag("home fragment");
                 if (home != null) {
                     home.updateSleepSum(sleepSum);
                 }
@@ -200,10 +197,6 @@ public class MainActivity extends AppCompatActivity {
         if (rqst1OK && rqst2OK) {
             entryManager.saveEntries();
         }
-
-        loadState();
-        home.updateCalorieSum(calorieSum);
-        home.updateSleepSum(sleepSum);
     }
 
     public void saveState() {
