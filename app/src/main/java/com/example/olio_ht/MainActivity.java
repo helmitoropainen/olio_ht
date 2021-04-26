@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.Calendar;
@@ -20,8 +21,6 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-
-    int facts_index;
     double sleepSum = 0, calorieSum = 0;
     boolean rqst1OK = false, rqst2OK = false;
     String filename, username;
@@ -99,17 +98,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             };
 
-    public void randomFact (View v) {
-        String[] facts = getResources().getStringArray(R.array.facts);
-        int min = 0;
-        int max = facts.length - 1;
-        Random rand = new Random();
-        facts_index = rand.nextInt((max - min) + 1) + min;
-        String text = String.format("Did you know?\n" + facts[facts_index]);
-        bundle.putString("fact", text);
-        home.setArguments(bundle);
-        home.changeFact();
-    }
 
     public void updateDate() {
         Bundle bundle = new Bundle();
@@ -197,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
         if (rqst1OK && rqst2OK) {
             entryManager.saveEntries();
         }
+        saveState();
     }
 
     public void saveState() {
