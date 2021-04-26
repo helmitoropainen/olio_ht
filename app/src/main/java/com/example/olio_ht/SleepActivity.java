@@ -20,9 +20,9 @@ public class SleepActivity extends AppCompatActivity {
 
     Button returnHome;
     EditText hour1, minute1, hour2, minute2;
-    TextView sum, readinesstext, advicetext ;
+    TextView sum, readinesstext, advicetext, goalView;
     int h1=0, m1=0, h2=0, m2=0, slepth=0, sleptmin=0, mindifference=0, readiness=0, goal=8;
-    double slepttime=0;
+    double slepttime=0, goalh = 0;
     String username, date;
     sleepEntry SE = new sleepEntry(0,0,0,0);
     User user;
@@ -55,10 +55,13 @@ public class SleepActivity extends AppCompatActivity {
         sum = (TextView) findViewById(R.id.textViewSum) ;
         readinesstext = (TextView) findViewById(R.id.textViewReadiness);
         advicetext = (TextView) findViewById(R.id.textViewComment) ;
+        goalView = (TextView) findViewById(R.id.goalView);
 
         // jos h1<00.00, h1:n päivä on h2:n päivä -1. Jos h1>00.00, h1:n päivä = h2:n päivä
 
         loadState();
+        goalh = (double) user.sleepGoal/60;
+        goalView.setText(String.format("Your nightly sleep goal: %.2f hours", goalh));
         String sumText = SE.getHoursAndMinsText(mindifference) ;
         sum.setText(sumText);
         readinesstext.setText("You've reached "+readiness+"% of your goal") ;

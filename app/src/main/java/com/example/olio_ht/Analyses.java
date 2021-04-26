@@ -26,8 +26,8 @@ public class Analyses {
 
     double sleepGoal ;
     long calorieGoal ;
-    String date;
-    String user ;
+    String date, username;
+    User user ;
     String filename = "userData.csv" ;
     Context context = null ;
 
@@ -43,15 +43,18 @@ public class Analyses {
     public void retrieveUserAndGoals() {
         UserLocalStore uls = new UserLocalStore(context) ;
 
-        user = uls.getUserLoggedIn() ;
-        sleepGoal = uls.getUserInfo(user).idealSleep;
-        calorieGoal = uls.getUserInfo(user).idealCalories ;
+        username = uls.getUserLoggedIn() ;
+        user = uls.getUserInfo(username);
+        sleepGoal = user.sleepGoal;
+        calorieGoal = user.caloriesGoal;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void readCSV() {
         try {
             String line = "" ;
+
+            retrieveUserAndGoals();
 
             InputStream ins = context.openFileInput(filename); // täl ei tuu file not found erroria
             BufferedReader br = new BufferedReader(new InputStreamReader(ins));
@@ -63,8 +66,8 @@ public class Analyses {
             int i = 0 ;
             while ((line = br.readLine()) != null && i<5) {
                 String[] data = line.split(";");
-
-                if (data[0].equals(user) == true && data[1].equals(date) == true) {
+                if (data[0].equals(username) == true) {//&& data[1].equals(date) == true) { täs ehdos jotain mätää XD
+                    System.out.println("match!");
                     sleep.add(new Entry(Float.parseFloat(data[2]), i)) ;
                     gainedCal.add(new Entry(Float.parseFloat(data[3]), i)) ;
                     lostCal.add(new Entry(Float.parseFloat(data[4]), i)) ;

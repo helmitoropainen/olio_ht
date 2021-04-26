@@ -83,7 +83,7 @@ public class PopUpSleep extends Activity {
                     viewGoal.setText("Your nightly goal is set to " + goalh + " hours");
                     goal = goalh * 60;
                 } else {
-                    viewGoal.setText("Your nightly goal is set to" + goalh + " hours and " + goalmin + " minutes");
+                    viewGoal.setText("Your nightly goal is set to " + goalh + " hours and " + goalmin + " minutes");
                     goal = goalh * 60 + goalmin;
                 }
 

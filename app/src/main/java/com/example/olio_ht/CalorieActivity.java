@@ -111,7 +111,7 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         viewGainedCalories = (TextView) findViewById(R.id.gainedCalories);
         caloriesSpentInput = (EditText) findViewById(R.id.caloriesSpentInput);
         calorieIntakeInput = (EditText) findViewById(R.id.calorieIntakeInput);
-        sumView = (TextView) findViewById(R.id.sumView);
+        sumView = (TextView) findViewById(R.id.goalView);
 
         loadArrays();
         spent_array = initRecyclerView(sportsRecyclerView, spent_array);
