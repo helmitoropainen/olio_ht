@@ -31,6 +31,7 @@ public class Analyses {
     User user ;
     String filename = "userData.csv" ;
     Context context = null ;
+    UserLocalStore uls ;
 
     ArrayList<Entry> gainedCal = new ArrayList<>();
     ArrayList<Entry> lostCal = new ArrayList<>();
@@ -38,27 +39,27 @@ public class Analyses {
 
     public Analyses(Context c) {
         context = c ;
+        uls = new UserLocalStore(context) ;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void retrieveUserAndGoals() {
-        UserLocalStore uls = new UserLocalStore(context) ;
-
         username = uls.getUserLoggedIn() ;
         user = uls.getUserInfo(username);
         sleepGoal = user.sleepGoal;
         calorieGoal = user.caloriesGoal;
     }
 
+    public double getSleepGoal() { return sleepGoal ; }
+
+    public long getCalorieGoal() { return calorieGoal; }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void readCSV() {
-        System.out.println("########################    1.1    ############################") ;
         try {
             String line = "" ;
-            System.out.println("########################    1.2    ############################") ;
             retrieveUserAndGoals();
-            System.out.println("########################    1.3    ############################") ;
-            InputStream ins = context.openFileInput(filename); // täl ei tuu file not found erroria
+            InputStream ins = context.openFileInput(filename);
             BufferedReader br = new BufferedReader(new InputStreamReader(ins));
 
             SimpleDateFormat sdf = new SimpleDateFormat("dd.M.yyyy") ;
@@ -68,7 +69,7 @@ public class Analyses {
             int i = 0 ;
             while ((line = br.readLine()) != null && i<5) {
                 String[] data = line.split(";");
-                if (data[0].equals(username) == true && data[1].equals((String) date)) {// == true) { täs ehdos jotain mätää XD
+                if (data[0].equals(username) == true && data[1].equals((String) date)==true) {// == true) { täs ehdos jotain mätää XD
                     System.out.println("match!");
                     sleep.add(new Entry(Float.parseFloat(data[2]), i)) ;
                     gainedCal.add(new Entry(Float.parseFloat(data[3]), i)) ;

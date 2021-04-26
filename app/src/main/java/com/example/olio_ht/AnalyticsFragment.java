@@ -30,44 +30,35 @@ public class AnalyticsFragment extends Fragment {
 
     LineChart caloriesChart, sleepChart;
     View view;
-    String filename ;
     private static final String TAG = "AnalyticsFragment" ;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_analytics, container, false);
-        System.out.println("########################    :))    ############################") ;
         return view;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        System.out.println("########################    :)))))))))))    ############################") ;
         caloriesChart = (LineChart) this.view.findViewById(R.id.lineChartCalorieChart);
         sleepChart = (LineChart) this.view.findViewById(R.id.lineChartSleepChart);
 
-        System.out.println("########################    1    ############################") ;
         Analyses analyse = new Analyses(getActivity().getBaseContext());
         analyse.readCSV();
 
-        System.out.println("#######################     2     ############################") ;
-
         ArrayList<Entry> calgained = analyse.getCalorieIntake() ;
-        System.out.println("#######################     2.1     ############################") ;
-
         ArrayList<Entry> calburned = analyse.getCalorieLoss() ;
-        System.out.println("#######################     2.2     ############################") ;
-
         ArrayList<Entry> sleep = analyse.getSleptHours() ;
-        System.out.println("#######################     2.3     ############################") ;
-
 
         ArrayList<String> xAXES = new ArrayList<>() ;
-        System.out.println("#######################     2.4     ############################") ;
 
+        long calorieGoal = analyse.getCalorieGoal() ;
+        double sleepGoal = analyse.getSleepGoal() ;
 
-        System.out.print("#######################     3     ############################") ;
+        ArrayList<Entry> calorieG = new ArrayList<>() ;
+        ArrayList<Entry> sleepG = new ArrayList<>();
+
         double x = 0;
         int datapoints = 5 ;
 
@@ -78,6 +69,8 @@ public class AnalyticsFragment extends Fragment {
 
         for (int i=0; i<5;i++) {
             xaxes[i] = date ;
+
+
             try {
                 c.setTime(sdf.parse(date)) ;
             } catch (ParseException e) {
@@ -87,22 +80,32 @@ public class AnalyticsFragment extends Fragment {
             date = sdf.format(c.getTime()) ;
         }
 
-        ArrayList<ILineDataSet> lineDataSets = new ArrayList<>() ;
-        LineDataSet LineDataSet1  = new LineDataSet(calgained, "intake");
-        LineDataSet1.setDrawCircles(false) ;
-        LineDataSet1.setColor(Color.rgb(251, 226, 127)) ;
+        // Create a chart and add to it datapoints based on burnt calories and intake
+        ArrayList<ILineDataSet> ldsCalorie = new ArrayList<>() ;
+        LineDataSet LineDataSetGained  = new LineDataSet(calgained, "intake");
+        LineDataSetGained.setDrawCircles(true) ;
+        LineDataSetGained.setColor(Color.rgb(239, 108, 0)) ;
 
-        LineDataSet LineDataSet2  = new LineDataSet(calburned, "burnt");
-        LineDataSet2.setDrawCircles(false) ;
-        LineDataSet2.setColor(Color.rgb(2, 218, 197)) ;
+        LineDataSet LineDataSetBurnt  = new LineDataSet(calburned, "burnt");
+        LineDataSetBurnt.setDrawCircles(true) ;
+        LineDataSetBurnt.setColor(Color.rgb(2, 218, 197)) ;
 
-        lineDataSets.add(LineDataSet1) ;
-        lineDataSets.add(LineDataSet2) ;
+        ldsCalorie.add(LineDataSetGained) ;
+        ldsCalorie.add(LineDataSetBurnt) ;
 
-        caloriesChart.setData(new LineData(xaxes, lineDataSets)) ;
+        caloriesChart.setData(new LineData(xaxes, ldsCalorie)) ;
+
+        // Create a new chart and add to it datapoints based on hours slept
+        ArrayList<ILineDataSet> ldsSleep = new ArrayList<>() ;
+        LineDataSet LineDataSetSleep  = new LineDataSet(sleep, "Hours slept");
+        LineDataSetSleep.setDrawCircles(true) ;
+        LineDataSetSleep.setColor(Color.rgb(151, 180, 212)) ;
+
+        ldsSleep.add(LineDataSetSleep) ;
+
+        sleepChart.setData(new LineData(xaxes, ldsSleep)) ;
+
     }
-
-    public void setFilename(String f) { filename = f; }
 
 }
 
