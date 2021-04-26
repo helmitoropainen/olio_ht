@@ -16,10 +16,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
+import java.util.concurrent.TimeUnit;
 
 
 public class Analyses {
@@ -62,23 +63,62 @@ public class Analyses {
             InputStream ins = context.openFileInput(filename);
             BufferedReader br = new BufferedReader(new InputStreamReader(ins));
 
+            int i = 0 ;
+            for (i=0;i<5;i++) {
+                sleep.add(new Entry(Float.parseFloat("0"), i));
+                gainedCal.add(new Entry(Float.parseFloat("0"), i));
+                lostCal.add(new Entry(Float.parseFloat("0"), i));
+            }
+
             SimpleDateFormat sdf = new SimpleDateFormat("dd.M.yyyy") ;
             date = sdf.format(new Date()) ;
 
-            Calendar c = Calendar.getInstance() ;
-            int i = 0 ;
-            while ((line = br.readLine()) != null && i<5) {
-                String[] data = line.split(";");
-                if (data[0].equals(username) == true && data[1].equals((String) date)==true) {// == true) { täs ehdos jotain mätää XD
-                    System.out.println("match!");
-                    sleep.add(new Entry(Float.parseFloat(data[2]), i)) ;
-                    gainedCal.add(new Entry(Float.parseFloat(data[3]), i)) ;
-                    lostCal.add(new Entry(Float.parseFloat(data[4]), i)) ;
+            Date today = Calendar.getInstance().getTime() ;
+            Date checkedDate ;
 
-                    c.setTime(sdf.parse(date)) ;
-                    c.add(Calendar.DAY_OF_MONTH, -1) ;
-                    date = sdf.format(c.getTime()) ;
-                    i++ ;
+            // long days = ChronoUnit.DAYS.between(pastDate, now);
+            Calendar c = Calendar.getInstance() ;
+
+            int diff, check = 0, j=0 ;
+            String dateForParse ;
+
+            while ((line = br.readLine()) != null && check == 0) {
+                String[] data = line.split(";");
+                if (data[0].equals(username) == true) {// && data[1].equals((String) date)==true== true) { täs ehdos jotain mätää XD
+
+                    checkedDate = sdf.parse(data[1]) ;
+                    long diffInMillies =  checkedDate.getTime() - today.getTime();
+
+                    diff = (int) TimeUnit.HOURS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
+                    System.out.println(diff) ;
+
+                    i = 0;
+                    while(j==0) {
+                        if (diff/24<i) {
+                            diff = i ;
+                            j++ ;
+                        }
+                        i++ ;
+                    }
+
+                    System.out.println(checkedDate) ;
+                    System.out.println(today) ;
+                    System.out.println(diff) ;
+                    System.out.println("############## ._. ################") ;
+
+                    if (diff > 4) {
+                        check = 1 ;
+                    } else {
+                        if (diff > 0) {
+                        sleep.set(diff, new Entry(Float.parseFloat(data[2]), i));
+                        gainedCal.set(diff, new Entry(Float.parseFloat(data[3]), i));
+                        lostCal.set(diff, new Entry(Float.parseFloat(data[4]), i));
+                        //c.setTime(sdf.parse(date));
+                        //c.add(Calendar.DAY_OF_MONTH, -1);
+                        //date = sdf.format(c.getTime());
+                        }
+                    }
                 }
             }
         } catch (FileNotFoundException e) {
@@ -88,17 +128,16 @@ public class Analyses {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        System.out.println(sleep) ;
+        System.out.println(gainedCal) ;
+        System.out.println(lostCal) ;
     }
 
     public ArrayList<Entry> getCalorieIntake() {
-        System.out.println("#######################     getgained     ############################") ;
-
         return gainedCal;
     }
 
     public ArrayList<Entry> getCalorieLoss() {
-        System.out.println("#######################     getlost     ############################") ;
-
         return lostCal;
     }
 
