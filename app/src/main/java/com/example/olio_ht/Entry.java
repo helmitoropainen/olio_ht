@@ -21,5 +21,6 @@ public abstract class Entry implements Serializable {
     public void setSum( double s ) { sum = s; }
     public void setUsername( String u ) { username = u; }
 
+
 }
 

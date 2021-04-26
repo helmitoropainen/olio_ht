@@ -71,16 +71,15 @@ public class SettingsFragment extends Fragment {
         etWeight = view.findViewById(R.id.etWeight);
         dateView = view.findViewById(R.id.dateOfBirth);
         btLogOut = view.findViewById(R.id.button3);
-        tvBMI = view.findViewById(R.id.idBMI);
-        tvInfoBMI = view.findViewById(R.id.tvInfoBMI);
+        tvBMI = view.findViewById(R.id.tvInfoBMI);
+        tvInfoBMI = view.findViewById(R.id.idBMI);
 
         String username = uls.getUserLoggedIn();
         tvUserName.setText(username);
         etFirstName.setText(uls.getUserInfo(username).firstName);
         etLastName.setText(uls.getUserInfo(username).lastName);
-        etHeight.setText(String.valueOf(Math.round(uls.getUserInfo(username).height)));
-        etWeight.setText(String.valueOf(Math.round(uls.getUserInfo(username).weight)));
-        tvBMI.setText(String.valueOf(Math.round(uls.getUserInfo(username).bmi)));
+        etHeight.setText(String.valueOf(uls.getUserInfo(username).height));
+        etWeight.setText(String.valueOf(uls.getUserInfo(username).height));
         String bmiInfo = getBmiInfo(uls.getUserInfo(username).bmi);
         tvInfoBMI.setText(bmiInfo);
 
@@ -214,38 +213,6 @@ public class SettingsFragment extends Fragment {
         return bmiInfo;
     }
 
-    // näist en oo viel ihan varma, tämmösii käytin 11? viikol ku halusin et asetukset säilyy vaik
-    // relaunchaa activityn, tyylii appin voi myös sulkee ja säilyy silti.. mut en tiiä ku meil on
-    // ne käyttäjät et meneeks eri taval
-  /*  public void saveData() {
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(USERNAME, usernameInput.getText().toString());
-        editor.putInt(FONT_SIZE, fontSize);
-        editor.putBoolean(EDIT_SWITCH, editValue);
-        editor.putBoolean(BOLD_SWITCH, boldValue);
-        editor.putBoolean(ITALIC_SWITCH, italicValue);
-        editor.putInt(SPINNER_STATE, spinnerPosition);
-        editor.apply();
-    }
 
-    public void loadData() {
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        username = sharedPreferences.getString(USERNAME, "");
-        editValue = sharedPreferences.getBoolean(EDIT_SWITCH, false);
-        boldValue = sharedPreferences.getBoolean(BOLD_SWITCH, false);
-        italicValue = sharedPreferences.getBoolean(ITALIC_SWITCH, false);
-        fontSize = sharedPreferences.getInt(FONT_SIZE, 10);
-        spinnerPosition = sharedPreferences.getInt(SPINNER_STATE, 0);
-    }
-
-    public void updateViews() {
-        editSwitch.setChecked(editValue);
-        boldSwitch.setChecked(boldValue);
-        italicSwitch.setChecked(italicValue);
-        seekBar.setProgress((fontSize-10)/2);
-        usernameInput.setText(username);
-        spinner.setSelection(spinnerPosition);
-    }*/
 }
 

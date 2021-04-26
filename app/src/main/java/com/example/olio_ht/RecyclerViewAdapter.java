@@ -85,5 +85,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         void onTextClick(ArrayList<CalorieEntry> array);
         void getClass(String cN);
     }
+
 }
 
