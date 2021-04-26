@@ -360,7 +360,7 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         sum = round(add - sub);
         SE.setSum(sub);
         FE.setSum(add);
-        sumView.setText("Todays calories are " + sum + " kcal!");
+        sumView.setText("Todays sum of calories is " + sum + " kcal!");
     }
 
     public void calorieRecommendation (View v) {

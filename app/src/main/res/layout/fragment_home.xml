@@ -30,7 +30,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/factView"
         android:layout_width="342dp"
-        android:layout_height="154dp"
+        android:layout_height="185dp"
         android:background="@drawable/roundstyle"
         android:backgroundTint="#FFE57F"
         android:clickable="true"
@@ -61,7 +61,7 @@
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.101"
+        app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.417" />
@@ -82,7 +82,7 @@
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.828"
+        app:layout_constraintHorizontal_bias="0.85"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.417" />
@@ -98,12 +98,12 @@
         android:shadowDx="-3"
         android:shadowDy="3"
         android:shadowRadius="0.01"
-        android:text="Your calories are 0 kcal"
+        android:text="The sum of your calories is 0 kcal"
         android:textColor="#448AFF"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.79"
+        app:layout_constraintHorizontal_bias="0.85"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.526" />
