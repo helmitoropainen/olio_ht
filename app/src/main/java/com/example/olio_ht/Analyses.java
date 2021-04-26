@@ -16,10 +16,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
+import java.util.concurrent.TimeUnit;
 
 
 public class Analyses {
@@ -31,6 +32,7 @@ public class Analyses {
     User user ;
     String filename = "userData.csv" ;
     Context context = null ;
+    UserLocalStore uls ;
 
     ArrayList<Entry> gainedCal = new ArrayList<>();
     ArrayList<Entry> lostCal = new ArrayList<>();
@@ -38,36 +40,51 @@ public class Analyses {
 
     public Analyses(Context c) {
         context = c ;
+        uls = new UserLocalStore(context) ;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void retrieveUserAndGoals() {
-        UserLocalStore uls = new UserLocalStore(context) ;
-
         username = uls.getUserLoggedIn() ;
         user = uls.getUserInfo(username);
         sleepGoal = user.sleepGoal;
         calorieGoal = user.caloriesGoal;
     }
 
+    public double getSleepGoal() { return sleepGoal ; }
+
+    public long getCalorieGoal() { return calorieGoal; }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void readCSV() {
-        System.out.print("########################    1.1    ############################") ;
         try {
             String line = "" ;
-            System.out.print("########################    1.2    ############################") ;
             retrieveUserAndGoals();
-            System.out.print("########################    1.3    ############################") ;
-            InputStream ins = context.openFileInput(filename); // täl ei tuu file not found erroria
+            InputStream ins = context.openFileInput(filename);
             BufferedReader br = new BufferedReader(new InputStreamReader(ins));
+
+            int i = 0 ;
+            for (i=0;i<5;i++) {
+                sleep.add(new Entry(Float.parseFloat("0"), i));
+                gainedCal.add(new Entry(Float.parseFloat("0"), i));
+                lostCal.add(new Entry(Float.parseFloat("0"), i));
+            }
 
             SimpleDateFormat sdf = new SimpleDateFormat("dd.M.yyyy") ;
             date = sdf.format(new Date()) ;
 
+            Date today = Calendar.getInstance().getTime() ;
+            Date checkedDate ;
+
+            // long days = ChronoUnit.DAYS.between(pastDate, now);
             Calendar c = Calendar.getInstance() ;
-            int i = 0 ;
-            while ((line = br.readLine()) != null && i<5) {
+
+            int diff, check = 0, j=0 ;
+            String dateForParse ;
+
+            while ((line = br.readLine()) != null && check == 0) {
                 String[] data = line.split(";");
+
                 if (data[0].equals(username) == true /*&& data[1].equals((String) date)*/) {// == true) { täs ehdos jotain mätää XD
                     System.out.println("match!");
                     sleep.add(new Entry(Float.parseFloat(data[2]), i)) ;
@@ -87,6 +104,9 @@ public class Analyses {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        System.out.println(sleep) ;
+        System.out.println(gainedCal) ;
+        System.out.println(lostCal) ;
     }
 
     public ArrayList<Entry> getCalorieIntake() {

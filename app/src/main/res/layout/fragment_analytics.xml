@@ -42,7 +42,7 @@
         app:layout_constraintHorizontal_bias="0.172"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.14" />
+        app:layout_constraintVertical_bias="0.11" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/headerView3"
@@ -61,12 +61,12 @@
         app:layout_constraintHorizontal_bias="0.16"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.544" />
+        app:layout_constraintVertical_bias="0.578" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/calorie_fragment_container"
-        android:layout_width="350dp"
-        android:layout_height="200dp"
+        android:layout_width="350sp"
+        android:layout_height="190sp"
         android:background="@drawable/roundstyle"
         android:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -74,8 +74,8 @@
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.838"
-        tools:ignore="MissingConstraints" >
+        app:layout_constraintVertical_bias="0.826"
+        tools:ignore="MissingConstraints">
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/lineChartSleepChart"
@@ -83,6 +83,7 @@
             android:layout_height="192sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.6"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints" />
@@ -90,8 +91,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/sleep_fragment_container"
-        android:layout_width="350dp"
-        android:layout_height="200dp"
+        android:layout_width="350sp"
+        android:layout_height="190sp"
         android:background="@drawable/roundstyle"
         android:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -99,7 +100,7 @@
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.271"
+        app:layout_constraintVertical_bias="0.22"
         tools:ignore="MissingConstraints">
 
         <com.github.mikephil.charting.charts.LineChart
@@ -108,6 +109,7 @@
             android:layout_height="192sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.6"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints" />
