@@ -2,10 +2,42 @@
     <string name="app_name">On Track</string>
 
     <string-array name="facts">
-        <item>Laughing is good for the heart\nand can increase blood flow\nby 40 percent.</item>
-        <item>Exercise will give you more\nenergy, even when you are tired.</item>
-        <item>Drinking coffee can reduce the risk\nof depression, especially in women.</item>
-        <item>Swearing can make you feel\nbetter when you\'re in pain.</item>
+        <item>Laughing is good for the heart and can increase blood flow by 40%.</item>
+        <item>Exercise will give you more energy, even when you are tired.</item>
+        <item>Drinking coffee can reduce the risk of depression, especially in women.</item>
+        <item>Swearing can make you feel better when you’re in pain.</item>
+        <item>Learning a new language or playing a musical instrument gives your brain a boost.</item>
+        <item>Feeling stressed? Read. Getting lost in a book can lower levels of cortisol, and other unhealthy stress hormones, by 68%.</item>
+        <item>Maintaining good relationships with your friends and family, reduces harmful levels of stress and boosts your immune system.</item>
+        <item>Chewing gum makes you more alert, relieves stress and reduces anxiety levels.</item>
+        <item>Yoga can boost your cognitive function and lower stress.</item>
+        <item>Walking outside – or spending time in green space – can reduce negative thoughts and boost self-esteem.</item>
+        <item>Chocolate is good for your skin; its antioxidants improve blood flow and protect against UV damage.</item>
+        <item>Tea can lower risks of heart attack, certain cancers, type 2 Diabetes and Parkinson’s disease. Just make sure your tea isn’t too sweet!</item>
+        <item>Eating oatmeal provides a serotonin boost to calm the brain and improve your mood.</item>
+        <item>Although it only takes you a few minutes to eat a meal, it takes your body hours to completely digest the food.</item>
+        <item>Women below the age of 50 need twice the amount of iron per day as men of the same age.</item>
+        <item>Almonds, avocados and arugula (the three ‘A’s) can boost your sex drive and improve fertility.</item>
+        <item>An apple a day does keep the doctor away. Apples can reduce levels of bad cholesterol to keep your heart healthy.</item>
+        <item>Left-handed people are more likely to suffer from ADHD.</item>
+        <item>The nose knows: it can remember 50,000 different scents.</item>
+        <item>Cardio exercise before breakfast can burn more fat.</item>
+        <item>The blue light from your phone can mess with your circadian rhythm.</item>
+        <item>SPF 50 allows only two percent of UVB rays to pass to your skin compared to seven percent when wearing only SPF 15.</item>
+        <item>Want to slow the aging process? Meditation is proven to help!</item>
+        <item>The spinal disc core is comprised of a large volume of water therefore dehydration could lead to back pain.</item>
+        <item>Repeatedly using plastic water bottles can release chemicals into your water. Why not try a reusable bottle instead? It’s good for you and the planet.</item>
+        <item>Consuming water helps the body maintain its natural pH balance.</item>
+        <item>Drinking at least five glasses of water a day can reduce your chances of suffering from a heart attack by 40%.</item>
+        <item>Stretching increases the blood flow to your muscles and helps avoid injuries.</item>
+        <item>Exercising regularly can increase your lifespan by keeping your DNA healthy and young.</item>
+        <item>Sleeping naked can help you burn more calories.</item>
+        <item>Vitamin D is as important as calcium in determining bone health, and most people don’t get enough of it.</item>
+        <item>Extra virgin olive oil is the healthiest fat on the planet.</item>
+        <item>The amino acid found in eggs can help improve your reflexes.</item>
+        <item>Bananas can help improve your mood.</item>
+        <item>Optimism may help you live longer.</item>
+        <item>Drink something hot to cool down.</item>
     </string-array>
 
     <string-array name="sexes">
