@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 public class CalorieEntry extends Entry {
 
+
     String info;
     double calories;
 

@@ -44,6 +44,7 @@ import static java.lang.Math.round;
 
 public class CalorieActivity extends AppCompatActivity implements RecyclerViewAdapter.OnTextClickListener {
 
+
     Button returnHome;
     ArrayList<SportData> sports_array = new ArrayList<SportData>();
     ArrayList<SportData> sports_array_full = new ArrayList<SportData>();

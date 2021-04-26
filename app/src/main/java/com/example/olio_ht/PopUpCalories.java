@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi;
 
 public class PopUpCalories extends Activity {
 
+
     Button back;
     EditText goalInput;
     TextView viewGoal, viewIdeal;

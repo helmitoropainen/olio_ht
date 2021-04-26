@@ -2,6 +2,7 @@ package com.example.olio_ht;
 
 public class SportData {
 
+
     String sportName;
     double calories;
 

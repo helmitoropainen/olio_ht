@@ -24,6 +24,7 @@ import java.util.Date;
 
 public class Analyses {
 
+
     double sleepGoal ;
     long calorieGoal ;
     String date, username;

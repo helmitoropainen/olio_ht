@@ -20,6 +20,7 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
+
     int facts_index;
     double sleepSum = 0, calorieSum = 0;
     boolean rqst1OK = false, rqst2OK = false;

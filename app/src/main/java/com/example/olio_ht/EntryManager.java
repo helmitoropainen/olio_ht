@@ -17,6 +17,7 @@ import java.util.List;
 
 public class EntryManager {
 
+
     private static EntryManager entryManager = new EntryManager();
     UserEntryLog userEntryLog;
     Entry sportEntries = null;

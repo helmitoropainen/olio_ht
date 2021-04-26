@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public abstract class Entry implements Serializable {
 
+
     String date;
     double sum;
     String username;

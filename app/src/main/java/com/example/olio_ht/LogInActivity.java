@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class LogInActivity extends AppCompatActivity {
 
+
     TextView LogIn;
     TextView SignUp;
     EditText etUsername;

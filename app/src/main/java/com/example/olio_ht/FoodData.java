@@ -5,6 +5,7 @@ import static java.lang.Math.round;
 
 public class FoodData {
 
+
     String foodName;
     long calories;
 

@@ -18,6 +18,7 @@ import static java.lang.Math.round;
 
 public class HomeFragment extends Fragment {
 
+
     TextView factView, sleep, calories;
     View view;
     double sleepSum = 0, calorieSum = 0;

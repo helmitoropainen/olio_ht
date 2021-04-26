@@ -32,6 +32,7 @@ import static java.lang.Float.valueOf;
 
 public class SettingsFragment extends Fragment {
 
+
     TextView dateView;
     View view;
     Spinner spinner;

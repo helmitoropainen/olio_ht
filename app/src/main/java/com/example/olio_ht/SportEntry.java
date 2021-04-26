@@ -4,6 +4,7 @@ import static java.lang.Math.round;
 
 public class SportEntry extends CalorieEntry {
 
+
     String sportType;
     int duration;
 

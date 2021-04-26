@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
+
     private ArrayList<CalorieEntry> items = new ArrayList<CalorieEntry>();
     private OnTextClickListener listener;
     private Context context;
