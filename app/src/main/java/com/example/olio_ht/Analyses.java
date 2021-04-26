@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Analyses {
 
+
     double sleepGoal ;
     long calorieGoal ;
     String date, username;
