@@ -78,6 +78,9 @@ public class PopUpSleep extends Activity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void changeGoal(View v) {
         if (goalInputH.getText().toString().trim().length() > 0) {
+            if (goalInputMin.getText().toString().trim().length() <= 0) {
+                goalInputMin.setText("0");
+            }
             goalh = Integer.parseInt(goalInputH.getText().toString());
             goalmin = Integer.parseInt(goalInputMin.getText().toString());
             if (goalh > 23 || goalmin > 59) {
@@ -98,6 +101,8 @@ public class PopUpSleep extends Activity {
 
                 hasUserChangedGoal = true;
             }
+        } else {
+            Toast.makeText(this, "Please enter hours", Toast.LENGTH_SHORT).show();
         }
     }
 

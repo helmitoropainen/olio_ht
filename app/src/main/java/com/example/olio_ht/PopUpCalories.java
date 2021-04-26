@@ -74,6 +74,8 @@ public class PopUpCalories extends Activity {
                         user.salt, user.sex, user.dateOfBirth, user.age, user.height, user.weight, goal, user.sleepGoal);
                 userLocalStore.storeUserData(changedUser);
             }
+        } else {
+            Toast.makeText(this, "Please enter an amount first", Toast.LENGTH_SHORT).show();
         }
     }
 
