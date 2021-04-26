@@ -23,4 +23,3 @@ public abstract class Entry implements Serializable {
     public void setUsername( String u ) { username = u; }
 
 }
-

@@ -89,4 +89,3 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         void getClass(String cN);
     }
 }
-
