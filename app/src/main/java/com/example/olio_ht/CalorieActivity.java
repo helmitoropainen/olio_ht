@@ -497,4 +497,5 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
             gained_array = new ArrayList<CalorieEntry>();
         }
     }
+
 }

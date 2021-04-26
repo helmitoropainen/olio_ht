@@ -90,4 +90,5 @@ public class PopUpCalories extends Activity {
     public void onBackPressed() {
         closePopUp();
     }
+
 }

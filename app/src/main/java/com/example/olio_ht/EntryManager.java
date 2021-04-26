@@ -95,4 +95,5 @@ public class EntryManager {
     public void setFilename ( String f ) { filename = f; }
     public void setContext ( Context c ) { context = c; }
 
+
 }

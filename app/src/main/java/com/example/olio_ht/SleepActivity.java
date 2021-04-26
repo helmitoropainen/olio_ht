@@ -167,4 +167,5 @@ public class SleepActivity extends AppCompatActivity {
         readiness = sharedPreferences.getInt("readiness", 0);
 
     }
+
 }

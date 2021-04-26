@@ -77,4 +77,5 @@ public class Analyses {
 
     public void setSleptHours(double h) { sleptHours= h ; }
 
+
 }
