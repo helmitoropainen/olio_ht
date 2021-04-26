@@ -10,8 +10,6 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-
-
 public class PopUpSleep extends Activity {
 
     EditText goalInputH, goalInputMin;

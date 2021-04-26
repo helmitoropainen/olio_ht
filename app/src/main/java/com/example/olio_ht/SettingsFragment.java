@@ -26,6 +26,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import static java.lang.Float.parseFloat;
+import static java.lang.Float.valueOf;
+
 
 
 
@@ -42,6 +44,8 @@ public class SettingsFragment extends Fragment {
     EditText etLastName;
     EditText etHeight;
     EditText etWeight;
+    TextView tvBMI;
+    TextView tvInfoBMI;
     int choice;
 
     public static final String SHARED_PREFS = "sharedPrefs";
@@ -70,21 +74,24 @@ public class SettingsFragment extends Fragment {
         etWeight = view.findViewById(R.id.etWeight);
         dateView = view.findViewById(R.id.dateOfBirth);
         btLogOut = view.findViewById(R.id.button3);
+        tvBMI = view.findViewById(R.id.idBMI);
+        tvInfoBMI = view.findViewById(R.id.tvInfoBMI);
 
         String username = uls.getUserLoggedIn();
         tvUserName.setText(username);
         etFirstName.setText(uls.getUserInfo(username).firstName);
         etLastName.setText(uls.getUserInfo(username).lastName);
-        etHeight.setText(String.valueOf(uls.getUserInfo(username).height));
-        etWeight.setText(String.valueOf(uls.getUserInfo(username).height));
+        etHeight.setText(String.valueOf(Math.round(uls.getUserInfo(username).height)));
+        etWeight.setText(String.valueOf(Math.round(uls.getUserInfo(username).weight)));
+        tvBMI.setText(String.valueOf(Math.round(uls.getUserInfo(username).bmi)));
+        String bmiInfo = getBmiInfo(uls.getUserInfo(username).bmi);
+        tvInfoBMI.setText(bmiInfo);
 
         LocalDate dateOfBirth = uls.getUserInfo(username).dateOfBirth;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         String formattedDate = dateOfBirth.format(formatter);
         dateView.setText(formattedDate);
 
-        int sex = getSpinnerPosition(uls.getUserInfo(username).sex);
-        spinner.setSelection(sex);
 
         btLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +120,8 @@ public class SettingsFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+        int sex = getSpinnerPosition(uls.getUserInfo(username).sex);
+        spinner.setSelection(sex);
     }
 
     public int getSpinnerPosition(String sex) {
@@ -124,7 +133,6 @@ public class SettingsFragment extends Fragment {
                 break;
             }
         }
-        System.out.println("i: " + i); // Testiii
         return i;
     }
 
@@ -154,6 +162,8 @@ public class SettingsFragment extends Fragment {
         String sex = spinner.getItemAtPosition(choice).toString();
         String securePassword = uls.getUserInfo(username).password;
         String salt = uls.getUserInfo(username).salt;
+        long sleepGoal = uls.getUserInfo(username).sleepGoal;
+        long caloriesGoal = uls.getUserInfo(username).caloriesGoal;
 
         if (firstName.isEmpty()) {
             etFirstName.setError("Field can't be empty!");
@@ -178,14 +188,33 @@ public class SettingsFragment extends Fragment {
         }
 
         User changedUser = new User(firstName, lastName, username, securePassword, salt, sex,
-                dateOfBirth, age, parseFloat(height), parseFloat(weight)/*, bmi*/);
+                dateOfBirth, age, parseFloat(height), parseFloat(weight), caloriesGoal, sleepGoal);
         uls.storeUserData(changedUser);
+
+        System.out.println(uls.getUserInfo(username).bmi);
+        tvBMI.setText(String.valueOf(Math.round(uls.getUserInfo(username).bmi)));
+        String bmiInfo = getBmiInfo(uls.getUserInfo(username).bmi);
+        tvInfoBMI.setText(bmiInfo);
 
         Context context = getContext();
         CharSequence text = "User data changed successfully.";
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
+    }
+
+    public String getBmiInfo(float bmi) {
+        String bmiInfo = "";
+        if (bmi < 18.5) {
+            bmiInfo = "Underweight";
+        } else if (bmi >= 18.5 && bmi < 25) {
+            bmiInfo = "Normal weight";
+        } else if (bmi >= 25 && bmi < 30) {
+            bmiInfo = "Overweight";
+        } else if (bmi >= 30) {
+            bmiInfo = "Obese";
+        }
+        return bmiInfo;
     }
 
     // näist en oo viel ihan varma, tämmösii käytin 11? viikol ku halusin et asetukset säilyy vaik

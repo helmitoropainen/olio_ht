@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 
-
 public abstract class Entry implements Serializable {
 
     String date;
@@ -22,13 +21,6 @@ public abstract class Entry implements Serializable {
     public void setDate( String d ) { date = d; }
     public void setSum( double s ) { sum = s; }
     public void setUsername( String u ) { username = u; }
-
-    public void resetTodaysSum() {
-        sum = 0;
-    }
-    public void addToTodaysSum(double x) {
-        sum = sum + x;
-    }
 
 }
 

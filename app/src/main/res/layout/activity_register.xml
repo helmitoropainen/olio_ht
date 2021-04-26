@@ -7,6 +7,7 @@
     android:background="#A9A9A9">
     tools:context=".RegisterActivity">
 
+
     <TextView
         android:id="@+id/dateOfBirth"
         android:layout_width="150dp"
@@ -14,8 +15,8 @@
         android:clickable="true"
         android:fontFamily="sans-serif"
         android:gravity="right"
-        android:onClick="updateDate"
-        android:text="20.4.1980"
+        android:onClick="openDatePicker"
+        android:hint="20.4.1980"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -58,7 +59,7 @@
         app:layout_constraintHorizontal_bias="0.082"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.516" />
+        app:layout_constraintVertical_bias="0.525" />
 
     <TextView
         android:id="@+id/textView3"
@@ -157,7 +158,7 @@
         app:layout_constraintVertical_bias="0.174" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/viewIdeal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
@@ -170,7 +171,7 @@
         app:layout_constraintHorizontal_bias="0.093"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.57" />
+        app:layout_constraintVertical_bias="0.58" />
 
     <TextView
         android:id="@+id/textView10"
@@ -186,7 +187,7 @@
         app:layout_constraintHorizontal_bias="0.11"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.62" />
+        app:layout_constraintVertical_bias="0.64" />
 
     <Button
         android:id="@+id/button"
@@ -226,7 +227,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
         android:gravity="right"
-        android:text="_user_"
+        android:hint="_user_"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -244,7 +245,7 @@
         android:ems="10"
         android:gravity="right"
         android:inputType="textPersonName"
-        android:text="Pancakes"
+        android:hint="Pancakes"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -262,7 +263,7 @@
         android:ems="10"
         android:gravity="right"
         android:inputType="textPersonName"
-        android:text="Bob"
+        android:hint="Bob"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -279,8 +280,8 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:gravity="right"
-        android:inputType="number"
-        android:text="190"
+        android:inputType="numberDecimal"
+        android:hint="190"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -297,8 +298,8 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:gravity="right"
-        android:inputType="number"
-        android:text="90"
+        android:inputType="numberDecimal"
+        android:hint="90"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -315,7 +316,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
         android:gravity="right"
-        android:text="Password"
+        android:hint="Password"
+        android:inputType="textPassword"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -324,7 +326,7 @@
         app:layout_constraintHorizontal_bias="0.854"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.57" />
+        app:layout_constraintVertical_bias="0.59" />
 
     <EditText
         android:id="@+id/etConfirmPassword"
@@ -332,7 +334,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
         android:gravity="right"
-        android:text="Password"
+        android:inputType="textPassword"
+        android:hint="Password"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -341,7 +344,7 @@
         app:layout_constraintHorizontal_bias="0.854"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.62" />
+        app:layout_constraintVertical_bias="0.65" />
 
     <Spinner
         android:id="@+id/sexSpinner"

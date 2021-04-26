@@ -158,9 +158,6 @@ public class MainActivity extends AppCompatActivity {
                 foodEntry = (Entry) data.getSerializableExtra("food entry");
                 try {
                     calorieSum = (double) foodEntry.getSum() - sportEntry.getSum();
-                    System.out.println("#### food sum " + foodEntry.getSum());
-                    System.out.println("#### sport sum -" + sportEntry.getSum());
-                    System.out.println("#### calorie sum " + calorieSum);
                     entryManager.setSportEntries(sportEntry);
                     entryManager.setFoodEntries(foodEntry);
                     home = (HomeFragment) getSupportFragmentManager().findFragmentByTag("home fragment");

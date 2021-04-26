@@ -11,7 +11,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-
 public class LogInActivity extends AppCompatActivity {
 
     TextView LogIn;

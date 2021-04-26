@@ -3,10 +3,9 @@ package com.example.olio_ht;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -40,9 +39,10 @@ public class RegisterActivity extends AppCompatActivity {
     EditText etPassword;
     EditText etConfirmPassword;
     int choice;
-    private DatePickerDialog.OnDateSetListener dateSetListener;
     UserLocalStore userLocalStore;
+    DatePickerDialog datePickerDialog;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +56,7 @@ public class RegisterActivity extends AppCompatActivity {
         etWeight = findViewById(R.id.etWeight);
         etPassword = findViewById(R.id.etPassword);
         etConfirmPassword = findViewById(R.id.etConfirmPassword);
+        updateDate();
 
         userLocalStore = new UserLocalStore(this);
 
@@ -76,41 +77,41 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    public void updateDate(View v) {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void updateDate() {
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+                month = month + 1;
+                String date = makeDateString(day, month, year);
+                tvDateOfBirth.setText(date);
+            }
+        };
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         int day = cal.get(Calendar.DAY_OF_MONTH);
-        Bundle bundle = new Bundle();
 
-        DatePickerDialog dialog = new DatePickerDialog(
-                RegisterActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                dateSetListener,
-                year, month, day);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
-
-        dateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month = month + 1;
-                String date = dayOfMonth + "." + month + "." + year;
-                tvDateOfBirth.setText(date);
-            }
-        };
+        datePickerDialog = new DatePickerDialog(this, AlertDialog.THEME_HOLO_LIGHT, dateSetListener, year, month, day);
     }
+
+    public String makeDateString( int day, int month, int year) {
+        return day + "." + month + "." + year;
+    }
+
+    public void openDatePicker (View v) {
+        datePickerDialog.show();
+    }
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void createAccount(View v) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.M.yyyy");
-        LocalDate now = LocalDate.now();
         String password = etPassword.getText().toString();
         String confirmPassword = etConfirmPassword.getText().toString();
         String username = etUsername.getText().toString();
-        String firstName = etUsername.getText().toString();
+        String firstName = etFirstName.getText().toString();
         String lastName = etLastName.getText().toString();
-        LocalDate dateOfBirth = LocalDate.parse(tvDateOfBirth.getText(), formatter);
-        int age = (int) java.time.temporal.ChronoUnit.YEARS.between(dateOfBirth, now);
+        String stringBirthday = tvDateOfBirth.getText().toString();
         String height = etHeight.getText().toString();
         String weight = etWeight.getText().toString();
         String sex = spinner.getItemAtPosition(choice).toString();
@@ -131,7 +132,7 @@ public class RegisterActivity extends AppCompatActivity {
             etLastName.setError("Field can't be empty!");
             etLastName.requestFocus();
             return;
-        } if (dateOfBirth.toString().isEmpty()) {
+        } if (stringBirthday.isEmpty()) {
             tvDateOfBirth.setError("Field can't be empty!");
             tvDateOfBirth.requestFocus();
             return;
@@ -162,14 +163,30 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.M.yyyy");
+        LocalDate now = LocalDate.now();
+        LocalDate dateOfBirth = LocalDate.parse(stringBirthday, formatter);
+        int age = (int) java.time.temporal.ChronoUnit.YEARS.between(dateOfBirth, now);
+
         String salt = generateSalt();
         String securePassword = getSHA512(password, salt.getBytes());
 
         User registeredUser = new User(firstName, lastName, username, securePassword, salt, sex,
-                dateOfBirth, age, parseFloat(height), parseFloat(weight));
+                dateOfBirth, age, parseFloat(height), parseFloat(weight), 0, 0);
+        registeredUser.setBMI();
+        registeredUser.setIdealCalories();
+        registeredUser.setIdealSleep();
+        registeredUser.setCaloriesGoal();
+        registeredUser.setSleepGoal();
         userLocalStore.storeUserData(registeredUser);
         Intent intent = new Intent(RegisterActivity.this, LogInActivity.class);
         startActivityForResult(intent, 1);
+        System.out.println("IDEAL UNI: "+userLocalStore.getUserInfo(username).idealSleep);
+        System.out.println("GOAL UNI " + userLocalStore.getUserInfo(username).sleepGoal);
+        System.out.println("IDEAL KALORTI: "+userLocalStore.getUserInfo(username).idealCalories);
+        System.out.println("GOAL KALORIT: "+userLocalStore.getUserInfo(username).caloriesGoal);
+        System.out.println("BMI: "+userLocalStore.getUserInfo(username).bmi);
+
     }
 
     // Checks whether the password fills the requirements of a secure password or not.

@@ -2,6 +2,7 @@ package com.example.olio_ht;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -13,10 +14,16 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -28,9 +35,10 @@ public class SleepActivity extends AppCompatActivity {
     TextView sum, readinesstext, advicetext ;
     int h1=0, m1=0, h2=0, m2=0, slepth=0, sleptmin=0, mindifference=0, readiness=0, goal=8;
     double slepttime=0;
-    boolean hasUerCalculatedSleep = false;
     String username, date;
     sleepEntry SE = new sleepEntry(0,0,0,0);
+    User user;
+    SharedPreferences sharedPreferences;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -39,8 +47,17 @@ public class SleepActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sleep);
         setTitle(R.string.app_name);
 
-        returnHome = (Button) findViewById(R.id.returnHome);
+        user = (User) getIntent().getSerializableExtra("user");
+        username = user.username;
 
+        LocalDate dateNow = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        date = dateNow.format(formatter);
+
+        SE.setDate(date);
+        SE.setUsername(username);
+
+        returnHome = (Button) findViewById(R.id.returnHome);
         hour1 = (EditText) findViewById(R.id.editTextHour1) ;
         minute1 = (EditText) findViewById(R.id.editTextMinute1) ;
         hour2 = (EditText) findViewById(R.id.editTextHour2) ;
@@ -51,16 +68,19 @@ public class SleepActivity extends AppCompatActivity {
 
         // jos h1<00.00, h1:n päivä on h2:n päivä -1. Jos h1>00.00, h1:n päivä = h2:n päivä
 
-        username = "user";
-        date = "24.4.2021";
-
-        SE.setDate(date);
-        SE.setUsername(username);
+        loadState();
+        String sumText = SE.getHoursAndMinsText(mindifference) ;
+        sum.setText(sumText);
+        readinesstext.setText("You've reached "+readiness+"% of your goal") ;
+        String advice = SE.getAdvice(readiness) ;
+        advicetext.setText(advice);
 
         returnHome.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                saveState();
+                SE.setSum(slepttime);
                 Intent intent = new Intent();
                 intent.putExtra("sleep entry", SE);
                 setResult(RESULT_OK, intent);
@@ -92,6 +112,8 @@ public class SleepActivity extends AppCompatActivity {
         }
 
         SE = new sleepEntry(h1, h2, m1, m2) ;
+        SE.setDate(date);
+        SE.setUsername(username);
         mindifference = SE.calculateTime();
 
         String sumText = SE.getHoursAndMinsText(mindifference) ;
@@ -107,17 +129,18 @@ public class SleepActivity extends AppCompatActivity {
         SE.setDate(date);
         SE.setUsername(username);
         SE.setSum(slepttime);
-
-        hasUerCalculatedSleep = true;
-
     }
 
     public void resetData(View v) {
-        if (hasUerCalculatedSleep == false) {
-            SE = new sleepEntry(0,0,0,0);
-            hasUerCalculatedSleep = true;
-        }
-        SE.resetTodaysSum();
+        SE.setSum(0);
+        readiness = 0;
+        mindifference = 0;
+        slepttime = 0;
+        String sumText = SE.getHoursAndMinsText(mindifference) ;
+        sum.setText(sumText);
+        readinesstext.setText("You've reached "+readiness+"% of your goal") ;
+        advicetext.setText("");
+        saveState();
     }
 
     public void sleepRecommendation (View v) {
@@ -126,14 +149,32 @@ public class SleepActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        saveState();
+        SE.setSum(slepttime);
         Intent intent = new Intent();
-        if (hasUerCalculatedSleep == true) {
-            intent.putExtra("sleep entry", SE);
-            setResult(RESULT_OK, intent);
-        } else {
-            intent.putExtra("no data", SE);
-            setResult(RESULT_CANCELED, intent);
-        }
+        intent.putExtra("sleep entry", SE);
+        setResult(RESULT_OK, intent);
         finish();
+    }
+
+    public void saveState() {
+        String spName = "shared preferences" + username;
+        sharedPreferences = getSharedPreferences(spName, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("username", username);
+        editor.putFloat("slept time", (float) slepttime);
+        editor.putInt("min dif", mindifference);
+        editor.putInt("readiness", readiness);
+        editor.apply();
+    }
+
+    private void loadState() {
+        String spName = "shared preferences" + username;
+        sharedPreferences = getSharedPreferences(spName, MODE_PRIVATE);
+
+        slepttime = (double) sharedPreferences.getFloat("slept time", 0);
+        mindifference = sharedPreferences.getInt("min dif", 0);
+        readiness = sharedPreferences.getInt("readiness", 0);
+
     }
 }
