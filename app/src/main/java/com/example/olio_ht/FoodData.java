@@ -20,5 +20,4 @@ public class FoodData {
     public String toString() {
         return foodName;
     }
-
 }

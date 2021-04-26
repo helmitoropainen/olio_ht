@@ -3,6 +3,7 @@ package com.example.olio_ht;
 import static java.lang.Math.round;
 
 
+
 public class SportEntry extends CalorieEntry {
 
     String sportType;
@@ -40,5 +41,4 @@ public class SportEntry extends CalorieEntry {
         se.setCalories(countedCalories);
         return countedCalories;
     }
-
 }

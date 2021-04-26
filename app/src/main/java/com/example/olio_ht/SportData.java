@@ -3,6 +3,7 @@ package com.example.olio_ht;
 import static java.lang.Math.round;
 
 
+
 public class SportData {
 
     String sportName;
@@ -18,6 +19,5 @@ public class SportData {
 
     @Override
     public String toString() { return sportName; }
-
 }
 

@@ -4,12 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
@@ -18,6 +21,7 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.Calendar;
 import java.util.Random;
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -133,18 +137,20 @@ public class MainActivity extends AppCompatActivity {
 
     public void launchCalories(View v) {
         Intent intent = new Intent(MainActivity.this, CalorieActivity.class);
+        intent.putExtra("user", user);
         startActivityForResult(intent, 1);
     }
 
     public void launchSleep(View v) {
         Intent intent = new Intent(MainActivity.this, SleepActivity.class);
+        intent.putExtra("user", user);
         startActivityForResult(intent, 2);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        //super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
@@ -184,10 +190,9 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        if (rqst1OK && rqst2OK) {
+        if (rqst1OK == true && rqst2OK == true) {
             entryManager.saveEntries();
         }
     }
-
 
 }

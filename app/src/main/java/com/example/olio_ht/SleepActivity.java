@@ -1,5 +1,6 @@
 package com.example.olio_ht;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -13,8 +14,18 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
+
 
 
 public class SleepActivity extends AppCompatActivity {
@@ -25,10 +36,9 @@ public class SleepActivity extends AppCompatActivity {
     int h1=0, m1=0, h2=0, m2=0, slepth=0, sleptmin=0, mindifference=0, readiness=0, goal=8;
     double slepttime=0;
     String username, date;
-    SleepEntry SE = new SleepEntry(0,0,0,0);
+    sleepEntry SE = new sleepEntry(0,0,0,0);
     User user;
     SharedPreferences sharedPreferences;
-    UserLocalStore userLocalStore;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -37,9 +47,8 @@ public class SleepActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sleep);
         setTitle(R.string.app_name);
 
-        userLocalStore = new UserLocalStore(this);
-        username = userLocalStore.getUserLoggedIn();
-        user = userLocalStore.getUserInfo(username);
+        user = (User) getIntent().getSerializableExtra("user");
+        username = user.username;
 
         LocalDate dateNow = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
@@ -102,7 +111,7 @@ public class SleepActivity extends AppCompatActivity {
             return;
         }
 
-        SE = new SleepEntry(h1, h2, m1, m2) ;
+        SE = new sleepEntry(h1, h2, m1, m2) ;
         SE.setDate(date);
         SE.setUsername(username);
         mindifference = SE.calculateTime();
@@ -168,5 +177,4 @@ public class SleepActivity extends AppCompatActivity {
         readiness = sharedPreferences.getInt("readiness", 0);
 
     }
-
 }
