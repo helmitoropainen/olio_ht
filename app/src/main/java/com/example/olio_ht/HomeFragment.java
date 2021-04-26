@@ -39,7 +39,7 @@ public class HomeFragment extends Fragment {
 
         randomFact();
         sleep.setText("You've slept " + String.format("%.2f", sleepSum) + " hours");
-        calories.setText("Your calories are " + round(calorieSum) + " kcal");
+        calories.setText("The sum of your calories is " + round(calorieSum) + " kcal");
 
         factView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,7 +52,7 @@ public class HomeFragment extends Fragment {
     public void updateCalorieSum( double sum ) {
         calorieSum = sum;
         try {
-            calories.setText("Your calories are " + round(calorieSum) + " kcal");
+            calories.setText("The sum of your calories is " + round(calorieSum) + " kcal");
         } catch (Exception e) {}
     }
 
