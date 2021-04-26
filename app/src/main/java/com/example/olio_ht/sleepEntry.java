@@ -17,7 +17,7 @@ public class sleepEntry extends Entry {
         m2 = min2;
     }
 
-    public int calculateTime() {
+    public int calculateTime() {/*
         if (h1 > 12) {
             m1 = 24 * 60 - 60 * h1 - m1;
             if (h2 > h1) {
@@ -31,6 +31,18 @@ public class sleepEntry extends Entry {
             m1 = 60 * h1 + m1;
             m2 = h2 * 60 + m2;
             mindifference = m2 - m1;
+        }*/
+
+        // Huomioita Marolle calculateTimesta:
+        // ehdot h1 > 12 ja h1 < 12 ei huomioi, jos h1 = 12
+        // En oikein ees älynny mitä varten noi yllä mainitut ehot on tossa.
+        // Ja sori et tein tän nyt kokonaa uusiks, ku en vaa oikee älynny tota.
+
+
+        if (h1 > h2) {
+            mindifference = 24 * 60 - (60 * h1 + m1) + (60 * h2 + m2);
+        } else {
+            mindifference = 60 * h2 + m2 - (60 * h1 + m1);
         }
 
         slepttime = (double) mindifference / 60;
