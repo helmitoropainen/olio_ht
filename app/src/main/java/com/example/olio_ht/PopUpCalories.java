@@ -14,9 +14,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-
-
-
 public class PopUpCalories extends Activity {
 
     Button back;
@@ -27,6 +24,7 @@ public class PopUpCalories extends Activity {
     User user;
     UserLocalStore userLocalStore;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,11 +44,12 @@ public class PopUpCalories extends Activity {
 
         getWindow().setLayout((int)(width*.8),(int)(height*.6));
 
-        user = (User) getIntent().getSerializableExtra("user");
-        username = user.username;
         userLocalStore = new UserLocalStore(this);
+        username = userLocalStore.getUserLoggedIn();
+        user = userLocalStore.getUserInfo(username);
 
         setViewIdeal();
+        viewGoal.setText("Your daily goal is set to " + user.caloriesGoal + " kcal");
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +70,9 @@ public class PopUpCalories extends Activity {
                 viewGoal.setText("Your daily goal is set to " + goal + " kcal");
 
                 userLocalStore.getUserInfo(username);
-                userLocalStore.storeUserData(user);
+                User changedUser = new User(user.firstName, user.lastName, user.username, user.password,
+                        user.salt, user.sex, user.dateOfBirth, user.age, user.height, user.weight, goal, user.sleepGoal);
+                userLocalStore.storeUserData(changedUser);
             }
         }
     }
@@ -88,11 +89,5 @@ public class PopUpCalories extends Activity {
     @Override
     public void onBackPressed() {
         closePopUp();
-    }
-
-    /// MUISTA!!!!
-    @Override
-    public void setFinishOnTouchOutside(boolean finish) {
-        super.setFinishOnTouchOutside(finish);
     }
 }

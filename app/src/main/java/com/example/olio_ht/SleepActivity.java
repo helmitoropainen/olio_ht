@@ -1,6 +1,5 @@
 package com.example.olio_ht;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -14,19 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-
-
 
 public class SleepActivity extends AppCompatActivity {
 
@@ -39,6 +27,7 @@ public class SleepActivity extends AppCompatActivity {
     sleepEntry SE = new sleepEntry(0,0,0,0);
     User user;
     SharedPreferences sharedPreferences;
+    UserLocalStore userLocalStore;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -47,8 +36,9 @@ public class SleepActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sleep);
         setTitle(R.string.app_name);
 
-        user = (User) getIntent().getSerializableExtra("user");
-        username = user.username;
+        userLocalStore = new UserLocalStore(this);
+        username = userLocalStore.getUserLoggedIn();
+        user = userLocalStore.getUserInfo(username);
 
         LocalDate dateNow = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
@@ -144,7 +134,7 @@ public class SleepActivity extends AppCompatActivity {
     }
 
     public void sleepRecommendation (View v) {
-        startActivity(new Intent(SleepActivity.this, PopUpSleep.class));
+        startActivity(new Intent(SleepActivity.this, com.example.olio_ht.PopUpSleep.class));
     }
 
     @Override
