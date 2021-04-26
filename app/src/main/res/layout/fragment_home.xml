@@ -37,7 +37,6 @@
         android:fontFamily="@font/baloo_bhaina"
         android:gravity="center"
         android:lineSpacingMultiplier="0.8"
-        android:onClick="randomFact"
         android:text="Loading your daily fact..."
         android:textColor="@color/white"
         android:textSize="20sp"

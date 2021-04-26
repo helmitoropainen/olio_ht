@@ -23,7 +23,7 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.023" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/headerView2"
@@ -42,7 +42,7 @@
         app:layout_constraintHorizontal_bias="0.172"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.107" />
+        app:layout_constraintVertical_bias="0.14" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/headerView3"
@@ -99,7 +99,7 @@
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.229"
+        app:layout_constraintVertical_bias="0.271"
         tools:ignore="MissingConstraints">
 
         <com.github.mikephil.charting.charts.LineChart

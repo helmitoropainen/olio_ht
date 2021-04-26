@@ -374,6 +374,7 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         } else if (className.equals("foodEntry")) {
             gained_array = array;
         }
+        countSum();
     }
 
     @Override

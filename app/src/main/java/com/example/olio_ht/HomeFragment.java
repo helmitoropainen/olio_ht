@@ -14,14 +14,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 
+import java.util.Random;
+
 import static java.lang.Math.round;
 
 public class HomeFragment extends Fragment {
 
-
     TextView factView, sleep, calories;
     View view;
     double sleepSum = 0, calorieSum = 0;
+    int facts_index;
 
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -35,19 +37,16 @@ public class HomeFragment extends Fragment {
         sleep = (TextView) this.view.findViewById(R.id.goToSleep);
         calories = (TextView) this.view.findViewById(R.id.goToCalories);
 
-        String[] facts = getResources().getStringArray(R.array.facts);
-        String fact = facts[0];
-        factView.setText("Did you know?\n" + fact);
+        randomFact();
         sleep.setText("You've slept " + String.format("%.2f", sleepSum) + " hours");
         calories.setText("Your calories are " + round(calorieSum) + " kcal");
-    }
 
-    public void changeFact() {
-        if (getArguments() != null) {
-            String arg = getArguments().getString("fact");
-            factView = (TextView) this.view.findViewById(R.id.factView);
-            factView.setText(arg);
-        }
+        factView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                randomFact();
+            }
+        });
     }
 
     public void updateCalorieSum( double sum ) {
@@ -63,6 +62,15 @@ public class HomeFragment extends Fragment {
             sleep.setText("You've slept " + String.format("%.2f", sleepSum) + " hours");
         } catch (Exception e) {}
 
+    }
+
+    public void randomFact () {
+        String[] facts = getResources().getStringArray(R.array.facts);
+        int min = 0;
+        int max = facts.length - 1;
+        Random rand = new Random();
+        facts_index = rand.nextInt((max - min) + 1) + min;
+        factView.setText("Did you know?\n" + facts[facts_index]);
     }
 }
 
