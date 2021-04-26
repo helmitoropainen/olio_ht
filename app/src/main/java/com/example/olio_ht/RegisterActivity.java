@@ -107,7 +107,7 @@ public class RegisterActivity extends AppCompatActivity {
         String password = etPassword.getText().toString();
         String confirmPassword = etConfirmPassword.getText().toString();
         String username = etUsername.getText().toString();
-        String firstName = etUsername.getText().toString();
+        String firstName = etFirstName.getText().toString();
         String lastName = etLastName.getText().toString();
         String stringBirthday = tvDateOfBirth.getText().toString();
         String height = etHeight.getText().toString();
@@ -262,5 +262,4 @@ public class RegisterActivity extends AppCompatActivity {
         Intent intent = new Intent(RegisterActivity.this, LogInActivity.class);
         startActivityForResult(intent, 1);
     }
-
 }

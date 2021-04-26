@@ -1,8 +1,9 @@
 package com.example.olio_ht;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public class User {
+public class User implements Serializable {
     String firstName, lastName, username, password, sex;
     String salt;
     LocalDate dateOfBirth;
@@ -10,6 +11,7 @@ public class User {
     long sleepGoal, caloriesGoal;
     int age;
     float height, weight, bmi;
+
     public User (String firstName, String lastName, String username, String password, String salt,
                  String sex, LocalDate dateOfBirth, int age, float height, float weight,
                  long caloriesGoal, long sleepGoal) {
@@ -28,7 +30,8 @@ public class User {
     }
 
     public void setBMI() {
-        float bmi = weight/((height/100)*(height/100));
+        bmi = weight/((height/100)*(height/100));
+        System.out.println("LASKETTU BMI: "+bmi);
     }
 
     public void setIdealCalories() {
@@ -40,6 +43,7 @@ public class User {
             idealCalories = (2500+2000)/2;
         }
     }
+
     public void setIdealSleep() {
         if (age < 1) {
             idealSleep = (17+14)/2;
@@ -56,11 +60,13 @@ public class User {
         } else if (age >= 18) {
             idealSleep = (7+9)/2;
         }
+        System.out.println("LASKETTU UNI: "+idealSleep);
     }
 
     public void setCaloriesGoal() {
         caloriesGoal = idealCalories;
     }
+
     public void setSleepGoal() {
         sleepGoal = idealSleep;
     }
