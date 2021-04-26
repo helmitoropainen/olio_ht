@@ -37,27 +37,35 @@ public class AnalyticsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_analytics, container, false);
-        System.out.print("########################    :))    ############################") ;
+        System.out.println("########################    :))    ############################") ;
         return view;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        System.out.print("########################    :)))))))))))    ############################") ;
+        System.out.println("########################    :)))))))))))    ############################") ;
         caloriesChart = (LineChart) this.view.findViewById(R.id.lineChartCalorieChart);
         sleepChart = (LineChart) this.view.findViewById(R.id.lineChartSleepChart);
 
-        System.out.print("########################    1    ############################") ;
+        System.out.println("########################    1    ############################") ;
         Analyses analyse = new Analyses(getActivity().getBaseContext());
         analyse.readCSV();
 
-        System.out.print("#######################     2     ############################") ;
+        System.out.println("#######################     2     ############################") ;
 
         ArrayList<Entry> calgained = analyse.getCalorieIntake() ;
+        System.out.println("#######################     2.1     ############################") ;
+
         ArrayList<Entry> calburned = analyse.getCalorieLoss() ;
+        System.out.println("#######################     2.2     ############################") ;
+
         ArrayList<Entry> sleep = analyse.getSleptHours() ;
+        System.out.println("#######################     2.3     ############################") ;
+
 
         ArrayList<String> xAXES = new ArrayList<>() ;
+        System.out.println("#######################     2.4     ############################") ;
+
 
         System.out.print("#######################     3     ############################") ;
         double x = 0;

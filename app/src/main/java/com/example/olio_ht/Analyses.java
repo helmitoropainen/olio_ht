@@ -52,12 +52,12 @@ public class Analyses {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void readCSV() {
-        System.out.print("########################    1.1    ############################") ;
+        System.out.println("########################    1.1    ############################") ;
         try {
             String line = "" ;
-            System.out.print("########################    1.2    ############################") ;
+            System.out.println("########################    1.2    ############################") ;
             retrieveUserAndGoals();
-            System.out.print("########################    1.3    ############################") ;
+            System.out.println("########################    1.3    ############################") ;
             InputStream ins = context.openFileInput(filename); // täl ei tuu file not found erroria
             BufferedReader br = new BufferedReader(new InputStreamReader(ins));
 
@@ -90,10 +90,14 @@ public class Analyses {
     }
 
     public ArrayList<Entry> getCalorieIntake() {
+        System.out.println("#######################     getgained     ############################") ;
+
         return gainedCal;
     }
 
     public ArrayList<Entry> getCalorieLoss() {
+        System.out.println("#######################     getlost     ############################") ;
+
         return lostCal;
     }
 
