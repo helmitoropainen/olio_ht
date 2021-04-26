@@ -70,7 +70,7 @@ public class User implements Serializable {
     }
 
     public void setSleepGoal() {
-        sleepGoal = idealSleep;
+        sleepGoal = idealSleep*60; // changing hours to minutes.
     }
 
 }
