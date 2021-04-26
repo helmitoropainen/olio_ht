@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -41,6 +43,7 @@ import java.util.ArrayList;
 import static java.lang.Math.round;
 
 public class CalorieActivity extends AppCompatActivity implements RecyclerViewAdapter.OnTextClickListener {
+
 
     Button returnHome;
     ArrayList<SportData> sports_array = new ArrayList<SportData>();

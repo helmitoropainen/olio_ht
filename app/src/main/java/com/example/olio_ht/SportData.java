@@ -1,10 +1,7 @@
 package com.example.olio_ht;
 
-import static java.lang.Math.round;
-
-
-
 public class SportData {
+
 
     String sportName;
     double calories;

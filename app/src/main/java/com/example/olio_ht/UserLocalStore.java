@@ -11,6 +11,7 @@ import java.time.LocalDate;
 
 
 public class UserLocalStore {
+
     public static final String SP_NAME = "userInformation";
     SharedPreferences userLocalDatabase;
     String firstName;

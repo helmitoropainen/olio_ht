@@ -1,12 +1,11 @@
 package com.example.olio_ht;
 
-import android.widget.Toast;
-
-
 
 public class sleepEntry extends Entry {
 
-    int h1 = 0, m1 = 0, h2 = 0, m2 = 0, slepth = 0, sleptmin = 0, mindifference = 0, readiness = 0, goal = 8;
+
+    int h1 = 0, m1 = 0, h2 = 0, m2 = 0, slepth = 0, sleptmin = 0, mindifference = 0, readiness = 0;
+    long goal;
     double slepttime = 0;
     String resultText, adviceText;
 
@@ -66,9 +65,13 @@ public class sleepEntry extends Entry {
     }
 
     public int getReadiness () {
-        readiness = (int) ((slepttime / goal) * 100);
+        float goalh = (float) goal/60;
+        readiness = (int) ((slepttime / goalh) * 100);
+        System.out.println("Sleep entrystä: " + goal + " " + goalh + " " + readiness);
         return readiness;
     }
+
+    public void setGoal( long g ) { goal = g; }
     
     public String getAdvice ( int readiness){
         if (readiness < 30) {

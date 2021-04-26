@@ -2,10 +2,7 @@ package com.example.olio_ht;
 
 import android.content.Context;
 import android.os.Build;
-import android.widget.Toast;
-
 import androidx.annotation.RequiresApi;
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -19,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EntryManager {
+
 
     private static EntryManager entryManager = new EntryManager();
     UserEntryLog userEntryLog;

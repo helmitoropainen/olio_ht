@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,6 +18,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class SleepActivity extends AppCompatActivity {
+
 
     Button returnHome;
     EditText hour1, minute1, hour2, minute2;
@@ -46,6 +48,7 @@ public class SleepActivity extends AppCompatActivity {
 
         SE.setDate(date);
         SE.setUsername(username);
+        SE.setGoal(user.sleepGoal);
 
         returnHome = (Button) findViewById(R.id.returnHome);
         hour1 = (EditText) findViewById(R.id.editTextHour1) ;
@@ -107,6 +110,7 @@ public class SleepActivity extends AppCompatActivity {
         SE = new sleepEntry(h1, h2, m1, m2) ;
         SE.setDate(date);
         SE.setUsername(username);
+        SE.setGoal(user.sleepGoal);
         mindifference = SE.calculateTime();
 
         String sumText = SE.getHoursAndMinsText(mindifference) ;
@@ -137,7 +141,7 @@ public class SleepActivity extends AppCompatActivity {
     }
 
     public void sleepRecommendation (View v) {
-        startActivity(new Intent(SleepActivity.this, com.example.olio_ht.PopUpSleep.class));
+        startActivityForResult(new Intent(SleepActivity.this, com.example.olio_ht.PopUpSleep.class), 1);
     }
 
     @Override
@@ -169,5 +173,17 @@ public class SleepActivity extends AppCompatActivity {
         mindifference = sharedPreferences.getInt("min dif", 0);
         readiness = sharedPreferences.getInt("readiness", 0);
 
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                user = userLocalStore.getUserInfo(username);
+                goalh = (double) user.sleepGoal/60;
+                goalView.setText(String.format("Your nightly sleep goal: %.2f hours", goalh));
+            }
+        }
     }
 }
