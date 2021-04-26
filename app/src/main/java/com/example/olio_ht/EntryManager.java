@@ -71,13 +71,11 @@ public class EntryManager {
                                 }
                             }
                             Files.write(Paths.get(filepath), fileContent, StandardCharsets.UTF_8);
-                            Toast.makeText(context, "replaced line", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     if (replace == null) {
                         userEntryLog.appendToCSV(filename, username, date, sleep, caloriesEaten, caloriesBurned);
-                        Toast.makeText(context, "appended to csv", Toast.LENGTH_SHORT).show();
                     }
 
                 }  catch (FileNotFoundException e) {
