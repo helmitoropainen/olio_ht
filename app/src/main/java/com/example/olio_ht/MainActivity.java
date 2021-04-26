@@ -75,13 +75,13 @@ public class MainActivity extends AppCompatActivity {
 
                     switch (item.getItemId()) {
                         case R.id.nav_home:
-                            selectedFragment = home;
+                            selectedFragment = new HomeFragment();
                             break;
                         case R.id.nav_analytics :
-                            selectedFragment = analytics;
+                            selectedFragment = new AnalyticsFragment();
                             break;
                         case R.id.nav_settings:
-                            selectedFragment = settings;
+                            selectedFragment = new SettingsFragment();
                             break;
                     }
 
