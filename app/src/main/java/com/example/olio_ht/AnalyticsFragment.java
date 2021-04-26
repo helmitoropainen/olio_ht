@@ -27,6 +27,7 @@ import java.util.Date;
 
 public class AnalyticsFragment extends Fragment {
 
+
     LineChart caloriesChart, sleepChart;
     View view;
     private static final String TAG = "AnalyticsFragment" ;
@@ -65,17 +66,24 @@ public class AnalyticsFragment extends Fragment {
         SimpleDateFormat sdf = new SimpleDateFormat("dd.M.") ;
         String date = sdf.format(new Date()) ;
         Calendar c = Calendar.getInstance() ;
+        try {
+            c.setTime(sdf.parse(date)) ;
+            c.add(Calendar.DAY_OF_MONTH, -5) ;
+            date = sdf.format(c.getTime()) ;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
 
         for (int i=0; i<5;i++) {
             xaxes[i] = date ;
-
 
             try {
                 c.setTime(sdf.parse(date)) ;
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            c.add(Calendar.DAY_OF_MONTH, -1) ;
+            c.add(Calendar.DAY_OF_MONTH, 1) ;
             date = sdf.format(c.getTime()) ;
         }
 
@@ -92,6 +100,9 @@ public class AnalyticsFragment extends Fragment {
         ldsCalorie.add(LineDataSetGained) ;
         ldsCalorie.add(LineDataSetBurnt) ;
 
+        System.out.println("#####################################") ;
+        System.out.println(ldsCalorie) ;
+        System.out.println(xaxes) ;
         caloriesChart.setData(new LineData(xaxes, ldsCalorie)) ;
 
         // Create a new chart and add to it datapoints based on hours slept

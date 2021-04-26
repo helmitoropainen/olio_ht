@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Analyses {
 
+
     double sleepGoal ;
     long calorieGoal ;
     String date, username;
@@ -75,25 +76,36 @@ public class Analyses {
             Date today = Calendar.getInstance().getTime() ;
             Date checkedDate ;
 
-            // long days = ChronoUnit.DAYS.between(pastDate, now);
-            Calendar c = Calendar.getInstance() ;
-
             int diff, check = 0, j=0 ;
-            String dateForParse ;
 
             while ((line = br.readLine()) != null && check == 0) {
                 String[] data = line.split(";");
 
-                if (data[0].equals(username) == true /*&& data[1].equals((String) date)*/) {// == true) { täs ehdos jotain mätää XD
-                    System.out.println("match!");
-                    sleep.add(new Entry(Float.parseFloat(data[2]), i)) ;
-                    gainedCal.add(new Entry(Float.parseFloat(data[3]), i)) ;
-                    lostCal.add(new Entry(Float.parseFloat(data[4]), i)) ;
+                if (data[0].equals(username) == true) {// == true) { täs ehdos jotain mätää XD
+                    checkedDate = sdf.parse(data[1]) ;
+                    long diffInMillies = checkedDate.getTime() - today.getTime() ;
 
-                    c.setTime(sdf.parse(date)) ;
-                    c.add(Calendar.DAY_OF_MONTH, -1) ;
-                    date = sdf.format(c.getTime()) ;
-                    i++ ;
+                    diff = (int) TimeUnit.HOURS.convert(diffInMillies,TimeUnit.MILLISECONDS) ;
+
+                    i=0 ;
+                    j = 0;
+                    while(j==0) {
+                        if ((diff/24) < i) {
+                            diff = i ;
+                            j++ ;
+                        }
+                        i++ ;
+                    }
+
+                    if (diff > 4) {
+                        check++ ;
+                    } else {
+                        if (diff > 0) {
+                        sleep.set(diff, new Entry(Float.parseFloat(data[2]), i)) ;
+                        gainedCal.set(diff, new Entry(Float.parseFloat(data[3]), i)) ;
+                        lostCal.set(diff, new Entry(Float.parseFloat(data[4]), i)) ;
+                        }
+                    }
                 }
             }
         } catch (FileNotFoundException e) {
