@@ -3,6 +3,7 @@ package com.example.olio_ht;
 import android.widget.Toast;
 
 
+
 public class sleepEntry extends Entry {
 
     int h1 = 0, m1 = 0, h2 = 0, m2 = 0, slepth = 0, sleptmin = 0, mindifference = 0, readiness = 0, goal = 8;
@@ -56,7 +57,7 @@ public class sleepEntry extends Entry {
         readiness = (int) ((slepttime / goal) * 100);
         return readiness;
     }
-    
+
     public String getAdvice ( int readiness){
         if (readiness < 30) {
             adviceText = "Take it easy on yourself today and try to sleep early!";
@@ -73,9 +74,9 @@ public class sleepEntry extends Entry {
         } else {
             adviceText = "Remember that too much sleep can increase your tiredness.";
         }
-      return adviceText;
+        return adviceText;
     }
 
-        public double getSleptTime() { return slepttime; }
-  
+    public double getSleptTime() { return slepttime; }
+
 }

@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import static java.lang.Math.round;
 
 
+
 public class HomeFragment extends Fragment {
 
     TextView factView, sleep, calories;
@@ -60,4 +61,3 @@ public class HomeFragment extends Fragment {
         sleep.setText("You've slept " + String.format("%.2f", sleepSum) + " hours");
     }
 }
-

@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import static android.widget.Toast.makeText;
 
 
+
+
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     private ArrayList<CalorieEntry> items = new ArrayList<CalorieEntry>();
@@ -87,4 +89,3 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         void getClass(String cN);
     }
 }
-
