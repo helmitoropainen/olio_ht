@@ -27,7 +27,6 @@ import java.util.Date;
 
 public class AnalyticsFragment extends Fragment {
 
-
     LineChart caloriesChart, sleepChart;
     View view;
     private static final String TAG = "AnalyticsFragment" ;
