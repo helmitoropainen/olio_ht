@@ -1,7 +1,6 @@
 package com.example.olio_ht;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -82,12 +81,9 @@ public class PopUpCalories extends Activity {
         viewIdeal.setText("Your recommended daily calorie intake is " + ideal + " kcal");
     }
 
-    public void closePopUp() {
-        finish();
-    }
+    public void closePopUp() { finish(); }
 
     @Override
-    public void onBackPressed() {
-        closePopUp();
-    }
+    public void onBackPressed() { closePopUp(); }
+
 }

@@ -37,14 +37,11 @@ public class UserEntryLog {
                 String s = "username;date;sleep;caloriesEaten;caloriesBurned\n";
                 osw.write(s);
                 osw.close();
-                Toast.makeText(context, "file created", Toast.LENGTH_SHORT).show();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else {
-            Toast.makeText(context, "file already exists", Toast.LENGTH_SHORT).show();
         }
 
 

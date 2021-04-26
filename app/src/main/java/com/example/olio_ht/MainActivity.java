@@ -4,19 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.Toast;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.Calendar;
 import java.util.Random;
@@ -39,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     User user;
     Entry sportEntry, foodEntry, sleepEntry;
     DatePickerDialog datePickerDialog;
+    SharedPreferences sharedPreferences;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -64,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
         user = userLocalStore.getUserInfo(username);
 
         updateDate();
+        loadState();
+        home.updateCalorieSum(calorieSum);
+        home.updateSleepSum(sleepSum);
 
     }
 
@@ -87,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             selectedFragment).commit();
+                    saveState();
                     return true;
                 }
             };
@@ -165,7 +167,6 @@ public class MainActivity extends AppCompatActivity {
                         home.updateCalorieSum(calorieSum);
                     }
                     rqst1OK = true;
-                    Toast.makeText(this,"Adding data was successful.", Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
                     rqst1OK = false;
                     Toast.makeText(this,"Adding data wasn't successful. Please re-try", Toast.LENGTH_LONG).show();
@@ -183,7 +184,6 @@ public class MainActivity extends AppCompatActivity {
                     home.updateSleepSum(sleepSum);
                 }
                 rqst2OK = true;
-                Toast.makeText(this,"Adding data was successful.", Toast.LENGTH_LONG).show();
             } else {
                 rqst2OK = false;
                 Toast.makeText(this,"Adding data wasn't successful. Please re-try", Toast.LENGTH_LONG).show();
@@ -195,4 +195,26 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void saveState() {
+        String spName = "shared preferences" + username;
+        sharedPreferences = getSharedPreferences(spName, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("username", username);
+        editor.putString("sleep sum", String.valueOf(sleepSum));
+        editor.putString("calorie sum", String.valueOf(calorieSum));
+        editor.apply();
+    }
+
+    private void loadState() {
+        String spName = "shared preferences" + username;
+        sharedPreferences = getSharedPreferences(spName, MODE_PRIVATE);
+
+        sleepSum = Double.parseDouble(sharedPreferences.getString("sleep sum", "0"));
+        calorieSum = Double.parseDouble(sharedPreferences.getString("calorie sum", "0"));
+
+    }
+
+    @Override
+    public void onBackPressed() {
+    }
 }

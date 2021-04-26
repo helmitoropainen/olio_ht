@@ -51,12 +51,17 @@ public class HomeFragment extends Fragment {
 
     public void updateCalorieSum( double sum ) {
         calorieSum = sum;
-        calories.setText("Your calories are " + round(calorieSum) + " kcal");
+        try {
+            calories.setText("Your calories are " + round(calorieSum) + " kcal");
+        } catch (Exception e) {}
     }
 
     public void updateSleepSum( double sum ) {
         sleepSum = sum;
-        sleep.setText("You've slept " + String.format("%.2f", sleepSum) + " hours");
+        try {
+            sleep.setText("You've slept " + String.format("%.2f", sleepSum) + " hours");
+        } catch (Exception e) {}
+
     }
 }
 

@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,7 +25,7 @@ public class SleepActivity extends AppCompatActivity {
     int h1=0, m1=0, h2=0, m2=0, slepth=0, sleptmin=0, mindifference=0, readiness=0, goal=8;
     double slepttime=0, goalh = 0;
     String username, date;
-    sleepEntry SE = new sleepEntry(0,0,0,0);
+    SleepEntry SE = new SleepEntry(0,0,0,0);
     User user;
     SharedPreferences sharedPreferences;
     UserLocalStore userLocalStore;
@@ -46,6 +47,7 @@ public class SleepActivity extends AppCompatActivity {
 
         SE.setDate(date);
         SE.setUsername(username);
+        SE.setGoal(user.sleepGoal);
 
         returnHome = (Button) findViewById(R.id.returnHome);
         hour1 = (EditText) findViewById(R.id.editTextHour1) ;
@@ -104,9 +106,10 @@ public class SleepActivity extends AppCompatActivity {
             return;
         }
 
-        SE = new sleepEntry(h1, h2, m1, m2) ;
+        SE = new SleepEntry(h1, h2, m1, m2) ;
         SE.setDate(date);
         SE.setUsername(username);
+        SE.setGoal(user.sleepGoal);
         mindifference = SE.calculateTime();
 
         String sumText = SE.getHoursAndMinsText(mindifference) ;
@@ -137,7 +140,7 @@ public class SleepActivity extends AppCompatActivity {
     }
 
     public void sleepRecommendation (View v) {
-        startActivity(new Intent(SleepActivity.this, com.example.olio_ht.PopUpSleep.class));
+        startActivityForResult(new Intent(SleepActivity.this, com.example.olio_ht.PopUpSleep.class), 1);
     }
 
     @Override
@@ -169,5 +172,17 @@ public class SleepActivity extends AppCompatActivity {
         mindifference = sharedPreferences.getInt("min dif", 0);
         readiness = sharedPreferences.getInt("readiness", 0);
 
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                user = userLocalStore.getUserInfo(username);
+                goalh = (double) user.sleepGoal/60;
+                goalView.setText(String.format("Your nightly sleep goal: %.2f hours", goalh));
+            }
+        }
     }
 }

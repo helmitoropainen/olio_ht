@@ -1,6 +1,7 @@
 package com.example.olio_ht;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -18,9 +19,11 @@ public class PopUpSleep extends Activity {
     Button back;
     EditText goalInputH, goalInputMin;
     TextView viewGoal, viewIdeal;
+    Intent intent = new Intent();
     long goalh = 0, goalmin = 0;
     long goal, ideal;
     String username;
+    boolean hasUserChangedGoal = false;
     User user;
     UserLocalStore userLocalStore;
 
@@ -91,6 +94,8 @@ public class PopUpSleep extends Activity {
                 User changedUser = new User(user.firstName, user.lastName, user.username, user.password,
                         user.salt, user.sex, user.dateOfBirth, user.age, user.height, user.weight, user.caloriesGoal, goal);
                 userLocalStore.storeUserData(changedUser);
+
+                hasUserChangedGoal = true;
             }
         }
     }
@@ -101,6 +106,11 @@ public class PopUpSleep extends Activity {
     }
 
     public void closePopUp() {
+        if (hasUserChangedGoal) {
+            setResult(RESULT_OK, intent);
+        } else {
+            setResult(RESULT_CANCELED, intent);
+        }
         finish();
     }
 
