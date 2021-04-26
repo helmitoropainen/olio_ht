@@ -53,8 +53,8 @@ public class Analyses {
         try {
             String line = "" ;
 
-            InputStream ins = new FileInputStream(filename); // maro
-            BufferedReader br = new BufferedReader(new InputStreamReader(ins)); // maro
+            InputStream ins = context.openFileInput(filename); // täl ei tuu file not found erroria
+            BufferedReader br = new BufferedReader(new InputStreamReader(ins));
 
             SimpleDateFormat sdf = new SimpleDateFormat("dd.M.yyyy") ;
             date = sdf.format(new Date()) ;
