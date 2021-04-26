@@ -68,7 +68,7 @@ public class AnalyticsFragment extends Fragment {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            c.add(Calendar.DAY_OF_MONTH, 1) ;
+            c.add(Calendar.DAY_OF_MONTH, -1) ;
             date = sdf.format(c.getTime()) ;
         }
 
