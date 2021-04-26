@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="#FFE57F">
 
+
     <TextView
         android:id="@+id/sumView"
         android:layout_width="wrap_content"

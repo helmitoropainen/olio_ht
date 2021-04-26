@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class EntryManager {
 
     private static EntryManager entryManager = new EntryManager();

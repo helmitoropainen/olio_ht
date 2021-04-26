@@ -22,6 +22,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.Calendar;
 import java.util.Random;
 
+
 public class MainActivity extends AppCompatActivity {
 
     int facts_index;
