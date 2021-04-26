@@ -39,5 +39,4 @@ public class SportEntry extends CalorieEntry {
         se.setCalories(countedCalories);
         return countedCalories;
     }
-
 }

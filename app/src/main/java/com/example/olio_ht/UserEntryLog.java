@@ -91,5 +91,4 @@ public class UserEntryLog {
             e.printStackTrace();
         }
     }
-
 }

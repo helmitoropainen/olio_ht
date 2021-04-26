@@ -64,9 +64,9 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
     SportEntry SE;
     FoodData FD;
     SportData SD;
+    Context context;
     SharedPreferences sharedPreferences;
     User user;
-    UserLocalStore userLocalStore;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -75,11 +75,11 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         setContentView(R.layout.activity_calories);
         setTitle(R.string.app_name);
 
-        userLocalStore = new UserLocalStore(this);
-        username = userLocalStore.getUserLoggedIn();
-        user = userLocalStore.getUserInfo(username);
-
+        user = (User) getIntent().getSerializableExtra("user");
         weight = user.weight;
+        username = user.username;
+
+        context = CalorieActivity.this;
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -142,7 +142,7 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
                 sportType = sports_array.get(position).getSportName();
                 SD = sports_array.get(position);
                 SE.setSportType(sportType);
-                if (!sportType.equals("Own workout")) {
+                if (sportType.equals("Own workout") == false) {
                     caloriesSpentInput.setEnabled(false);
                     durationSeekBar.setEnabled(true);
                     duration = (int) durationSeekBar.getProgress() * 10;
@@ -181,7 +181,7 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
                 foodType = food_array.get(position).getFoodName();
                 FD = food_array.get(position);
                 FE.setFoodType(foodType);
-                if (!foodType.equals("Own portion")) {
+                if (foodType.equals("Own portion") == false) {
                     calorieIntakeInput.setEnabled(false);
                     massSeekBar.setEnabled(true);
                     mass = (int) massSeekBar.getProgress() * 10;
@@ -286,6 +286,7 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
             public void afterTextChanged(Editable s) {
             }
         });
+
     }
 
     @Override
@@ -362,14 +363,16 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
     }
 
     public void calorieRecommendation (View v) {
-        startActivity(new Intent(CalorieActivity.this, PopUpCalories.class));
+        Intent intent = new Intent(CalorieActivity.this, PopUpCalories.class);
+        intent.putExtra("user", user);
+        startActivity(intent);
     }
 
     @Override
     public void onTextClick(ArrayList<CalorieEntry> array) {
-        if (className.equals("sportEntry")) {
+        if (className.equals("sportEntry") == true) {
             spent_array = array;
-        } else if (className.equals("foodEntry")) {
+        } else if (className.equals("foodEntry") == true) {
             gained_array = array;
         }
     }
@@ -450,7 +453,7 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
                 SD.setSportName(sportName);
 
                 int l = (int) sports_array.size() - 1;
-                    if (!sports_array.get(l).getSportName().equals(sportName)) {
+                    if (sports_array.get(l).getSportName().equals(sportName) == false) {
                         sports_array.add(SD);
                     }
                 }
@@ -497,5 +500,4 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
             gained_array = new ArrayList<CalorieEntry>();
         }
     }
-
 }

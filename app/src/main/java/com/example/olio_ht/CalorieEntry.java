@@ -15,5 +15,4 @@ public class CalorieEntry extends Entry {
 
     public void setCalories(double c) { calories = c; }
 
-
 }

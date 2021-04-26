@@ -94,5 +94,4 @@ public class PasswordFragment extends Fragment {
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
     }
-
 }

@@ -39,5 +39,4 @@ public class FoodEntry extends CalorieEntry {
         fe.setCalories(calories);
         return calories;
     }
-
 }
