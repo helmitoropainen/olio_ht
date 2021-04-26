@@ -3,6 +3,7 @@ package com.example.olio_ht;
 import android.widget.Toast;
 
 
+
 public class sleepEntry extends Entry {
 
     int h1 = 0, m1 = 0, h2 = 0, m2 = 0, slepth = 0, sleptmin = 0, mindifference = 0, readiness = 0, goal = 8;

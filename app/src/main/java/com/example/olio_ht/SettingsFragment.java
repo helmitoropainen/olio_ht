@@ -29,6 +29,8 @@ import static java.lang.Float.parseFloat;
 import static java.lang.Float.valueOf;
 
 
+
+
 public class SettingsFragment extends Fragment {
 
     TextView dateView;

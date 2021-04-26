@@ -13,6 +13,7 @@ import java.io.OutputStreamWriter;
 import java.time.LocalDate;
 
 
+
 public class UserEntryLog {
     Context context;
     UserLocalStore uls;
