@@ -25,12 +25,12 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.815" />
+        app:layout_constraintVertical_bias="0.864" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/factView"
         android:layout_width="342dp"
-        android:layout_height="185dp"
+        android:layout_height="200dp"
         android:background="@drawable/roundstyle"
         android:backgroundTint="#FFE57F"
         android:clickable="true"
@@ -45,7 +45,7 @@
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.147" />
+        app:layout_constraintVertical_bias="0.16" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/todayView"
@@ -58,18 +58,18 @@
         android:shadowRadius="0.01"
         android:text="Today:"
         android:textColor="#448AFF"
-        android:textSize="25sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintHorizontal_bias="0.047"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.417" />
+        app:layout_constraintVertical_bias="0.502" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/goToSleep"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="233dp"
+        android:layout_height="47dp"
         android:clickable="true"
         android:fontFamily="@font/baloo_bhaina"
         android:onClick="launchSleep"
@@ -79,13 +79,13 @@
         android:shadowRadius="0.01"
         android:text="You've slept 0 hours"
         android:textColor="#448AFF"
-        android:textSize="25sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintHorizontal_bias="0.91"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.417" />
+        app:layout_constraintVertical_bias="0.507" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/goToCalories"
@@ -100,13 +100,13 @@
         android:shadowRadius="0.01"
         android:text="The sum of your calories is 0 kcal"
         android:textColor="#448AFF"
-        android:textSize="25sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintHorizontal_bias="0.542"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.526" />
+        app:layout_constraintVertical_bias="0.598" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/welcomeView"

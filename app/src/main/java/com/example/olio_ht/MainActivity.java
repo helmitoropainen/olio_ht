@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     UserLocalStore userLocalStore;
     EntryManager entryManager;
     User user;
-    Entry sportEntry, foodEntry, sleepEntry;
+    UserEntry sportEntry, foodEntry, sleepEntry;
     DatePickerDialog datePickerDialog;
     SharedPreferences sharedPreferences;
 
@@ -148,8 +148,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
-                sportEntry = (Entry) data.getSerializableExtra("sport entry");
-                foodEntry = (Entry) data.getSerializableExtra("food entry");
+                sportEntry = (UserEntry) data.getSerializableExtra("sport entry");
+                foodEntry = (UserEntry) data.getSerializableExtra("food entry");
                 try {
                     calorieSum = (double) foodEntry.getSum() - sportEntry.getSum();
                     entryManager.setSportEntries(sportEntry);
@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == 2) {
             if (resultCode == RESULT_OK) {
-                sleepEntry = (Entry) data.getSerializableExtra("sleep entry");
+                sleepEntry = (UserEntry) data.getSerializableExtra("sleep entry");
                 sleepSum = sleepEntry.getSum();
                 entryManager.setSleepEntries(sleepEntry);
                 if (home != null) {

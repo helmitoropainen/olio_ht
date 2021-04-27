@@ -16,7 +16,6 @@
 
     <style name="Theme.Olio_HT.Pop">
         <item name="android:windowIsTranslucent">true</item>
-        <item name ="android:windowCloseOnTouchOutside">true</item>
     </style>
 
 </resources>
