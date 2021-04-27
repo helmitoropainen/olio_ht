@@ -5,6 +5,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 
 
@@ -15,6 +16,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,18 +28,19 @@ import java.util.concurrent.TimeUnit;
 
 public class Analyses {
 
-
     double sleepGoal ;
     long calorieGoal ;
-    String date, username;
+    String username ; //date,
     User user ;
     String filename = "userData.csv" ;
     Context context = null ;
     UserLocalStore uls ;
+    LocalDate today ;
 
     ArrayList<Entry> gainedCal = new ArrayList<>();
     ArrayList<Entry> lostCal = new ArrayList<>();
-    ArrayList<Entry> sleep = new ArrayList<>();
+    ArrayList<Entry> calDiff = new ArrayList<>() ;
+    ArrayList<BarEntry> sleep = new ArrayList<>();
 
     public Analyses(Context c) {
         context = c ;
@@ -61,56 +67,49 @@ public class Analyses {
             InputStream ins = context.openFileInput(filename);
             BufferedReader br = new BufferedReader(new InputStreamReader(ins));
 
-            int i = 0 ;
-            for (i=0;i<5;i++) {
-                sleep.add(new Entry(Float.parseFloat("0"), i));
+            for (int i=0;i<5;i++) {
+                sleep.add(new BarEntry(Float.parseFloat("0"), i));
                 gainedCal.add(new Entry(Float.parseFloat("0"), i));
+                calDiff.add(new Entry(Float.parseFloat("0"), i)) ;
                 lostCal.add(new Entry(Float.parseFloat("0"), i));
             }
 
-            SimpleDateFormat sdf = new SimpleDateFormat("dd.M.yyyy") ;
-            date = sdf.format(new Date()) ;
+            //SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy") ;
+            //date = sdf.format(new Date()) ;
 
-            Date today = Calendar.getInstance().getTime() ;
-            Date checkedDate ;
+            //long today = Calendar.getInstance().getTime().getTime() ;
+            LocalDate checkedDate ;
 
-            int diff, check = 0, j=0 ;
+            LocalDate today = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+            //today = dateNow.format(formatter);
 
-            while ((line = br.readLine()) != null && check == 0) {
+            int diff, check = 0 ;
+
+            while ((line = br.readLine()) != null) {
                 String[] data = line.split(";");
 
-                if (data[0].equals(username) == true) {// == true) { täs ehdos jotain mätää XD
-                    checkedDate = sdf.parse(data[1]) ;
-                    long diffInMillies = checkedDate.getTime() - today.getTime() ;
+                if (data[0].equals(username) == true) {
+                    checkedDate = LocalDate.parse(data[1], formatter) ;
 
-                    diff = (int) TimeUnit.HOURS.convert(diffInMillies,TimeUnit.MILLISECONDS) ;
+                    System.out.println("#################### Checked date " + checkedDate) ;
+                    System.out.println("#################### Today " + today) ;
 
-                    i=0 ;
-                    j = 0;
-                    while(j==0) {
-                        if ((diff/24) < i) {
-                            diff = i ;
-                            j++ ;
-                        }
-                        i++ ;
+                    //diff = (int) Math.abs(java.time.temporal.ChronoUnit.DAYS.between(checkedDate, today));
+                    diff = (int) Period.between(checkedDate, today).getDays();
+                    System.out.println("PÄIVIEN EROTUS       " + diff);
+
+                    if (diff < 5) {
+                        sleep.set(4-diff, new BarEntry(Float.parseFloat(data[2]), 4-diff)) ;
+                        gainedCal.set(4-diff, new Entry(Float.parseFloat(data[3]), 4-diff)) ;
+                        lostCal.set(4-diff, new Entry((0-Float.parseFloat(data[4])), 4-diff)) ;
+                        calDiff.set(4-diff, new Entry((Float.parseFloat(data[3]) - Float.parseFloat(data[4])), 4-diff)) ;
                     }
-
-                    if (diff > 4) {
-                        check++ ;
-                    } else {
-                        if (diff > 0) {
-                        sleep.set(diff, new Entry(Float.parseFloat(data[2]), i)) ;
-                        gainedCal.set(diff, new Entry(Float.parseFloat(data[3]), i)) ;
-                        lostCal.set(diff, new Entry(Float.parseFloat(data[4]), i)) ;
-                        }
                     }
-                }
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
             e.printStackTrace();
         }
         System.out.println(sleep) ;
@@ -126,7 +125,9 @@ public class Analyses {
         return lostCal;
     }
 
-    public ArrayList<Entry> getSleptHours() {
+    public ArrayList<Entry> getCaloriesDifference() { return calDiff; }
+
+    public ArrayList<BarEntry> getSleptHours() {
         return sleep ;
     }
 

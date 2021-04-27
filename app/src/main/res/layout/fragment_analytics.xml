@@ -37,12 +37,12 @@
         android:text="Review calories"
         android:textColor="@color/white"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/sleep_fragment_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.172"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.11" />
+        app:layout_constraintVertical_bias="0.974" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/headerView3"
@@ -56,12 +56,12 @@
         android:text="Rewiew sleep"
         android:textColor="@color/white"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/calorie_fragment_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.16"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.578" />
+        app:layout_constraintVertical_bias="0.997" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/calorie_fragment_container"
@@ -77,7 +77,7 @@
         app:layout_constraintVertical_bias="0.826"
         tools:ignore="MissingConstraints">
 
-        <com.github.mikephil.charting.charts.LineChart
+        <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/lineChartSleepChart"
             android:layout_width="345sp"
             android:layout_height="192sp"
