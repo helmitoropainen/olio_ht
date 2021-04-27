@@ -58,13 +58,13 @@
         android:shadowRadius="0.01"
         android:text="Today:"
         android:textColor="#448AFF"
-        android:textSize="25sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.056"
+        app:layout_constraintHorizontal_bias="0.047"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.494" />
+        app:layout_constraintVertical_bias="0.502" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/goToSleep"
@@ -79,13 +79,13 @@
         android:shadowRadius="0.01"
         android:text="You've slept 0 hours"
         android:textColor="#448AFF"
-        android:textSize="25sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.91"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.491" />
+        app:layout_constraintVertical_bias="0.507" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/goToCalories"
@@ -100,7 +100,7 @@
         android:shadowRadius="0.01"
         android:text="The sum of your calories is 0 kcal"
         android:textColor="#448AFF"
-        android:textSize="25sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.542"

@@ -1,9 +1,7 @@
 package com.example.olio_ht;
 
-import java.io.Serializable;
 
-
-public class CalorieEntry extends Entry {
+public class CalorieEntry extends UserEntry {
 
 
     String info;

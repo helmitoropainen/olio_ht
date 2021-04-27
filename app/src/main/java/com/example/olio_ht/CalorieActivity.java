@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -87,7 +88,6 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         StrictMode.setThreadPolicy(policy);
         readJSON();
         this.sports_array = readFile();
-        sports_array_full = new ArrayList<SportData>(sports_array);
 
         LocalDate dateNow = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
@@ -384,7 +384,6 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
 
     public void readJSON () {
         String json = getJSON();
-
         if (json != null) {
             try {
                 FD = new FoodData();
@@ -404,6 +403,13 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        } else {
+            FD = new FoodData();
+            foodName = "Own portion";
+            foodCalories = 0;
+            FD.setCalories(foodCalories);
+            FD.setFoodName(foodName);
+            food_array.add(FD);
         }
     }
 
