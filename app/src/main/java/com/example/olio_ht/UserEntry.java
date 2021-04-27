@@ -5,14 +5,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 
-public abstract class Entry implements Serializable {
+public abstract class UserEntry implements Serializable {
 
 
     String date;
     double sum;
     String username;
 
-    public Entry() {
+    public UserEntry() {
     }
 
     public String getDate() { return date; }

@@ -11,7 +11,6 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,9 +19,9 @@ public class EntryManager {
 
     private static EntryManager entryManager = new EntryManager();
     UserEntryLog userEntryLog;
-    Entry sportEntries = null;
-    Entry foodEntries = null;
-    Entry sleepEntries = null;
+    UserEntry sportEntries = null;
+    UserEntry foodEntries = null;
+    UserEntry sleepEntries = null;
     String filename = null;
     Context context = null;
 
@@ -85,9 +84,9 @@ public class EntryManager {
         }
     }
 
-    public void setSportEntries( Entry e ) { sportEntries = e; }
-    public void setFoodEntries( Entry e ) { foodEntries = e; }
-    public void setSleepEntries( Entry e ) { sleepEntries = e; }
+    public void setSportEntries( UserEntry e ) { sportEntries = e; }
+    public void setFoodEntries( UserEntry e ) { foodEntries = e; }
+    public void setSleepEntries( UserEntry e ) { sleepEntries = e; }
     public void setFilename ( String f ) { filename = f; }
     public void setContext ( Context c ) { context = c; }
 
