@@ -1,7 +1,6 @@
 package com.example.olio_ht;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,25 +8,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-
 import java.time.LocalDate;
-
 
 public class PasswordFragment extends Fragment {
 
-
     View view;
     Button btChangePassword;
-    EditText etPassword;
-    EditText etConfirmPassword;
+    EditText etPassword,  etConfirmPassword;
     RegisterActivity ra = new RegisterActivity();
     UserLocalStore uls;
-
 
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -42,7 +34,6 @@ public class PasswordFragment extends Fragment {
         etPassword = view.findViewById(R.id.etPassword);
         etConfirmPassword = view.findViewById(R.id.etConfirmPassword);
         btChangePassword.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 changePassword();
@@ -50,7 +41,8 @@ public class PasswordFragment extends Fragment {
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    // Checks password given by user and changes it if no field are left empty, passwords match and
+    // it fills the requirements of secure password.
     public void changePassword() {
         String password = etPassword.getText().toString();
         String confirmPassword = etConfirmPassword.getText().toString();
@@ -75,7 +67,9 @@ public class PasswordFragment extends Fragment {
         String salt = ra.generateSalt();
         String securePassword = ra.getSHA512(password, salt.getBytes());
 
-        String username =uls.getUserLoggedIn();
+        // Fetching the information of currently logged in user, which are needed when creating
+        // User object.
+        String username = uls.getUserLoggedIn();
         String firstName = uls.getUserInfo(username).firstName;
         String lastName = uls.getUserInfo(username).lastName;
         LocalDate dateOfBirth = uls.getUserInfo(username).dateOfBirth;
@@ -86,6 +80,7 @@ public class PasswordFragment extends Fragment {
         long sleepGoal = uls.getUserInfo(username).sleepGoal;
         long caloriesGoal = uls.getUserInfo(username).caloriesGoal;
 
+        // Storing user data.
         User changedUser = new User(firstName, lastName, username, securePassword, salt, sex,
                 dateOfBirth, age, height, weight, caloriesGoal, sleepGoal);
         uls.storeUserData(changedUser);

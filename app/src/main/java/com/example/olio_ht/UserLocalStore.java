@@ -2,38 +2,24 @@ package com.example.olio_ht;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
 import java.time.LocalDate;
-
-
 
 public class UserLocalStore {
 
-    public static final String SP_NAME = "userInformation";
+    String SP_NAME = "userInformation";
     SharedPreferences userLocalDatabase;
-    String firstName;
-    String lastName;
-    String username;
-    String password;
-    String salt;
-    String sex;
+    String firstName, lastName, username, password, salt, sex;
     LocalDate dateOfBirth;
     int age;
-    float height;
-    float weight;
-    float bmi;
-    long idealCalories;
-    long idealSleep;
-    long sleepGoal;
-    long caloriesGoal;
+    float height, weight, bmi;
+    long idealCalories, idealSleep, sleepGoal, caloriesGoal;
 
     public UserLocalStore(Context context) {
         userLocalDatabase = context.getSharedPreferences(SP_NAME, 0);
     }
 
+    // Takes the currently logged in user as an input and stores the basic information about user
+    // into an xml file created with SharedPreferences.
     public void storeUserData(User user) {
         SharedPreferences.Editor spEditor = userLocalDatabase.edit();
         spEditor.putString("firstName"+user.username, user.firstName);
@@ -54,7 +40,8 @@ public class UserLocalStore {
         spEditor.apply();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    // Takes the username of currently logged in user as an input, fetches the information about
+    // user from local database and returns the fetched user.
     public User getUserInfo(String un) {
         firstName = userLocalDatabase.getString("firstName"+un, "");
         lastName = userLocalDatabase.getString("lastName"+un, "");
@@ -82,13 +69,15 @@ public class UserLocalStore {
         return user;
     }
 
-    // Tells which user is logged in.
+    // Fetches the logged in user from stored user information and returns the username of logged in
+    // user.
     public String getUserLoggedIn() {
         String loggedInUser = userLocalDatabase.getString("loggedIn", "");
         return loggedInUser;
     }
 
-    // Sets info to the userLocalDatabase which user is logged in.
+    // Takes username as an input and sets the user as logged in. If the input is an empty string,
+    // the method sets the currently logged in user as logged out.
     public void setUserLoggedIO(String un) {
         SharedPreferences.Editor spEditor = userLocalDatabase.edit();
         spEditor.putString("loggedIn", un);

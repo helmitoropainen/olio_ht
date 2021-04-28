@@ -1,8 +1,6 @@
 package com.example.olio_ht;
 
 import android.content.Context;
-import android.os.Build;
-import androidx.annotation.RequiresApi;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -33,7 +31,6 @@ public class EntryManager {
         return entryManager;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public void saveEntries() {
         if (context != null && filename != null) {
             userEntryLog = new UserEntryLog(context);

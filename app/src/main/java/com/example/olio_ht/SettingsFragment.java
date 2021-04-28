@@ -3,7 +3,6 @@ package com.example.olio_ht;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,46 +14,23 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-
 import static java.lang.Float.parseFloat;
-import static java.lang.Float.valueOf;
-
-
-
 
 public class SettingsFragment extends Fragment {
 
-
-    TextView dateView;
     View view;
     Spinner spinner;
     UserLocalStore uls;
-    Button btLogOut;
-    Button btApplyChanges;
+    Button btLogOut, btApplyChanges;
     TextView tvUserName;
-    EditText etFirstName;
-    EditText etLastName;
-    EditText etHeight;
-    EditText etWeight;
-    TextView tvBMI;
-    TextView tvInfoBMI;
+    EditText etFirstName, etLastName, etHeight, etWeight;
+    TextView dateView, tvBMI, tvInfoBMI;
     int choice;
-
-    public static final String SHARED_PREFS = "sharedPrefs";
-    public static final String FIRST_NAME = "firstName";
-    public static final String LAST_NAME = "lastName";
-    public static final String BIRTHDAY = "birthday";
-    public static final String HEIGHT = "height";
-    public static final String WEIGHT = "weight";
-    public static final String SEX = "sex";
 
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -62,7 +38,6 @@ public class SettingsFragment extends Fragment {
         return view;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         spinner = view.findViewById(R.id.sexSpinner);
@@ -92,7 +67,6 @@ public class SettingsFragment extends Fragment {
         String formattedDate = dateOfBirth.format(formatter);
         dateView.setText(formattedDate);
 
-
         btLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,7 +75,6 @@ public class SettingsFragment extends Fragment {
         });
         btApplyChanges = view.findViewById(R.id.button);
         btApplyChanges.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 applyChanges();
@@ -124,6 +97,8 @@ public class SettingsFragment extends Fragment {
         spinner.setSelection(sex);
     }
 
+    // Takes user's gender as input and returns the position for spinner, which has the user's
+    // gender.
     public int getSpinnerPosition(String sex) {
         int i;
         Resources res = getResources();
@@ -148,15 +123,11 @@ public class SettingsFragment extends Fragment {
         startActivityForResult(intent, 1);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    // Stores the changed information about user.
     public void applyChanges() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.M.yyyy");
-        LocalDate now = LocalDate.now();
         String username = uls.getUserLoggedIn();
         String firstName = etFirstName.getText().toString();
         String lastName = etLastName.getText().toString();
-        LocalDate dateOfBirth = LocalDate.parse(dateView.getText(), formatter);
-        int age = (int) java.time.temporal.ChronoUnit.YEARS.between(dateOfBirth, now);
         String height = etHeight.getText().toString();
         String weight = etWeight.getText().toString();
         String sex = spinner.getItemAtPosition(choice).toString();
@@ -164,6 +135,11 @@ public class SettingsFragment extends Fragment {
         String salt = uls.getUserInfo(username).salt;
         long sleepGoal = uls.getUserInfo(username).sleepGoal;
         long caloriesGoal = uls.getUserInfo(username).caloriesGoal;
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.M.yyyy");
+        LocalDate now = LocalDate.now();
+        LocalDate dateOfBirth = LocalDate.parse(dateView.getText(), formatter);
+        int age = (int) java.time.temporal.ChronoUnit.YEARS.between(dateOfBirth, now);
 
         if (firstName.isEmpty()) {
             etFirstName.setError("Field can't be empty!");
@@ -187,11 +163,11 @@ public class SettingsFragment extends Fragment {
             return;
         }
 
+        // Storing changed information about user.
         User changedUser = new User(firstName, lastName, username, securePassword, salt, sex,
                 dateOfBirth, age, parseFloat(height), parseFloat(weight), caloriesGoal, sleepGoal);
         uls.storeUserData(changedUser);
 
-        System.out.println(uls.getUserInfo(username).bmi);
         tvBMI.setText(String.valueOf(Math.round(uls.getUserInfo(username).bmi)));
         String bmiInfo = getBmiInfo(uls.getUserInfo(username).bmi);
         tvInfoBMI.setText(bmiInfo);
@@ -203,6 +179,8 @@ public class SettingsFragment extends Fragment {
         toast.show();
     }
 
+    // Takes user's body mass index as input and returns the weight information about user based on
+    // the body mass index.
     public String getBmiInfo(float bmi) {
         String bmiInfo = "";
         if (bmi < 18.5) {

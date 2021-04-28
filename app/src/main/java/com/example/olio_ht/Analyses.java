@@ -1,10 +1,6 @@
 package com.example.olio_ht;
 
 import android.content.Context;
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 
@@ -43,11 +39,6 @@ public class Analyses {
         context = c ;
         uls = new UserLocalStore(context) ;
     }
-
-    // This method retrieves the current user's username and the goals the user has set for
-    // themselves from UserLocalStore class. Sleepgoal is saved in minutes, so it is divided
-    // by 60 to get hours.
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public void retrieveUserAndGoals() {
         username = uls.getUserLoggedIn() ;
         user = uls.getUserInfo(username);
@@ -58,7 +49,7 @@ public class Analyses {
     // The method opens the cvs file containing data on users and their entries. It picks the
     // user's entries from the latest days and saves them into an array list to be used as y-axis
     // values in the analytics graphs.
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
     public void readCSV() {
         try {
             String line = "" ;
