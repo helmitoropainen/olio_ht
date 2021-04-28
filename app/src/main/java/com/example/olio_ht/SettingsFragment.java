@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import static java.lang.Float.parseFloat;
 
@@ -28,8 +29,8 @@ public class SettingsFragment extends Fragment {
     UserLocalStore uls;
     Button btLogOut, btApplyChanges;
     TextView tvUserName;
-    EditText etFirstName, etLastName, etHeight, etWeight;
-    TextView dateView, tvBMI, tvInfoBMI;
+    EditText etFirstName, etLastName, etHeight, etWeight, dateView;
+    TextView tvBMI, tvInfoBMI;
     int choice;
 
     @Nullable
@@ -113,7 +114,7 @@ public class SettingsFragment extends Fragment {
 
     public void changeDate() {
         String arg = getArguments().getString("date");
-        dateView = (TextView) this.view.findViewById(R.id.dateOfBirth);
+        dateView = (EditText) this.view.findViewById(R.id.dateOfBirth);
         dateView.setText(arg);
     }
 
@@ -125,6 +126,8 @@ public class SettingsFragment extends Fragment {
 
     // Stores the changed information about user.
     public void applyChanges() {
+        Context context = getContext();
+
         String username = uls.getUserLoggedIn();
         String firstName = etFirstName.getText().toString();
         String lastName = etLastName.getText().toString();
@@ -150,8 +153,14 @@ public class SettingsFragment extends Fragment {
             etLastName.requestFocus();
             return;
         } if (dateOfBirth.toString().isEmpty()) {
-            dateView.setError("Field can't be empty!");
-            dateView.requestFocus();
+            CharSequence text = "Date can't be empty!";
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(context, text, duration).show();
+            return;
+        } if (Period.between(dateOfBirth, now).getDays() < 0) {
+            CharSequence text = "Are you a time traveller from the future?!";
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(context, text, duration).show();
             return;
         } if (height.isEmpty()) {
             etHeight.setError("Field can't be empty!");
@@ -172,11 +181,9 @@ public class SettingsFragment extends Fragment {
         String bmiInfo = getBmiInfo(uls.getUserInfo(username).bmi);
         tvInfoBMI.setText(bmiInfo);
 
-        Context context = getContext();
         CharSequence text = "User data changed successfully.";
         int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
+        Toast.makeText(context, text, duration).show();
     }
 
     // Takes user's body mass index as input and returns the weight information about user based on
