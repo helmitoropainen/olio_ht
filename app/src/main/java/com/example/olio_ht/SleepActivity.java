@@ -20,7 +20,7 @@ public class SleepActivity extends AppCompatActivity {
     Button returnHome;
     EditText hour1, minute1, hour2, minute2;
     TextView sum, readinesstext, advicetext, goalView;
-    int h1=0, m1=0, h2=0, m2=0, slepth=0, sleptmin=0, mindifference=0, readiness=0, goal=8;
+    int h1=0, m1=0, h2=0, m2=0, mindifference=0, readiness=0;
     double slepttime=0, goalh = 0;
     String username, date;
     SleepEntry SE = new SleepEntry(0,0,0,0);
