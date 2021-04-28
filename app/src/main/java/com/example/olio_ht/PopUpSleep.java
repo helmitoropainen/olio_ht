@@ -14,7 +14,6 @@ import androidx.annotation.Nullable;
 
 public class PopUpSleep extends Activity {
 
-
     Button back;
     EditText goalInputH, goalInputMin;
     TextView viewGoal, viewIdeal;
@@ -26,6 +25,8 @@ public class PopUpSleep extends Activity {
     User user;
     UserLocalStore userLocalStore;
 
+    // Popup is opened and it informs the user about their own goals and recommendations based on
+    // their age.
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +73,7 @@ public class PopUpSleep extends Activity {
 
     }
 
+    //  This method registers the user's new goal, once they set or change it.
     public void changeGoal(View v) {
         if (goalInputH.getText().toString().trim().length() > 0) {
             if (goalInputMin.getText().toString().trim().length() <= 0) {
@@ -102,11 +104,13 @@ public class PopUpSleep extends Activity {
         }
     }
 
+    // The user's ideal sleep is retrieved and displayed
     public void setViewIdeal() {
         ideal = user.idealSleep;
         viewIdeal.setText("Your recommended nightly sleep is " + ideal + " hours");
     }
 
+    // HELMI
     public void closePopUp() {
         if (hasUserChangedGoal) {
             setResult(RESULT_OK, intent);

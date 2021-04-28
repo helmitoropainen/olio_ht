@@ -86,6 +86,7 @@
             app:layout_constraintHorizontal_bias="0.6"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
             tools:ignore="MissingConstraints" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -114,6 +115,25 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout><![CDATA[
 
+    Button
+        android:id="@+id/previousDays"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/baloo_bhaina"
+        android:onClick="earlierGraph"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="-5 days"
+        app:backgroundTint="#FF8A80"
+        app:layout_constraintBottom_toTopOf="@+id/calorie_fragment_container"
+        app:layout_constraintEnd_toStartOf="@+id/nextDays"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toEndOf="@+id/headerView3"
+        app:layout_constraintTop_toBottomOf="@+id/sleep_fragment_container" />
+
+
+]]>
 </androidx.constraintlayout.widget.ConstraintLayout>
