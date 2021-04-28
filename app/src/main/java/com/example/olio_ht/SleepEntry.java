@@ -1,43 +1,23 @@
 package com.example.olio_ht;
 
 
-public class sleepEntry extends UserEntry {
-
+public class SleepEntry extends UserEntry {
 
     int h1 = 0, m1 = 0, h2 = 0, m2 = 0, slepth = 0, sleptmin = 0, mindifference = 0, readiness = 0;
     long goal;
     double slepttime = 0;
     String resultText, adviceText;
 
-    public sleepEntry(int hour1, int hour2, int min1, int min2) {
+    public SleepEntry(int hour1, int hour2, int min1, int min2) {
         h1 = hour1;
         h2 = hour2;
         m1 = min1;
         m2 = min2;
     }
 
-    public int calculateTime() {/*
-        if (h1 > 12) {
-            m1 = 24 * 60 - 60 * h1 - m1;
-            if (h2 > h1) {
-                m2 = 24 * 60 - h2 * 60 - m2;
-                mindifference = m2 - m1;
-            } else {
-                m2 = h2 * 60 + m2;
-                mindifference = m2 + m1;
-            }
-        } else if (h1 < 12) {
-            m1 = 60 * h1 + m1;
-            m2 = h2 * 60 + m2;
-            mindifference = m2 - m1;
-        }*/
-
-        // Huomioita Marolle calculateTimesta:
-        // ehdot h1 > 12 ja h1 < 12 ei huomioi, jos h1 = 12
-        // En oikein ees älynny mitä varten noi yllä mainitut ehot on tossa.
-        // Ja sori et tein tän nyt kokonaa uusiks, ku en vaa oikee älynny tota.
-
-
+    // This method calculates and returns the time that the user has slept in minutes. The time is
+    // also converted into hours.
+    public int calculateTime() {
         if (h1 > h2) {
             mindifference = 24 * 60 - (60 * h1 + m1) + (60 * h2 + m2);
         } else {
@@ -49,6 +29,7 @@ public class sleepEntry extends UserEntry {
         return mindifference;
     }
 
+    // Here the time slept is set for the user to see.
     public String getHoursAndMinsText(int mins) {
         slepth = (int) mins / 60;
         sleptmin = mins - slepth * 60;
@@ -64,15 +45,16 @@ public class sleepEntry extends UserEntry {
         return resultText;
     }
 
+    // Readiness is calculated as a ratio of the time slept and the user's own goal
     public int getReadiness () {
         float goalh = (float) goal/60;
         readiness = (int) ((slepttime / goalh) * 100);
-        System.out.println("Sleep entrystä: " + goal + " " + goalh + " " + readiness);
         return readiness;
     }
 
     public void setGoal( long g ) { goal = g; }
-    
+
+    // "Advice text" is printed for the user based on their readiness
     public String getAdvice ( int readiness){
         if (readiness < 30) {
             adviceText = "Take it easy on yourself today and try to sleep early!";
@@ -92,6 +74,6 @@ public class sleepEntry extends UserEntry {
       return adviceText;
     }
 
-        public double getSleptTime() { return slepttime; }
+    public double getSleptTime() { return slepttime; }
   
 }
