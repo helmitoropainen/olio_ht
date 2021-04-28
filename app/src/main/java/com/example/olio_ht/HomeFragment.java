@@ -4,18 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
-
 import java.util.Random;
-
 import static java.lang.Math.round;
 
 public class HomeFragment extends Fragment {
@@ -64,6 +57,7 @@ public class HomeFragment extends Fragment {
 
     }
 
+    // Randomizes and sets fact from facts-array in strings.xml folder.
     public void randomFact () {
         String[] facts = getResources().getStringArray(R.array.facts);
         int min = 0;

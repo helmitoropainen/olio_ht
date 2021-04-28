@@ -1,8 +1,7 @@
 package com.example.olio_ht;
 
-
+// This class is made so RecyclerViewAdapter works
 public class CalorieEntry extends UserEntry {
-
 
     String info;
     double calories;

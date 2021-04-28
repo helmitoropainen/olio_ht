@@ -1,19 +1,15 @@
 package com.example.olio_ht;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.ArrayList;
 
-
-public abstract class UserEntry implements Serializable {
-
+// Class is serializable so objects can be sent between activities
+public class UserEntry implements Serializable {
 
     String date;
     double sum;
     String username;
 
-    public UserEntry() {
-    }
+    public UserEntry() { }
 
     public String getDate() { return date; }
     public double getSum() { return sum; }

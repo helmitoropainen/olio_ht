@@ -53,7 +53,6 @@ public class SleepEntry extends UserEntry {
     }
 
     public void setGoal( long g ) { goal = g; }
-
     // "Advice text" is printed for the user based on their readiness
     public String getAdvice ( int readiness){
         if (readiness < 30) {

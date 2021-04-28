@@ -4,7 +4,6 @@ import static java.lang.Math.round;
 
 public class SportEntry extends CalorieEntry {
 
-
     String sportType;
     int duration;
 
@@ -15,8 +14,8 @@ public class SportEntry extends CalorieEntry {
     }
 
     public String getSportType() { return sportType; }
-    public int getDuration() { return duration; }
 
+    // Method creates and returns line that is printed in RecyclerView
     @Override
     public String getInfo() {
         if (sportType.equals("Own workout")) {
@@ -30,6 +29,9 @@ public class SportEntry extends CalorieEntry {
     public void setSportType(String ft) { sportType = ft; }
     public void setDuration(int a) { duration = a; }
 
+    // Method get's SportEntry, SportData (from spinner choice) and user's weight as input arguments,
+    // uses SportData, weight and attribute duration to count spent calories and sets countedCalories
+    // to SportEntry, also returns counted calories.
     public double countSpentCalories(SportEntry se, SportData sd, float w) {
         double countedCalories;
         if (se.getSportType().equals("Own workout") == true) {

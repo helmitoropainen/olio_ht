@@ -11,16 +11,10 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
-
-
-
-
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-
 
     private ArrayList<CalorieEntry> items = new ArrayList<CalorieEntry>();
     private OnTextClickListener listener;
-    private Context context;
 
     public RecyclerViewAdapter(ArrayList<CalorieEntry> rv_array, OnTextClickListener listener) {
         items = rv_array;
@@ -35,10 +29,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return holder;
     }
 
+    // When user long clicks on item it's removed and on short click toast message is made to inform that.
+    // When item is removed information is sent to CalorieActivity so calorie sum can be updated
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.item.setText(items.get(position).getInfo());
-
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,7 +41,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 Toast.makeText(v.getContext(), text, Toast.LENGTH_SHORT).show();
             }
         });
-
         holder.parentLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -69,12 +63,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public ArrayList<CalorieEntry> getArray() { return items; }
-
     public class ViewHolder extends RecyclerView.ViewHolder {
-
         TextView item;
         ConstraintLayout parentLayout;
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             item = itemView.findViewById(R.id.item_data);
@@ -82,6 +73,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     }
 
+    // Functions to get updates when recycler view changes and type of ArrayList that is dealt with
+    // These are overridden in CalorieActivity.
     interface OnTextClickListener {
         void onTextClick(ArrayList<CalorieEntry> array);
         void getClass(String cN);

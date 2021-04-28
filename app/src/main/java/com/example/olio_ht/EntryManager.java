@@ -24,7 +24,6 @@ public class EntryManager {
     Context context = null;
 
     private EntryManager() {
-
     }
 
     public static EntryManager getInstance() {

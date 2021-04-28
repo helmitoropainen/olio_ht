@@ -16,8 +16,8 @@ public class FoodEntry extends CalorieEntry {
     }
 
     public String getFoodType() { return foodType; }
-    public int getFoodAmount() { return amount; }
 
+    // Method creates and returns line that is printed in recycler view
     @Override
     public String getInfo() {
         if (foodType.equals("Own portion")) {
@@ -31,14 +31,17 @@ public class FoodEntry extends CalorieEntry {
     public void setFoodType(String ft) { foodType = ft; }
     public void setFoodAmount(int a) { amount = a; }
 
+    // Method get's FoodEntry and FoodData (from spinner choice) as input arguments, uses FoodData
+    // and attribute amount to count gained calories and sets gainedCalories to FoodEntry, also
+    // returns countedCalories.
     public double countGainedCalories(FoodEntry fe, FoodData fd) {
-        double calories;
+        double countedCalories;
         if (fe.getFoodType().equals("Own portion") == true) {
-            calories = fe.getCalories();
+            countedCalories = fe.getCalories();
         } else {
-            calories = (double) amount * fd.getCalories() / 100;
+            countedCalories = (double) amount * fd.getCalories() / 100;
         }
         fe.setCalories(calories);
-        return calories;
+        return countedCalories;
     }
 }
