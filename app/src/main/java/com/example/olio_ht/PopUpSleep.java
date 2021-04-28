@@ -110,7 +110,7 @@ public class PopUpSleep extends Activity {
         viewIdeal.setText("Your recommended nightly sleep is " + ideal + " hours");
     }
 
-    // HELMI
+    // If user made changes to SleepGoal sends RESULT_OK to SleepActivity
     public void closePopUp() {
         if (hasUserChangedGoal) {
             setResult(RESULT_OK, intent);

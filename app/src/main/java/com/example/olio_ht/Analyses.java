@@ -46,7 +46,7 @@ public class Analyses {
         calorieGoal = (String) valueOf(user.caloriesGoal);
     }
 
-    // The method opens the cvs file containing data on users and their entries. It picks the
+    // The method opens the csv file containing data on users and their entries. It picks the
     // user's entries from the latest days and saves them into an array list to be used as y-axis
     // values in the analytics graphs.
 
@@ -97,7 +97,6 @@ public class Analyses {
     }
 
     // In this method a string array is created, containing dates for the x-axis of the graphs
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public String[] createXAxisData() {
         LocalDate today = LocalDate.now();
         String[] xaxes = new String[5] ;

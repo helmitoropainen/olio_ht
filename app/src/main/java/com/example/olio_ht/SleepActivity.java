@@ -27,8 +27,9 @@ public class SleepActivity extends AppCompatActivity {
     User user;
     SharedPreferences sharedPreferences;
     UserLocalStore userLocalStore;
-  
-    // HELMI
+
+    // Get's current user, username and current date and sets it to SleepEntry.
+    // Loads values from SharedPreferences.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +69,7 @@ public class SleepActivity extends AppCompatActivity {
 
         // When return home button is clicked, the calculated slept time is saved, and the user is
         // redirected to the home fragment.
+        // Sends the entry back to MainActivity.
         returnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,12 +141,14 @@ public class SleepActivity extends AppCompatActivity {
         saveState();
     }
 
-    // HELMI
+    // Launches pop up
     public void sleepRecommendation (View v) {
         startActivityForResult(new Intent(SleepActivity.this, com.example.olio_ht.PopUpSleep.class), 1);
     }
 
-    // HELMI
+    // When return home button is clicked, the calculated slept time is saved, and the user is
+    // redirected to the home fragment.
+    // Sends the entry back to MainActivity
     @Override
     public void onBackPressed() {
         saveState();
@@ -155,7 +159,7 @@ public class SleepActivity extends AppCompatActivity {
         finish();
     }
 
-    //  HELMI
+    // Saves counted data and username to SharedPreferences
     public void saveState() {
         String spName = "shared preferences" + username;
         sharedPreferences = getSharedPreferences(spName, MODE_PRIVATE);
@@ -167,7 +171,7 @@ public class SleepActivity extends AppCompatActivity {
         editor.apply();
     }
 
-    // HELMI
+    // Loads values from SharedPreferences
     private void loadState() {
         String spName = "shared preferences" + username;
         sharedPreferences = getSharedPreferences(spName, MODE_PRIVATE);
@@ -178,7 +182,8 @@ public class SleepActivity extends AppCompatActivity {
 
     }
 
-    // HELMI
+    // SleepPopUp sends RESULT_OK if user made changes to their goal.
+    // User and text showing goal is updated.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

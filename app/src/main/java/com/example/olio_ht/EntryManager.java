@@ -12,8 +12,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+// This class uses Singleton
 public class EntryManager {
-
 
     private static EntryManager entryManager = new EntryManager();
     UserEntryLog userEntryLog;
@@ -23,13 +23,14 @@ public class EntryManager {
     String filename = null;
     Context context = null;
 
-    private EntryManager() {
-    }
+    private EntryManager() { }
 
     public static EntryManager getInstance() {
         return entryManager;
     }
 
+    // Gets entries from EntryManager and reads log file, if there is an an entry from the user from
+    // the same day method writes over it, otherwise it creates a new line.
     public void saveEntries() {
         if (context != null && filename != null) {
             userEntryLog = new UserEntryLog(context);
@@ -44,6 +45,7 @@ public class EntryManager {
                 double caloriesEaten = foodEntries.getSum();
                 double caloriesBurned = sportEntries.getSum();
 
+                // File is changed to ArrayList and back to make comparasion and replacement easier.
                 try {
                     String filepath = context.getFilesDir() + "/" + filename;
                     List<String> fileContent = new ArrayList<>(Files.readAllLines(Paths.get(filepath), StandardCharsets.UTF_8));
