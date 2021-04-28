@@ -15,23 +15,25 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
     double sleepSum = 0, calorieSum = 0;
-    boolean rqst1OK = false, rqst2OK = false;
-    String filename, username;
-    Bundle bundle = new Bundle();
+    String filename, username, date;
     HomeFragment home = new HomeFragment();
     SettingsFragment settings = new SettingsFragment();
     PasswordFragment password = new PasswordFragment();
-    private DatePickerDialog.OnDateSetListener dateSetListener;
     UserEntryLog userEntryLog;
     UserLocalStore userLocalStore;
     EntryManager entryManager;
     User user;
-    UserEntry sportEntry, foodEntry, sleepEntry;
+    UserEntry sportEntry = null, foodEntry = null, sleepEntry = null;
     DatePickerDialog datePickerDialog;
     SharedPreferences sharedPreferences;
 
@@ -45,7 +47,12 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
+        // When app launches HomeFragment automatically opens
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, home, "home fragment").commit();
+
+        LocalDate dateNow = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        date = dateNow.format(formatter);
 
         userEntryLog = new UserEntryLog(this);
         filename = userEntryLog.createFile();
@@ -58,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         username = userLocalStore.getUserLoggedIn();
         user = userLocalStore.getUserInfo(username);
 
+        // Load Entrys and UI-state from SharedPrefrences
         updateDate();
         loadState();
         home.updateCalorieSum(calorieSum);
@@ -65,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // Navigation between fragments, when HomeFragment is opend state is loaded again.
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -95,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
             };
-
 
     public void updateDate() {
         Bundle bundle = new Bundle();
@@ -146,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        // If CalorieActivity sends entries back.
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 sportEntry = (UserEntry) data.getSerializableExtra("sport entry");
@@ -157,14 +166,13 @@ public class MainActivity extends AppCompatActivity {
                     if (home != null) {
                         home.updateCalorieSum(calorieSum);
                     }
-                    rqst1OK = true;
                 } catch (Exception e) {
-                    rqst1OK = false;
                     Toast.makeText(this,"Adding data wasn't successful. Please re-try", Toast.LENGTH_LONG).show();
                 }
             }
         }
 
+        // If SleepActivity sends an entry back.
         if (requestCode == 2) {
             if (resultCode == RESULT_OK) {
                 sleepEntry = (UserEntry) data.getSerializableExtra("sleep entry");
@@ -173,19 +181,16 @@ public class MainActivity extends AppCompatActivity {
                 if (home != null) {
                     home.updateSleepSum(sleepSum);
                 }
-                rqst2OK = true;
             } else {
-                rqst2OK = false;
                 Toast.makeText(this,"Adding data wasn't successful. Please re-try", Toast.LENGTH_LONG).show();
             }
         }
-
-        if (rqst1OK && rqst2OK) {
-            entryManager.saveEntries();
-        }
+        // Send entries to EntryManager which updates log.
+        entryManager.saveEntries();
         saveState();
     }
 
+    // Save username, sums and entries in SharedPrefrences
     public void saveState() {
         String spName = "shared preferences" + username;
         sharedPreferences = getSharedPreferences(spName, MODE_PRIVATE);
@@ -193,16 +198,55 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("username", username);
         editor.putString("sleep sum", String.valueOf(sleepSum));
         editor.putString("calorie sum", String.valueOf(calorieSum));
+        Gson gsonSleep = new Gson();
+        Gson gsonFood = new Gson();
+        Gson gsonSport = new Gson();
+        String jsonSleep = gsonSleep.toJson(sleepEntry);
+        String jsonFood = gsonFood.toJson(foodEntry);
+        String jsonSport = gsonSport.toJson(sportEntry);
+        editor.putString("sleep entry", jsonSleep);
+        editor.putString("food entry", jsonFood);
+        editor.putString("sport entry", jsonSport);
         editor.apply();
     }
 
+    // Get sums and entries from SharedPreferences and if entries are null set default values
     private void loadState() {
         String spName = "shared preferences" + username;
         sharedPreferences = getSharedPreferences(spName, MODE_PRIVATE);
-
         sleepSum = Double.parseDouble(sharedPreferences.getString("sleep sum", "0"));
         calorieSum = Double.parseDouble(sharedPreferences.getString("calorie sum", "0"));
+        Gson gsonSleep = new Gson();
+        Gson gsonFood = new Gson();
+        Gson gsonSport = new Gson();
+        String jsonSleep = sharedPreferences.getString("sleep entry", null);
+        String jsonFood = sharedPreferences.getString("food entry", null);
+        String jsonSport = sharedPreferences.getString("sport entry", null);
 
+        Type type = new TypeToken<UserEntry>() {}.getType();
+
+        sleepEntry = gsonSleep.fromJson(jsonSleep, type);
+        foodEntry = gsonFood.fromJson(jsonFood, type);
+        sportEntry = gsonSport.fromJson(jsonSport, type);
+
+        if (sleepEntry == null) {
+            sleepEntry = new UserEntry();
+            sleepEntry.setDate(date);
+            sleepEntry.setUsername(username);
+            sleepEntry.setSum(0);
+        }
+        if (foodEntry == null) {
+            foodEntry = new UserEntry();
+            foodEntry.setDate(date);
+            foodEntry.setUsername(username);
+            foodEntry.setSum(0);
+        }
+        if (sportEntry == null) {
+            sportEntry = new UserEntry();
+            sportEntry.setDate(date);
+            sportEntry.setUsername(username);
+            sportEntry.setSum(0);
+        }
     }
 
     @Override

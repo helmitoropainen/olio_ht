@@ -2,7 +2,6 @@ package com.example.olio_ht;
 
 public class SportData {
 
-
     String sportName;
     double calories;
 
@@ -14,6 +13,7 @@ public class SportData {
     public String getSportName() { return sportName; }
     public double getCalories() { return calories; }
 
+    // This method is used in spinner adapter
     @Override
     public String toString() { return sportName; }
 }

@@ -15,9 +15,6 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -45,10 +42,8 @@ import static java.lang.Math.round;
 
 public class CalorieActivity extends AppCompatActivity implements RecyclerViewAdapter.OnTextClickListener {
 
-
     Button returnHome;
     ArrayList<SportData> sports_array = new ArrayList<SportData>();
-    ArrayList<SportData> sports_array_full = new ArrayList<SportData>();
     ArrayList<FoodData> food_array = new ArrayList<FoodData>();
     ArrayList<CalorieEntry> spent_array;
     ArrayList<CalorieEntry> gained_array;
@@ -78,23 +73,26 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         setContentView(R.layout.activity_calories);
         setTitle(R.string.app_name);
 
+        // Get logged in user and their username and weight
         userLocalStore = new UserLocalStore(this);
         username = userLocalStore.getUserLoggedIn();
         user = userLocalStore.getUserInfo(username);
-
         weight = user.weight;
 
+
+        // Read JSON and csv-file to get and set contents to spinner arrays
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         readJSON();
         this.sports_array = readFile();
 
+        FE = new FoodEntry(foodType, mass, gainedCalories);
+        SE = new SportEntry(foodType, mass, gainedCalories);
+
+        // Set current date for Entries
         LocalDate dateNow = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         date = dateNow.format(formatter);
-
-        FE = new FoodEntry(foodType, mass, gainedCalories);
-        SE = new SportEntry(foodType, mass, gainedCalories);
 
         FE.setDate(date);
         FE.setUsername(username);
@@ -116,11 +114,13 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         calorieIntakeInput = (EditText) findViewById(R.id.calorieIntakeInput);
         sumView = (TextView) findViewById(R.id.goalView);
 
+        // If user logs back into app shared preferences are loaded and sum is re-counted
         loadArrays();
         spent_array = initRecyclerView(sportsRecyclerView, spent_array);
         gained_array = initRecyclerView(foodRecyclerView, gained_array);
         countSum();
 
+        // Send entries to MainActivity
         returnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,6 +134,9 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
             }
         });
 
+        // Create spinner from arrays read from csv-file.
+        // Deal with special case if user wants to type their own calories for work out, otherwise
+        // calories are counted based on current state of durationSeekBar and free input field is locked.
         adapterS = new ArrayAdapter(this, android.R.layout.simple_spinner_item, sports_array);
         adapterS.setNotifyOnChange(true);
         adapterS.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -168,12 +171,14 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
                 spentCalories = round(SE.countSpentCalories(SE, SD, weight));
                 displaySpentCalories(spentCalories);
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
 
+        // Create spinner from arrays read from API.
+        // Deal with special case if user wants to type their own calories for portion, otherwise
+        // calories are counted based on current state of massSeekBar and free input field is locked.
         ArrayAdapter<CharSequence> adapterF = new ArrayAdapter(this, android.R.layout.simple_spinner_item, food_array);
         adapterF.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         foodSpinner.setAdapter(adapterF);
@@ -207,7 +212,6 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
                 gainedCalories = round(FE.countGainedCalories(FE, FD));
                 displayGainedCalories(gainedCalories);
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -222,11 +226,9 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
                 spentCalories = round(SE.countSpentCalories(SE, SD, weight));
                 displaySpentCalories(spentCalories);
             }
-
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
             }
-
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
@@ -241,11 +243,9 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
                 gainedCalories = round(FE.countGainedCalories(FE, FD));
                 displayGainedCalories(gainedCalories);
             }
-
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
             }
-
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
@@ -290,6 +290,7 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         });
     }
 
+    // Send entries to MainActivity
     @Override
     public void onBackPressed() {
         countSum();
@@ -301,11 +302,11 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         finish();
     }
 
+    // Update recycler views with RecylcerViewAdapter class
     public ArrayList initRecyclerView(RecyclerView rv, ArrayList array) {
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(array, this);
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
-        //array.clear();
         array = adapter.getArray();
         return array;
     }
@@ -318,6 +319,7 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         viewSpentCalories.setText("You spent " + sc + " kcal");
     }
 
+    // When user adds new entries update sums and entries
     public void addSpentCalories(View v) {
         spent_array.add(SE);
         spent_array = initRecyclerView(sportsRecyclerView, spent_array);
@@ -336,6 +338,7 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         FE.setUsername(username);
     }
 
+    // When user resets clear reycler view and re-count sum
     public void resetSport(View v) {
         spent_array.clear();
         spent_array = initRecyclerView(sportsRecyclerView, spent_array);
@@ -348,6 +351,7 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         countSum();
     }
 
+    // Count and display sum of gained and spent calories and set counted calories for Sport- and FoodEntries
     public void countSum() {
         double add = 0, sub = 0;
         sum = 0;
@@ -363,10 +367,13 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         sumView.setText("Todays sum of calories is " + sum + " kcal!");
     }
 
+    // Launch calorie pop up
     public void calorieRecommendation (View v) {
         startActivity(new Intent(CalorieActivity.this, com.example.olio_ht.PopUpCalories.class));
     }
 
+    // Override RecyclerViewAdapter class' onTextClick method and check whether user made changes in
+    // sport or food recycler view and update sums
     @Override
     public void onTextClick(ArrayList<CalorieEntry> array) {
         if (className.equals("sportEntry")) {
@@ -382,6 +389,8 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         className = cN;
     }
 
+    // Calls getJSON and creates ArrayList for foodSpinner based on data got from JSON.
+    // Get English food name and calories/100 g for each food.
     public void readJSON () {
         String json = getJSON();
         if (json != null) {
@@ -413,6 +422,8 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         }
     }
 
+    // Get JSON from Fineli.fi API creates ArrayList for foodSpinner based on data got from JSON.
+    // Get English food name and calories/100 g for each food.
     public String getJSON() {
         String response = null;
         try {
@@ -439,6 +450,8 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         return response;
     }
 
+    // Read exercise_data.csv file saved in the assets folder and creates ArrayList for sportSpinner
+    // based on data read from file. Get sport name and calories/one hour of exercise/kg for each sport type.
     public ArrayList<SportData> readFile() {
         try {
             InputStream ins = getAssets().open("exercise_data.csv");
@@ -473,6 +486,7 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         return sports_array;
     }
 
+    // Save recycler view arrays for when user logs back into app.
     public void saveArrays() {
         String spName = "shared preferences" + username;
         sharedPreferences = getSharedPreferences(spName, MODE_PRIVATE);
@@ -487,6 +501,7 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
         editor.apply();
     }
 
+    // Load recycler view arrays when user logs back into app.
     private void loadArrays() {
         String spName = "shared preferences" + username;
         sharedPreferences = getSharedPreferences(spName, MODE_PRIVATE);

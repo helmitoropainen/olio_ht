@@ -1,7 +1,7 @@
 package com.example.olio_ht;
 
 
-public class sleepEntry extends UserEntry {
+public class SleepEntry extends UserEntry {
 
 
     int h1 = 0, m1 = 0, h2 = 0, m2 = 0, slepth = 0, sleptmin = 0, mindifference = 0, readiness = 0;
@@ -9,7 +9,7 @@ public class sleepEntry extends UserEntry {
     double slepttime = 0;
     String resultText, adviceText;
 
-    public sleepEntry(int hour1, int hour2, int min1, int min2) {
+    public SleepEntry(int hour1, int hour2, int min1, int min2) {
         h1 = hour1;
         h2 = hour2;
         m1 = min1;

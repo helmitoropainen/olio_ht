@@ -26,7 +26,7 @@ public class SleepActivity extends AppCompatActivity {
     int h1=0, m1=0, h2=0, m2=0, slepth=0, sleptmin=0, mindifference=0, readiness=0, goal=8;
     double slepttime=0, goalh = 0;
     String username, date;
-    sleepEntry SE = new sleepEntry(0,0,0,0);
+    SleepEntry SE = new SleepEntry(0,0,0,0);
     User user;
     SharedPreferences sharedPreferences;
     UserLocalStore userLocalStore;
@@ -107,7 +107,7 @@ public class SleepActivity extends AppCompatActivity {
             return;
         }
 
-        SE = new sleepEntry(h1, h2, m1, m2) ;
+        SE = new SleepEntry(h1, h2, m1, m2) ;
         SE.setDate(date);
         SE.setUsername(username);
         SE.setGoal(user.sleepGoal);

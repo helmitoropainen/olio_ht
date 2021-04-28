@@ -9,12 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 public class PopUpCalories extends Activity {
-
 
     Button back;
     EditText goalInput;
@@ -42,8 +40,10 @@ public class PopUpCalories extends Activity {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
+        // Make pop up's size smaller than window
         getWindow().setLayout((int)(width*.8),(int)(height*.6));
 
+        // Load user and user's ideal calorie intake from from UserLocalStore
         userLocalStore = new UserLocalStore(this);
         username = userLocalStore.getUserLoggedIn();
         user = userLocalStore.getUserInfo(username);
@@ -59,6 +59,7 @@ public class PopUpCalories extends Activity {
         });
     }
 
+    // Set requirements for max calorie goal and update new goal in user information
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void changeGoal(View v) {
         if (goalInput.getText().toString().trim().length() > 0) {
@@ -68,7 +69,6 @@ public class PopUpCalories extends Activity {
                 return;
             } else {
                 viewGoal.setText("Your daily goal is set to " + goal + " kcal");
-
                 userLocalStore.getUserInfo(username);
                 User changedUser = new User(user.firstName, user.lastName, user.username, user.password,
                         user.salt, user.sex, user.dateOfBirth, user.age, user.height, user.weight, goal, user.sleepGoal);

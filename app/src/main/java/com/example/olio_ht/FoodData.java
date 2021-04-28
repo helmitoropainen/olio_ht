@@ -5,7 +5,6 @@ import static java.lang.Math.round;
 
 public class FoodData {
 
-
     String foodName;
     long calories;
 
@@ -17,6 +16,7 @@ public class FoodData {
     public String getFoodName() { return foodName; }
     public long getCalories() { return calories; }
 
+    // This method is used in spinner adapter
     @Override
     public String toString() {
         return foodName;
