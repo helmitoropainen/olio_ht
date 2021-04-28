@@ -1,10 +1,6 @@
 package com.example.olio_ht;
 
 import android.content.Context;
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 
@@ -47,7 +43,6 @@ public class Analyses {
         uls = new UserLocalStore(context) ;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public void retrieveUserAndGoals() {
         username = uls.getUserLoggedIn() ;
         user = uls.getUserInfo(username);
@@ -59,7 +54,6 @@ public class Analyses {
 
     public long getCalorieGoal() { return calorieGoal; }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public void readCSV() {
         try {
             String line = "" ;

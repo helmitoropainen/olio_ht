@@ -2,7 +2,6 @@ package com.example.olio_ht;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
 public class PopUpSleep extends Activity {
 
@@ -28,7 +26,6 @@ public class PopUpSleep extends Activity {
     User user;
     UserLocalStore userLocalStore;
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +72,6 @@ public class PopUpSleep extends Activity {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public void changeGoal(View v) {
         if (goalInputH.getText().toString().trim().length() > 0) {
             if (goalInputMin.getText().toString().trim().length() <= 0) {

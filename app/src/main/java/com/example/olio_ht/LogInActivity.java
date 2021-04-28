@@ -1,23 +1,16 @@
 package com.example.olio_ht;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-
 
 public class LogInActivity extends AppCompatActivity {
 
-
-    TextView LogIn;
-    TextView SignUp;
-    EditText etUsername;
-    EditText etPassword;
+    TextView LogIn, SignUp;
+    EditText etUsername, etPassword;
     UserLocalStore userLocalStore;
 
     @Override
@@ -32,11 +25,8 @@ public class LogInActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.passwordInput);
 
         userLocalStore = new UserLocalStore(this);
-        System.out.println("TIEDOSTOSIJAINTI: " + LogInActivity.this.getFilesDir());
-        // Tarkistamista varten.
 
         LogIn.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 String username = etUsername.getText().toString();
@@ -61,8 +51,11 @@ public class LogInActivity extends AppCompatActivity {
                     etPassword.requestFocus();
                     return;
                 }
+
+                // Setting username and password fields empty when user logs in.
                 etUsername.setText("");
                 etPassword.setText("");
+
                 userLocalStore.setUserLoggedIO(user.username);
                 Intent intent = new Intent(LogInActivity.this, MainActivity.class);
                 startActivityForResult(intent, 1);
@@ -78,7 +71,9 @@ public class LogInActivity extends AppCompatActivity {
         });
     }
 
-
+    // Takes password, salt, hashed and salted password as inputs, generates the hashed password
+    // and compares the two hashed and salted passwords. Returns true if the two hashed and salted
+    // passwords are same and false if not.
     public boolean passwordCheck(String password, String securePassword, byte[] salt) {
         Boolean match = false;
         RegisterActivity ra = new RegisterActivity();

@@ -1,7 +1,6 @@
 package com.example.olio_ht;
 
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -45,7 +43,6 @@ public class AnalyticsFragment extends Fragment {
         return view;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         caloriesChart = (LineChart) this.view.findViewById(R.id.lineChartCalorieChart);
         sleepChart = (BarChart) this.view.findViewById(R.id.lineChartSleepChart);
