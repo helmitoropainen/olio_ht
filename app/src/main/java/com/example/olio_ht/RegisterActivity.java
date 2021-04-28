@@ -3,6 +3,7 @@ package com.example.olio_ht;
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,10 +13,13 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import static java.lang.Float.parseFloat;
@@ -23,7 +27,7 @@ import static java.lang.Float.parseFloat;
 public class RegisterActivity extends AppCompatActivity {
 
     EditText etUsername, etFirstName, etLastName, etHeight, etWeight, etPassword, etConfirmPassword;
-    TextView tvDateOfBirth;
+    EditText tvDateOfBirth;
     Spinner spinner;
     int choice;
     UserLocalStore userLocalStore;
@@ -91,6 +95,7 @@ public class RegisterActivity extends AppCompatActivity {
     // Creates new account and stores it. If any of the fields in registration is empty, user gets
     // notified to fill in all the fields before an account can be created.
     public void createAccount(View v) {
+
         String password = etPassword.getText().toString();
         String confirmPassword = etConfirmPassword.getText().toString();
         String username = etUsername.getText().toString();
@@ -118,8 +123,22 @@ public class RegisterActivity extends AppCompatActivity {
             etLastName.requestFocus();
             return;
         } if (stringBirthday.isEmpty()) {
-            tvDateOfBirth.setError("Field can't be empty!");
-            tvDateOfBirth.requestFocus();
+            CharSequence text = "Date can't be empty!";
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(this, text, duration).show();
+            return;
+        }
+
+        // Calculating user's age.
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.M.yyyy");
+        LocalDate now = LocalDate.now();
+        LocalDate dateOfBirth = LocalDate.parse(stringBirthday, formatter);
+        int age = (int) java.time.temporal.ChronoUnit.YEARS.between(dateOfBirth, now);
+
+        if (Period.between(dateOfBirth, now).getDays() < 0) {
+            CharSequence text = "Are you a time traveller from the future?!";
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(this, text, duration).show();
             return;
         } if (height.isEmpty()) {
             etHeight.setError("Field can't be empty!");
@@ -147,12 +166,6 @@ public class RegisterActivity extends AppCompatActivity {
             etPassword.requestFocus();
             return;
         }
-
-        // Calculating user's age.
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.M.yyyy");
-        LocalDate now = LocalDate.now();
-        LocalDate dateOfBirth = LocalDate.parse(stringBirthday, formatter);
-        int age = (int) java.time.temporal.ChronoUnit.YEARS.between(dateOfBirth, now);
 
         String salt = generateSalt();
         String securePassword = getSHA512(password, salt.getBytes());

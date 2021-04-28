@@ -72,14 +72,15 @@ public class Analyses {
             LocalDate today = LocalDate.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-            int diff ;
+            int diff = 4 ;
 
-            while ((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null && diff > 0) {
                 String[] data = line.split(";");
 
                 if (data[0].equals(username) == true) {
                     checkedDate = LocalDate.parse(data[1], formatter) ;
                     diff = (int) Period.between(checkedDate, today).getDays();
+                    System.out.println("DIFFERENCE IN DAYS: "+diff);
 
                     if (diff < 5) {
                         sleep.set(4-diff, new BarEntry(Float.parseFloat(data[2]), 4-diff)) ;

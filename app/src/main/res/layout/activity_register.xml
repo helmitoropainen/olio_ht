@@ -8,14 +8,16 @@
     tools:context=".RegisterActivity">
 
 
-    <TextView
+    <EditText
         android:id="@+id/dateOfBirth"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:clickable="true"
+
         android:fontFamily="sans-serif"
         android:gravity="right"
         android:onClick="openDatePicker"
+        android:editable="false"
         android:hint="20.4.1980"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
