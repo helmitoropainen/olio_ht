@@ -2,7 +2,6 @@ package com.example.olio_ht;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,14 +10,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class SleepActivity extends AppCompatActivity {
-
 
     Button returnHome;
     EditText hour1, minute1, hour2, minute2;
@@ -30,8 +27,8 @@ public class SleepActivity extends AppCompatActivity {
     User user;
     SharedPreferences sharedPreferences;
     UserLocalStore userLocalStore;
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
+  
+    // HELMI
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,8 +57,6 @@ public class SleepActivity extends AppCompatActivity {
         advicetext = (TextView) findViewById(R.id.textViewComment) ;
         goalView = (TextView) findViewById(R.id.goalView);
 
-        // jos h1<00.00, h1:n päivä on h2:n päivä -1. Jos h1>00.00, h1:n päivä = h2:n päivä
-
         loadState();
         goalh = (double) user.sleepGoal/60;
         goalView.setText(String.format("Your nightly sleep goal: %.2f hours", goalh));
@@ -71,8 +66,9 @@ public class SleepActivity extends AppCompatActivity {
         String advice = SE.getAdvice(readiness) ;
         advicetext.setText(advice);
 
+        // When return home button is clicked, the calculated slept time is saved, and the user is
+        // redirected to the home fragment.
         returnHome.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 saveState();
@@ -85,8 +81,10 @@ public class SleepActivity extends AppCompatActivity {
         });
     }
 
+    // This method handles the submission of the given times. If inputs are lacking or faulty, the
+    // user is notified of this or other actions are taken. Acceptable inputs are saved in a
+    // SleepEntry object.
     public void submitTime(View v) {
-
         if (hour1.getText().toString().matches("") || hour2.getText().toString().matches("")) {
             Toast.makeText(this, "You did not enter required times", Toast.LENGTH_SHORT).show();
             return;
@@ -128,6 +126,7 @@ public class SleepActivity extends AppCompatActivity {
         SE.setSum(slepttime);
     }
 
+    // Today's data is reset to zero.
     public void resetData(View v) {
         SE.setSum(0);
         readiness = 0;
@@ -140,10 +139,12 @@ public class SleepActivity extends AppCompatActivity {
         saveState();
     }
 
+    // HELMI
     public void sleepRecommendation (View v) {
         startActivityForResult(new Intent(SleepActivity.this, com.example.olio_ht.PopUpSleep.class), 1);
     }
 
+    // HELMI
     @Override
     public void onBackPressed() {
         saveState();
@@ -154,6 +155,7 @@ public class SleepActivity extends AppCompatActivity {
         finish();
     }
 
+    //  HELMI
     public void saveState() {
         String spName = "shared preferences" + username;
         sharedPreferences = getSharedPreferences(spName, MODE_PRIVATE);
@@ -165,6 +167,7 @@ public class SleepActivity extends AppCompatActivity {
         editor.apply();
     }
 
+    // HELMI
     private void loadState() {
         String spName = "shared preferences" + username;
         sharedPreferences = getSharedPreferences(spName, MODE_PRIVATE);
@@ -175,13 +178,14 @@ public class SleepActivity extends AppCompatActivity {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    // HELMI
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 user = userLocalStore.getUserInfo(username);
-                goalh = (double) user.sleepGoal/60;
+                goalh = (double) user.sleepGoal / 60;
                 goalView.setText(String.format("Your nightly sleep goal: %.2f hours", goalh));
             }
         }

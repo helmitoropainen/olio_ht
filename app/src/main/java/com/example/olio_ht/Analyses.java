@@ -1,10 +1,6 @@
 package com.example.olio_ht;
 
 import android.content.Context;
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 
@@ -14,52 +10,46 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
+
+import static java.lang.String.valueOf;
 
 
 public class Analyses {
 
-    double sleepGoal ;
-    long calorieGoal ;
-    String username ; //date,
+    String sleepGoal, calorieGoal ;
+    String username ;
     User user ;
     String filename = "userData.csv" ;
     Context context = null ;
     UserLocalStore uls ;
-    LocalDate today ;
 
     ArrayList<Entry> gainedCal = new ArrayList<>();
     ArrayList<Entry> lostCal = new ArrayList<>();
     ArrayList<Entry> calDiff = new ArrayList<>() ;
     ArrayList<BarEntry> sleep = new ArrayList<>();
+    ArrayList<Entry> calorieG = new ArrayList<>() ;
+    ArrayList<BarEntry> sleepG = new ArrayList<>();
 
     public Analyses(Context c) {
         context = c ;
         uls = new UserLocalStore(context) ;
     }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public void retrieveUserAndGoals() {
         username = uls.getUserLoggedIn() ;
         user = uls.getUserInfo(username);
-        sleepGoal = user.sleepGoal;
-        calorieGoal = user.caloriesGoal;
+        sleepGoal = (String) valueOf(user.sleepGoal/60);
+        calorieGoal = (String) valueOf(user.caloriesGoal);
     }
 
-    public double getSleepGoal() { return sleepGoal ; }
+    // The method opens the cvs file containing data on users and their entries. It picks the
+    // user's entries from the latest days and saves them into an array list to be used as y-axis
+    // values in the analytics graphs.
 
-    public long getCalorieGoal() { return calorieGoal; }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public void readCSV() {
         try {
             String line = "" ;
@@ -72,32 +62,24 @@ public class Analyses {
                 gainedCal.add(new Entry(Float.parseFloat("0"), i));
                 calDiff.add(new Entry(Float.parseFloat("0"), i)) ;
                 lostCal.add(new Entry(Float.parseFloat("0"), i));
+
+                calorieG.add(new Entry(Float.parseFloat(calorieGoal), i)) ;
+                sleepG.add(new BarEntry(Float.parseFloat(sleepGoal), i));
+;
             }
 
-            //SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy") ;
-            //date = sdf.format(new Date()) ;
-
-            //long today = Calendar.getInstance().getTime().getTime() ;
             LocalDate checkedDate ;
-
             LocalDate today = LocalDate.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-            //today = dateNow.format(formatter);
 
-            int diff, check = 0 ;
+            int diff ;
 
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(";");
 
                 if (data[0].equals(username) == true) {
                     checkedDate = LocalDate.parse(data[1], formatter) ;
-
-                    System.out.println("#################### Checked date " + checkedDate) ;
-                    System.out.println("#################### Today " + today) ;
-
-                    //diff = (int) Math.abs(java.time.temporal.ChronoUnit.DAYS.between(checkedDate, today));
                     diff = (int) Period.between(checkedDate, today).getDays();
-                    System.out.println("PÄIVIEN EROTUS       " + diff);
 
                     if (diff < 5) {
                         sleep.set(4-diff, new BarEntry(Float.parseFloat(data[2]), 4-diff)) ;
@@ -112,23 +94,38 @@ public class Analyses {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(sleep) ;
-        System.out.println(gainedCal) ;
-        System.out.println(lostCal) ;
     }
 
-    public ArrayList<Entry> getCalorieIntake() {
-        return gainedCal;
+    // In this method a string array is created, containing dates for the x-axis of the graphs
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public String[] createXAxisData() {
+        LocalDate today = LocalDate.now();
+        String[] xaxes = new String[5] ;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.");
+
+        LocalDate date = today.plusDays(-4) ;
+        String dateInString ;
+
+        for (int i=0; i<5;i++) {
+            dateInString = formatter.format(date) ;
+            xaxes[i] = dateInString ;
+
+            date = date.plusDays(1) ;
+        }
+
+        return xaxes ;
     }
 
-    public ArrayList<Entry> getCalorieLoss() {
-        return lostCal;
-    }
+    public ArrayList<Entry> getCalorieIntake() { return gainedCal; }
+
+    public ArrayList<Entry> getCalorieLoss() { return lostCal; }
 
     public ArrayList<Entry> getCaloriesDifference() { return calDiff; }
 
-    public ArrayList<BarEntry> getSleptHours() {
-        return sleep ;
-    }
+    public ArrayList<BarEntry> getSleptHours() { return sleep ; }
+
+    public ArrayList<Entry> getCalorieGoal() { return calorieG; }
+
+    public ArrayList<BarEntry> getSleepGoal() { return sleepG ; }
 
 }

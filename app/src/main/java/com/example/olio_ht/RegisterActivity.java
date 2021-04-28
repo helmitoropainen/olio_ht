@@ -1,12 +1,9 @@
 package com.example.olio_ht;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,35 +12,23 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-
 import static java.lang.Float.parseFloat;
-
-
 
 public class RegisterActivity extends AppCompatActivity {
 
-
-    EditText etUsername;
-    EditText etFirstName;
-    EditText etLastName;
+    EditText etUsername, etFirstName, etLastName, etHeight, etWeight, etPassword, etConfirmPassword;
     TextView tvDateOfBirth;
-    EditText etHeight;
-    EditText etWeight;
     Spinner spinner;
-    EditText etPassword;
-    EditText etConfirmPassword;
     int choice;
     UserLocalStore userLocalStore;
     DatePickerDialog datePickerDialog;
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,8 +88,8 @@ public class RegisterActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    // Creates new account and stores it. If any of the fields in registration is empty, user gets
+    // notified to fill in all the fields before an account can be created.
     public void createAccount(View v) {
         String password = etPassword.getText().toString();
         String confirmPassword = etConfirmPassword.getText().toString();
@@ -163,6 +148,7 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
+        // Calculating user's age.
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.M.yyyy");
         LocalDate now = LocalDate.now();
         LocalDate dateOfBirth = LocalDate.parse(stringBirthday, formatter);
@@ -171,6 +157,7 @@ public class RegisterActivity extends AppCompatActivity {
         String salt = generateSalt();
         String securePassword = getSHA512(password, salt.getBytes());
 
+        // Storing user information.
         User registeredUser = new User(firstName, lastName, username, securePassword, salt, sex,
                 dateOfBirth, age, parseFloat(height), parseFloat(weight), 0, 0);
         registeredUser.setBMI();
@@ -179,17 +166,13 @@ public class RegisterActivity extends AppCompatActivity {
         registeredUser.setCaloriesGoal();
         registeredUser.setSleepGoal();
         userLocalStore.storeUserData(registeredUser);
+
         Intent intent = new Intent(RegisterActivity.this, LogInActivity.class);
         startActivityForResult(intent, 1);
-        System.out.println("IDEAL UNI: "+userLocalStore.getUserInfo(username).idealSleep);
-        System.out.println("GOAL UNI " + userLocalStore.getUserInfo(username).sleepGoal);
-        System.out.println("IDEAL KALORTI: "+userLocalStore.getUserInfo(username).idealCalories);
-        System.out.println("GOAL KALORIT: "+userLocalStore.getUserInfo(username).caloriesGoal);
-        System.out.println("BMI: "+userLocalStore.getUserInfo(username).bmi);
-
     }
 
-    // Checks whether the password fills the requirements of a secure password or not.
+    // Takes password as input, checks if it fills the requirements of secure password and returns
+    // true or false depending if the password is secure or not.
     public boolean checkPassword(String password) {
         char ch;
         boolean isValid = true;
@@ -229,7 +212,7 @@ public class RegisterActivity extends AppCompatActivity {
         return isValid;
     }
 
-    // Generates salt for password.
+    // Generates salt for password and returns it.
     public String generateSalt() {
         String stringSalt = "";
         SecureRandom random = new SecureRandom();
@@ -243,6 +226,8 @@ public class RegisterActivity extends AppCompatActivity {
         return stringSalt;
     }
 
+    // Takes salt and password as inputs and generates a secure password with SHA-512 algorithm.
+    // The method returns the salted and hashed password.
     public String getSHA512(String password, byte[] salt) {
         String securePassword = password;
         try {

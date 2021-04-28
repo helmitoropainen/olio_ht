@@ -2,7 +2,6 @@ package com.example.olio_ht;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Editable;
@@ -15,7 +14,6 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -66,7 +64,6 @@ public class CalorieActivity extends AppCompatActivity implements RecyclerViewAd
     User user;
     UserLocalStore userLocalStore;
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

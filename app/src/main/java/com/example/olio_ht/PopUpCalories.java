@@ -1,7 +1,6 @@
 package com.example.olio_ht;
 
 import android.app.Activity;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
 public class PopUpCalories extends Activity {
 
@@ -22,7 +20,6 @@ public class PopUpCalories extends Activity {
     User user;
     UserLocalStore userLocalStore;
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +57,6 @@ public class PopUpCalories extends Activity {
     }
 
     // Set requirements for max calorie goal and update new goal in user information
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public void changeGoal(View v) {
         if (goalInput.getText().toString().trim().length() > 0) {
             goal = Integer.valueOf(goalInput.getText().toString());
